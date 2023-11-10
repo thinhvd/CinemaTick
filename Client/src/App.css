@@ -4,17 +4,25 @@ img {
 }
 
 .bg {
-    display: flex;
-    background-image: url(./images/background1.jpg);
     min-height: 100%;
     background-size: cover;
     background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: white;
+    background-image: url(./images/background.jpg);
     box-shadow: inset 0px 0px 0px 2000px rgba(0,0,0,0.5);
 }
 
 .list {
-    display: flex;
-    background-color: gray;
+    margin-top: 100vh;
+    height: 35vh;
+    background-size: cover;
+    background-color: transparent;
+    color: white;
+}
+
+.aboutus {
+    background-color: rgba(204, 12, 12, 0.5);
     height: 35vh;
     background-size: cover;
 }

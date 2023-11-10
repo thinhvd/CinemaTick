@@ -1,4 +1,4 @@
-import { Layout, Image, Row, Col, Card, Button} from "antd";
+import { Layout, Image, Row, Col, Card, Button, Space} from "antd";
 import { Header} from "antd/es/layout/layout";
 import { MenuOutlined } from '@ant-design/icons';
 import './topbar.css';
@@ -33,12 +33,14 @@ const TopBar = () => {
                     </Col>
 
                     <Col span={8} style={{textAlign: 'right', paddingRight: '30px', paddingTop: '15px'}}>  
-                        <Button>
-                            Log in
-                        </Button>
-                        <Button >
-                            Sign up
-                        </Button>
+                        <Space size = 'middle'>
+                            <Button className="buttonstyle">
+                                Log in
+                            </Button>
+                            <Button className="buttonstyle">
+                                Sign up 
+                            </Button>
+                        </Space>
                     </Col>
                 </Row>
             </Header>

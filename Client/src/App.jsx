@@ -1,4 +1,4 @@
-
+import { Row, Col} from "antd";
 import TopBar from "./scenes/topbar.jsx";
 import './App.css';
 
@@ -7,13 +7,20 @@ function App() {
 
   return(
 
-        <><TopBar/>
-          <section className="bg">
-            
-          </section>
-          <section className="list">
+        <>
+        
+          <div className="bg">
 
-          </section>
+            <section><TopBar/></section>
+            <section className="list">
+                xin chafo
+            </section>
+            <section className="aboutus">
+
+            </section>
+            
+          </div>
+          
         </>
       
   )
