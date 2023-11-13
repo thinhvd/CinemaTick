@@ -17,7 +17,16 @@ const TopBar = () => {
             >  
                 <Row gutter={[16, 8]}>
                     <Col span={8}> 
-                        <Card style={{width:'10vh', height:'10vh', display:'flex', alignItems:'center',justifyContent:'center', backgroundColor:'#1f2833', border:'none'}}>
+                        <Card 
+                            style={{
+                                width:'10vh', 
+                                height:'10vh', 
+                                display:'flex', 
+                                alignItems:'center',
+                                justifyContent:'center', 
+                                backgroundColor:'transparent', 
+                                border:'none'
+                            }}>
                             <MenuOutlined style={{color:'#c5c6c7', scale:'3'}} /> 
                         </Card>
                     </Col>
@@ -25,7 +34,7 @@ const TopBar = () => {
                     <Col span={8}> 
                         <a href = 'http://localhost:5173/'>
                             <Image 
-                                style={{display:'block', margin:'0 245px'}} 
+                                style={{display:'block', margin:'0 245px', maxWidth:'150px'}} 
                                 src = "/src/images/Cinematick.png"
                                 preview = {false}
                             />

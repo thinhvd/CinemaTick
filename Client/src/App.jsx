@@ -1,19 +1,16 @@
-import { Row, Col} from "antd";
-import TopBar from "./scenes/topbar.jsx";
+import TopBar from "./components/header/topbar.jsx";
+import List from "./components/listMovie/list.jsx";
 import './App.css';
 
 
 function App() {
 
   return(
-
         <>
-        
           <div className="bg">
-
             <section><TopBar/></section>
             <section className="list">
-                xin chafo
+                <List/>
             </section>
             <section className="aboutus">
 
