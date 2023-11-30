@@ -12,7 +12,7 @@ const List = () => {
                 className='cardStyle'
                 cover={<img alt="1" src = "src/images/listMovie/1.jpg"/>}>
                 <Meta
-                    title={<div style={{ color: 'white' }}>Avenger:End game</div>}
+                    title={<div className='titleStyle'>Avenger:End game</div>}
             />
             </Card>
 
@@ -20,27 +20,27 @@ const List = () => {
             <Card 
                 hoverable
                 className='cardStyle'
-                cover={<img alt="1" src = "src/images/listMovie/1.jpg"/>}>
+                cover={<img alt="1" src = "src/images/listMovie/2.jpg"/>}>
                 <Meta
-                    title={<div style={{ color: 'white' }}>Avenger:End game</div>}
+                    title={<div className='titleStyle'>Avenger:Infinity war</div>}
             />
             </Card>
 
             <Card 
                 hoverable
                 className='cardStyle'
-                cover={<img alt="1" src = "src/images/listMovie/1.jpg"/>}>
+                cover={<img alt="1" src = "src/images/listMovie/3.jpg"/>}>
                 <Meta
-                    title={<div style={{ color: 'white' }}>Avenger:End game</div>}
+                    title={<div className='titleStyle'>Ironman 2</div>}
             />
             </Card>
 
             <Card 
                 hoverable
                 className='cardStyle'
-                cover={<img alt="1" src = "src/images/listMovie/1.jpg"/>}>
+                cover={<img alt="1" src = "src/images/listMovie/4.jpg"/>}>
                 <Meta
-                    title={<div style={{ color: 'white' }}>Avenger:End game</div>}
+                    title={<div className='titleStyle'>Spider man: <br/>Across the spiderverse</div>}
             />
             </Card>
         </div>

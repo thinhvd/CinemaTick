@@ -7,9 +7,15 @@ img{
 .cardStyle {
     width: 180px;
     height: 35vh;
+    border-color: transparent;
     display: flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     background-color: transparent;
+}
+
+.titleStyle{
+    color: white !important;
+    text-align: center;
 }
