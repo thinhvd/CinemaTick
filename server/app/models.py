@@ -1,5 +1,9 @@
 from datetime import datetime
 from app import db
+
+import string
+import secrets
+import random
 from flask import url_for
 
 class PaginatedAPIMixin(object):
@@ -55,6 +59,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     description = db.Column(db.String(200))
+    poster = db.Column(db.String(200))
     duration = db.Column(db.Integer)
     genre = db.Column(db.String(10))
     rating = db.Column(db.Float)
@@ -70,11 +75,13 @@ class Review(db.Model):
 class Show(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     schedule = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
     # Relationships
     seats = db.relationship('Seat', backref='show', lazy='dynamic')
     tickets = db.relationship('Ticket', backref='show', lazy='dynamic')
+    movies = db.relationship('Movie', backref='show', lazy='dynamic')
 
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -111,7 +118,11 @@ class Bill(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     schedule = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
+    bill_code = db.Column(db.String(6), unique=True)
+
     # Relationships
     drinks = db.relationship('Drink', backref='bill', lazy='dynamic')
 
-
+    def generate_bill_code(self):
+        characters = string.ascii_uppercase + string.digits
+        self.bill_code = ''.join(secrets.choice(characters) for _ in range(6))
