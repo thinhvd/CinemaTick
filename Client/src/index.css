@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
 
+/* index.css */
 html,
 body,
 #root,
@@ -31,4 +32,116 @@ html{
     box-sizing: border-box;
     overflow-x: hidden;
 }
- 
+
+body{
+  margin: 0;
+  padding: 0;
+}
+
+.background {
+  min-height: 100%;
+  height: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: white;
+  background-image: url(./images/background.jpg);
+  box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
+}
+
+.list {
+  margin-top: 100vh;
+  height: 35vh;
+  background-size: cover;
+  background-color: transparent;
+  color: white;
+}
+
+.aboutus {
+  margin-top: 100px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 35vh;
+  text-align: center;
+  background-size: cover;
+}
+
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+Form {
+  width: 18%;
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 250px auto !important;
+}
+
+.login-form {
+  max-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+Form {
+  width: 18%;
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 250px auto !important;
+}
+
+.buttonstyle{
+  background-color: #000000;
+  color: #c5c6c7;
+  width: 100px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+img{
+  margin-top: 5px;
+  max-width:  170px ;
+  max-height: 330px ;
+}
+
+.cardStyle {
+  width: 180px;
+  height: 35vh;
+  border-color: transparent;
+  display: flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background-color: transparent;
+}
+
+.titleStyle{
+  color: white !important;
+  text-align: center;
+}
