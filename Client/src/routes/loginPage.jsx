@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Parse from 'parse/dist/parse.min.js';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';

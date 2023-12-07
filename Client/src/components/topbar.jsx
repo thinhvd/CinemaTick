@@ -1,6 +1,7 @@
 import { Layout, Image, Row, Col, Card, Button, Space } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { MenuOutlined } from '@ant-design/icons';
+import MenuMovie from "./menu";
 
 export default function TopBar() {
     return (
@@ -26,7 +27,7 @@ export default function TopBar() {
                                 backgroundColor: 'transparent',
                                 border: 'none'
                             }}>
-                            <MenuOutlined style={{ color: '#c5c6c7', scale: '3' }} />
+                            <MenuMovie/>
                         </Card>
                     </Col>
 
