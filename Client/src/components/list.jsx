@@ -3,7 +3,7 @@ import { Card } from 'antd';
 const { Meta } = Card;
 
 
-const List = () => {
+export default function List() {
     return (
         <div style={{ display: 'flex', gap: '128px', margin: '0 100px' }}>
             <Card
@@ -45,7 +45,5 @@ const List = () => {
         </div>
     )
 }
-
-export default List;
 
 

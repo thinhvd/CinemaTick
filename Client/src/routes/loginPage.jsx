@@ -1,14 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Parse from 'parse/dist/parse.min.js';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';
-//import '../../mainScreen/mainScreen.css';
-//import './loginScreen.css';
 
 export default function LoginPage() {
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+    // State variables
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [currentUser, setCurrentUser] = useState(null);
+
+    var loginInfo = {
+        "username": username,
+        "password": password
+    }
+
+    // Function that will return current user and also update current username
+    const getCurrentUser = async function () {
+        const currentUser = await Parse.User.current();
+        // Update state variable holding current user
+        setCurrentUser(currentUser);
+        return currentUser;
     };
+    const doUserLogIn = async function () {
+        // Note that these values come from state variables that we've declared before
+        const usernameValue = username;
+        const passwordValue = password;
+        try {
+            const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
+            // logIn returns the corresponding ParseUser object
+            alert(
+                `Success! User ${loggedInUser.get(
+                    'username'
+                )} has successfully signed in!`
+            );
+            // To verify that this is in fact the current user, `current` can be used
+            const currentUser = await Parse.User.current();
+            console.log(loggedInUser === currentUser);
+            // Clear input fields
+            setUsername('');
+            setPassword('');
+            // Update state variable holding current user
+            getCurrentUser();
+            return true;
+        } catch (error) {
+            // Error can be caused by wrong parameters or lack of Internet connection
+            alert(`Error! ${error.message}`);
+            return false;
+        }
+    };
+
+    //   async function cout() {
+    //     const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/1", {
+    //         method: "get"
+    //     });
+    //     const movies = await response.json();
+    //     console.log(movies);
+    //   }
+
+    function sendData() {
+        fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/login", {
+            headers: {
+                'accept': 'application/json, text/plain',
+                'content-type': 'application/json;charset=utf-8'
+            },
+            method: "post",
+            body: JSON.stringify(loginInfo)
+        }).then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+    }
+
+
     return (
         <div className='background'>
             <TopBar />
@@ -18,7 +81,6 @@ export default function LoginPage() {
                 initialValues={{
                     remember: true,
                 }}
-                onFinish={onFinish}
             >
                 <Form.Item
                     name="username"
@@ -29,7 +91,12 @@ export default function LoginPage() {
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                    <Input
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        value={username}
+                        onChange={(event) => setUsername(event.target.value)}
+                        placeholder="Username"
+                    />
                 </Form.Item>
                 <Form.Item
                     name="password"
@@ -42,6 +109,8 @@ export default function LoginPage() {
                 >
                     <Input
                         prefix={<LockOutlined className="site-form-item-icon" />}
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
                         type="password"
                         placeholder="Password"
                     />
@@ -57,7 +126,12 @@ export default function LoginPage() {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
+                    <Button
+                        //onClick={() => doUserLogIn()}
+                        onClick={() => sendData()}
+                        type="primary"
+                        htmlType="submit"
+                        className="login-form-button">
                         Log in
                     </Button>
                     Or <a href={`signup`}>Register now!</a>

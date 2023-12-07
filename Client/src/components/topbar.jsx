@@ -2,7 +2,7 @@ import { Layout, Image, Row, Col, Card, Button, Space } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { MenuOutlined } from '@ant-design/icons';
 
-const TopBar = () => {
+export default function TopBar() {
     return (
         <Layout>
             <Header style={{
@@ -54,5 +54,3 @@ const TopBar = () => {
         </Layout>
     )
 }
-
-export default TopBar;
