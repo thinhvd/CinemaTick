@@ -32,7 +32,7 @@ class PaginatedAPIMixin(object):
 
 class User(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), index=True, unique=True)
+    fullname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     phone_number = db.Column(db.String(10), index=True, unique=True)
     password_hash = db.Column(db.String(128))
@@ -42,18 +42,18 @@ class User(PaginatedAPIMixin, db.Model):
     bills = db.relationship('Bill', backref='user', lazy='dynamic')
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return '<User {}>'.format(self.fullname)
     
     def to_dict(self):
         data = {
             'id': self.id,
-            'username': self.username,
+            'fullname': self.fullname,
             'email' : self.email,
             'phone_number' : self.phone_number
         }
 
         return data
-
+    
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -81,7 +81,7 @@ class Show(db.Model):
     # Relationships
     seats = db.relationship('Seat', backref='show', lazy='dynamic')
     tickets = db.relationship('Ticket', backref='show', lazy='dynamic')
-    movies = db.relationship('Movie', backref='show', lazy='dynamic')
+    movies = db.relationship('Movie', backref='show')
 
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)

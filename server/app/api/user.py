@@ -6,22 +6,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
 
-@bp.route('/api/user/sign_up', methods=['POST'])
+from flask_cors import CORS, cross_origin
+
+@bp.route('/api/user/signup', methods=['POST'])
+@cross_origin()
 def sign_up():
     data = request.get_json()
     session.permanent = True
 
-    if 'username' not in data or 'email' not in data or 'password' not in data:
-        return bad_request('must include username, email and password fields')
+    if 'fullname' not in data or 'email' not in data or 'password' not in data:
+        return bad_request('must include fullname, email and password fields')
     
-    username = data["username"]
+    fullname = data["fullname"]
     password = data["password"]
     email = data["email"]
     phone_number = data["phone_number"]
-
-    found_user = User.query.filter_by(username = username).first()
-    if found_user: 
-        return bad_request('please use a different username')
 
     found_user = User.query.filter_by(email = email).first()
     if found_user: 
@@ -32,51 +31,57 @@ def sign_up():
         return bad_request('please use a different phone number')
     
     # Hash passwork
-    password_hash = generate_password_hash(password)
+    password_hash = generate_password_hash(password, 'pbkdf2')
+
     # add user
-    user = User(username = username, email = email, phone_number = phone_number, password_hash = password_hash)
+    user = User(fullname = fullname, email = email, phone_number = phone_number, password_hash = password_hash)
     db.session.add(user)
     db.session.commit()
     response = jsonify(user.to_dict())
     response.status_code = 201
     return response
 
+@bp.route('/api/user/login', methods=['POST'])
+@cross_origin()
+def login():
+    data = request.get_json()
+
+    if 'email' not in data or 'password' not in data:
+        return bad_request('must include fullname and password fields')
+    
+
+    email = data["email"]
+    password = data["password"]
+    session.permanent = True
+
+    user = User.query.filter_by(email = email).first()
+    
+    if user :
+        if check_password_hash(user.password_hash, password):
+            response = jsonify(user.to_dict())
+            response.status_code = 201
+            return response
+        else:
+            return bad_request("email or password not true")
+    else:
+        return bad_request("email or password not true")
+    
 @bp.route('/api/user/<int:id>', methods=['GET'])
+@cross_origin()
 def get_user(id):
     return jsonify(User.query.get_or_404(id).to_dict())
 
 @bp.route('/api/users', methods=['GET'])
+@cross_origin()
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
     data = User.to_collection_dict(User.query, page, per_page, 'get_users')
     return jsonify(data)
 
-@bp.route('/api/user/login', methods=['POST'])
-def login():
-    data = request.get_json()
-
-    if 'username' not in data or 'password' not in data:
-        return bad_request('must include username and password fields')
-    
-
-    username = data["username"]
-    password = data["password"]
-    session.permanent = True
-
-    user = User.query.filter_by(username = username).first()
-    
-    if user :
-        if check_password_hash(user.passwork_hash, password):
-            response = jsonify(user.to_dict())
-            response.status_code = 201
-            return response
-        else:
-            return bad_request("username or password not true")
-    else:
-        return bad_request("username or password not true")
      
 @bp.route('/api/user/chance_pass', methods=['PUT'])
+@cross_origin()
 def chance_pass():
     data = request.get_json()
     if 'new_pass' not in data or 'id' not in data or 'old_pass' not in data:
@@ -96,6 +101,7 @@ def chance_pass():
         return bad_request("Old not true")
 
 @bp.route('/api/user/<int:id>', methods=['DELETE'])
+@cross_origin()
 def delete_user(id):
     User.query.filter_by(id = id).delete()
     db.session.commit()
