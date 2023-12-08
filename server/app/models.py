@@ -90,6 +90,7 @@ class Show(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     schedule = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    ticket_cost = db.Column(db.Integer)
 
     # Relationships
     seats = db.relationship('Seat', backref='show', lazy='dynamic')
