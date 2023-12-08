@@ -5,6 +5,7 @@ from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
+from app import api
 
 from flask_cors import CORS, cross_origin
 
@@ -39,7 +40,7 @@ def sign_up():
     db.session.commit()
     response = jsonify(user.to_dict())
     response.status_code = 201
-    return response
+    return user.password_hash
 
 @bp.route('/api/user/login', methods=['POST'])
 @cross_origin()
@@ -76,7 +77,7 @@ def get_user(id):
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = User.to_collection_dict(User.query, page, per_page, 'get_users')
+    data = User.to_collection_dict(User.query, page, per_page, 'api.get_users')
     return jsonify(data)
 
      
@@ -99,6 +100,31 @@ def chance_pass():
         return "thanh cong"
     else:
         return bad_request("Old not true")
+
+
+@bp.route('/api/user/forgot_pass', methods=['PUT'])
+@cross_origin()
+def forgot_pass():
+    data = request.get_json()
+    if 'email' not in data :
+        return bad_request('must include email fields')
+    
+
+    session.permanent = True
+    user = User.query.filter_by(email = data["email"]).first()
+    if not user:
+        return bad_request("email khong dung")
+    # gen pass vs gui mail cho thinh lam
+
+    new_pass = 123 # tự gen
+
+    # change pass
+    user.password_hash = generate_password_hash(new_pass)
+    db.session.commit()
+    response = jsonify(user.to_dict())
+    response.status_code = 201
+    return response
+
 
 @bp.route('/api/user/<int:id>', methods=['DELETE'])
 @cross_origin()
