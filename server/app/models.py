@@ -55,7 +55,7 @@ class User(PaginatedAPIMixin, db.Model):
         return data
     
 
-class Movie(db.Model):
+class Movie(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
     description = db.Column(db.String(200))
@@ -66,6 +66,19 @@ class Movie(db.Model):
 
     # Relationships
     reviews = db.relationship('Review', backref='movie', lazy='dynamic')
+
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'name' : self.name,
+            'description' : self.description,
+            'poster' : self.poster,
+            'duration' : self.duration,
+            'genre' : self.genre,
+            'rating' : self.rating
+        }
+
+        return data
 
 class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -91,7 +104,16 @@ class Room(db.Model):
     # Relationships
     shows = db.relationship('Show', backref='room', lazy='dynamic')
 
-class Seat(db.Model):
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'screen_type': self.screen_type,
+            'num_of_seats' : self.num_of_seats,
+        }
+
+        return data
+
+class Seat(PaginatedAPIMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
     status = db.Column(db.String(10))
@@ -100,6 +122,17 @@ class Seat(db.Model):
 
     # Relationships
     tickets = db.relationship('Ticket', backref='seat', lazy='dynamic')
+
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'show_id' : self.show_id,
+            'status' : self.status,
+            'seat_type' : self.seat_type,
+            'price' : self.price,
+        }
+
+        return data
 
 class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
