@@ -5,12 +5,12 @@ import TopBar from '../components/topbar';
 
 export default function LoginPage() {
     // State variables
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [currentUser, setCurrentUser] = useState(null);
 
     var loginInfo = {
-        "username": username,
+        "email": email,
         "password": password
     }
 
@@ -82,19 +82,19 @@ export default function LoginPage() {
                 }}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
                         },
                     ]}
                 >
                     <Input
                         prefix={<UserOutlined className="site-form-item-icon" />}
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        placeholder="Username"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        placeholder="Email"
                     />
                 </Form.Item>
                 <Form.Item

@@ -14,7 +14,7 @@ export default function SignupPage() {
     const [reconfirmpassword, setReconfirmpassword] = useState('');
 
     var signupInfo = {
-        "username": fullname,
+        "fullname": fullname,
         "password": password,
         "email": email,
         "phone_number": phone
@@ -38,7 +38,7 @@ export default function SignupPage() {
             return false;
         }
     };
-    function sendData() {
+    function uploadData() {
         fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
             headers: {
                 'accept': 'application/json, text/plain',
@@ -157,7 +157,7 @@ export default function SignupPage() {
 
                 <Form.Item>
                     <Button
-                        onClick={() => sendData()}
+                        onClick={() => uploadData()}
                         type="primary"
                         htmlType="submit"
                         className="login-form-button">

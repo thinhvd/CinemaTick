@@ -38,7 +38,7 @@ body{
   padding: 0;
 }
 
-.background {
+.background{
   min-height: 100%;
   background-size: cover;
   background-attachment: fixed;
@@ -63,29 +63,6 @@ body{
   height: 35vh;
   text-align: center;
   background-size: cover;
-}
-
-.login-form {
-  max-width: 300px;
-}
-
-.login-form-forgot {
-  float: right;
-}
-
-.ant-col-rtl .login-form-forgot {
-  float: left;
-}
-
-.login-form-button {
-  width: 100%;
-}
-
-Form {
-  width: 18%;
-  background-color: transparent;
-  border-radius: 10px;
-  margin: 250px auto !important;
 }
 
 .login-form {
@@ -143,4 +120,56 @@ img{
 .titleStyle{
   color: white !important;
   text-align: center;
+}
+
+.button{
+  scale: 1.5;
+  background-color: green;
+}
+
+.movieInfoImage{
+  scale: 2;
+  margin-left: 15vh;
+  margin-top: 15vh;
+}
+
+.movieInfoText{
+  margin-left: 15vh;
+  
+}
+#tenphim{
+  font-size: 5vh;
+  margin-top: 10vh;
+}
+#tomtat{
+  margin-top: 10vh;
+  max-width: 60vh;
+
+}
+
+.cardDatVe{
+}
+
+.movielist{
+  max-width: 100%;
+  min-height: 100%;
+  margin-top: 20vh;
+  margin-left: 5vh;
+  margin-right: 5vh;
+  display: grid;
+  grid-template-columns: repeat(5, 0.3fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 70px;
+  text-align: center;
+}
+
+.countpage{
+  width: 100%;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  padding: 10px;
+  background-color: rgba(225, 225, 225, 0.6);
 }

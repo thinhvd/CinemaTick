@@ -1,20 +1,24 @@
 import { Card } from 'antd';
+import DatVe from './bookingButton';
 
 const { Meta } = Card;
-
 
 export default function List() {
     return (
         <div style={{ display: 'flex', gap: '128px', margin: '0 100px' }}>
-            <Card
-                hoverable
-                className='cardStyle'
-                cover={<img alt="1" src="src/images/listMovie/1.jpg" />}>
-                <Meta
-                    title={<div className='titleStyle'>Avenger:End game</div>}
-                />
+            <Card>
+                <a href={`/movieinfo`}>
+                    <Card
+                        hoverable
+                        className='cardStyle'
+                        cover={<img alt="1" src="src/images/listMovie/1.jpg" />}>
+                        <Meta
+                            title={<div className='titleStyle'>Avenger:End game</div>}
+                        />
+                    </Card>
+                </a>
+                <DatVe/>
             </Card>
-
 
             <Card
                 hoverable

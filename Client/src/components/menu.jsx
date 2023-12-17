@@ -4,7 +4,6 @@ import { Menu } from 'antd';
 
 function getItem(label, icon, children,) {
   return {
-    
     icon,
     label,
     children,
@@ -13,7 +12,7 @@ function getItem(label, icon, children,) {
 
 const items = [
     getItem(null,<MenuOutlined style={{ color: '#c5c6c7', scale: '2.5' }}/>,[
-        getItem('Danh sách phim', null),
+        getItem(<a href={`/movielist`}>Danh sách phim</a>, null, ),
         getItem('Lịch',null)
     ])
 ]
@@ -27,7 +26,6 @@ export default function MenuMovie() {
                 backgroundColor: 'transparent'
             }}
             mode="horizontal"
-            horizontalCollapsed={collapsed}
             items={items}
         />
       )
