@@ -127,25 +127,9 @@ img{
   background-color: green;
 }
 
-.movieInfoImage{
-  scale: 2;
-  margin-left: 15vh;
-  margin-top: 15vh;
-}
 
-.movieInfoText{
-  margin-left: 15vh;
-  
-}
-#tenphim{
-  font-size: 5vh;
-  margin-top: 10vh;
-}
-#tomtat{
-  margin-top: 10vh;
-  max-width: 60vh;
 
-}
+
 
 .cardDatVe{
 }
@@ -172,4 +156,25 @@ img{
   font-size: 50px;
   padding: 10px;
   background-color: rgba(225, 225, 225, 0.6);
+}
+
+.movieInfo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(50%);
+}
+
+.movieInfoImage{
+  scale: 2;
+  transform: translate(-30%)
+}
+
+.movieInfoText{
+  height: 50vh;
+  background-color: transparent;
+  border-bottom: none;
+  border-top: none;
+  border-radius: 0%;
+  border-width: 2px;
 }
