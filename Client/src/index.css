@@ -135,22 +135,26 @@ img{
 }
 
 .movielist{
-  max-width: 100%;
+  min-width: 100%;
   min-height: 100%;
   margin-top: 20vh;
-  margin-left: 5vh;
-  margin-right: 5vh;
   display: grid;
-  grid-template-columns: repeat(5, 0.3fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-gap: 70px;
   text-align: center;
+  text-decoration: none !important;
+}
+
+.movielist h3{
+  text-align: center;
+  overflow-wrap: break-word;
+  color: #fff;
 }
 
 .countpage{
   width: 100%;
   position: fixed;
-  bottom: 50px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 50px;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Pagination } from 'antd';
+import { Link } from 'react-router-dom';
 import TopBar from '../components/topbar';
 
 export default function MovieList() {
@@ -9,30 +10,88 @@ export default function MovieList() {
   const itemsPerPage = 10;
 
   const movielist = [
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/1.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/2.jpg",
-    "src/images/listMovie/3.jpg",
-    "src/images/listMovie/3.jpg",
-    "src/images/listMovie/3.jpg",
-    "src/images/listMovie/3.jpg",
+    {
+      id: 1,
+      poster:"src/images/listMovie/1.jpg",
+      name: "Avenger: End Game",
+    },
+    {
+      id: 2,
+      poster:"src/images/listMovie/2.jpg",
+      name: "Avenger: Infinity War",
+    },
+    {
+      id: 3,
+      poster:"src/images/listMovie/3.jpg",
+      name: "Iron Man 2",
+    },
+    {
+      id: 4,
+      poster:"src/images/listMovie/4.jpg",
+      name: "Spider Man: Accross the Spider-Verse",
+    },
+    {
+      id: 5,
+      poster:"src/images/listMovie/5.jpg",
+      name: "Spider Man 2",
+    },
+    {
+      id: 6,
+      poster:"src/images/listMovie/6.jpg",
+      name: "Black Panther",
+    },
+    {
+      id: 7,
+      poster:"src/images/listMovie/7.jpg",
+      name: "Spider Man: No Way Home",
+    },
+    {
+      id: 8,
+      poster:"src/images/listMovie/8.jpg",
+      name: "Captain America: The First Avenger",
+    },
+    {
+      id: 1,
+      poster:"src/images/listMovie/1.jpg",
+      name: "Avenger: End Game",
+    },
+    {
+      id: 2,
+      poster:"src/images/listMovie/2.jpg",
+      name: "Avenger: Infinity War",
+    },
+    {
+      id: 3,
+      poster:"src/images/listMovie/3.jpg",
+      name: "Iron Man 2",
+    },
+    {
+      id: 4,
+      poster:"src/images/listMovie/4.jpg",
+      name: "Spider Man: Accross the Spider-Verse",
+    },
+    {
+      id: 5,
+      poster:"src/images/listMovie/5.jpg",
+      name: "Spider Man 2",
+    },
+    {
+      id: 6,
+      poster:"src/images/listMovie/6.jpg",
+      name: "Black Panther",
+    },
+    {
+      id: 7,
+      poster:"src/images/listMovie/7.jpg",
+      name: "Spider Man: No Way Home",
+    },
+    {
+      id: 8,
+      poster:"src/images/listMovie/8.jpg",
+      name: "Captain America: The First Avenger",
+    },
+
+    
     
   ];
 
@@ -53,8 +112,13 @@ export default function MovieList() {
 
       <div className='movielist'>
         {currentItems.map((movie, index) => (
-          <div key={index}>
-            <img src={movie} alt="" />
+          <div key={movie.id}>
+            <Link to={`/movieinfo`}>
+              <img src={movie.poster} alt="{movie.name}" />
+            </Link>
+            <div>
+              <h3>{movie.name}</h3>
+            </div>
           </div>
         ))}
         <div className='countpage'>
