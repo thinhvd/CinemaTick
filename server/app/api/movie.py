@@ -14,10 +14,16 @@ def get_movie(id):
 @bp.route('/api/movies', methods=['GET'])
 @cross_origin()
 def get_movies():
-    page = request.args.get('page', 1, type=int)
-    per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Movie.to_collection_dict(Movie.query, page, per_page, 'api.get_movies')
-    return jsonify(data)
+    # page = request.args.get('page', 1, type=int)
+    # per_page = min(request.args.get('per_page', 10, type=int), 100)
+    # data = Movie.to_collection_dict(Movie.query, page, per_page, 'api.get_movies')
+    # return jsonify(data)
+
+    data = Movie.query.all()
+    datas = []
+    for movie in data:
+        datas.append(movie.to_dict())
+    return jsonify(datas)
 
 @bp.route('/api/movie/create', methods=['POST'])
 @cross_origin()
