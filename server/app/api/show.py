@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app.models import User, Movie, Review, Show, Room, Seat, Ticket, Drink, Bill
 from app import db
 from app.api.erorrs import bad_request, error_response
+from app.api.seat import get_seats_by_show_id
 from app.api import bp
 from flask_cors import CORS, cross_origin
 from app.api.seat import create_seat
@@ -10,7 +11,8 @@ from app.api.seat import create_seat
 @bp.route('/api/show/<int:id>', methods=['GET'])
 @cross_origin()
 def get_show(id):
-    return jsonify(Show.query.get_or_404(id).to_dict())
+    show = Show.query.get_or_404(id).to_dict()
+    return show
 
 @bp.route('/api/shows', methods=['GET'])
 @cross_origin()
