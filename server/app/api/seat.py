@@ -19,7 +19,7 @@ def create_seat(show):
         for i in range(1,col+1):    
             position = chr(ch) + str(i)
             if ((i>3 and i<10) and (ch>66 and ch<71)):
-                seat = Seat(show_id = show.id, status = "empty", seat_type = "vip", price = round(show.ticket_cost * 1.25), position = position)
+                seat = Seat(show_id = show.id, status = "empty", seat_type = "vip", price = round(show.ticket_cost), position = position)
                 db.session.add(seat)
             else :
                 seat = Seat(show_id = show.id, status = "empty", seat_type = "basic", price = round(show.ticket_cost * 1.25), position = position)
@@ -36,8 +36,11 @@ def get_seat(id):
 @bp.route('/api/seats/<int:show_id>', methods=['GET'])
 @cross_origin()
 def get_seats_by_show_id(show_id):
-    data = Seat.query.filter_by(show_id=show_id).all().to_dict()
-    return jsonify(data)
+    data = Seat.query.filter_by(show_id=show_id)
+    datas = []
+    for seat in data:
+        datas.append(seat.to_dict())
+    return jsonify(datas)
 
 
 @bp.route('/api/seat/update', methods=['POST'])
