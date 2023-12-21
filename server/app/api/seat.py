@@ -47,17 +47,25 @@ def get_seats_by_show_id(show_id):
 @cross_origin()
 def update_seat(): 
     data = request.get_json()
-    if 'status' not in data or 'id' not in data:
-        return bad_request('must include input data fields')
+    response = []
     
-    seat = Seat.query.get(data["id"])
-    if not seat:
-        return bad_request('seat id ko ton tai')
-    
-    seat.status = data['status']
+    for seat_update in data:
+        if 'status' not in seat_update or 'id' not in seat_update:
+            return bad_request('must include input data fields')
+        seat = Seat.query.get(seat_update['id'])
+
+        if not seat:
+            return bad_request('seat id ko ton tai')
+
+        seat.status = seat_update['status']
+        response.append(seat.to_dict())
+
     db.session.commit()
-    response = jsonify(seat.to_dict())
+    
+    response = jsonify(response)
     response.status_code = 201
     return response
+
+
 
 
