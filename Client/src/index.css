@@ -140,7 +140,7 @@ img{
   margin-top: 20vh;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 2fr);
   text-align: center;
   text-decoration: none !important;
 }
@@ -179,6 +179,7 @@ img{
   background-color: transparent;
   border-bottom: none;
   border-top: none;
+  border-right: none;
   border-radius: 0%;
   border-width: 2px;
 }

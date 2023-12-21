@@ -28,13 +28,13 @@ const router = createBrowserRouter([
     element: <SignupPage />,
   },
   {
-    path:"movieinfo",
-    element: <MovieInfo />,
-  },
-  {
     path:"movielist",
     element: <MovieList/>
-  }
+  },
+  {
+    path:"/movieinfo/:id",
+    element: <MovieInfo/>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
