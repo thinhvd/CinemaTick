@@ -10,7 +10,14 @@ class Config(object):
     # dbname   = '/Cinematick'
     # SQLALCHEMY_DATABASE_URI = userpass + basedir + dbname
 
-    SQLALCHEMY_DATABASE_URI = "mysql://fall2324w20g8:cinematick8@10.110.77.167:3306/fall2324w20g8_cinematick"
+    SQLALCHEMY_DATABASE_URI = "mysql://fall2324w20g8:cinematick8@10.96.210.203:3306/fall2324w20g8_cinematick"
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     CORS_HEADERS = 'Content-Type'
+
+    MAIL_SERVER='smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = 'cinematickg8@gmail.com'
+    MAIL_PASSWORD = 'ctce ytln jmpq mgpb'
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
