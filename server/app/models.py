@@ -85,7 +85,7 @@ class Review(db.Model):
     content = db.Column(db.String(200))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
 
-class Show(db.Model):
+class Show(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
@@ -97,7 +97,18 @@ class Show(db.Model):
     tickets = db.relationship('Ticket', backref='show', lazy='dynamic')
     movies = db.relationship('Movie', backref='show')
 
-class Room(db.Model):
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'room_id' : self.room_id,
+            'movie_id' : self.movie_id,
+            'schedule' : self.schedule,
+            'ticket_cost' : self.ticket_cost
+        }
+
+        return data
+
+class Room(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     screen_type = db.Column(db.String(20))
     num_of_seats = db.Column(db.Integer)
@@ -119,7 +130,9 @@ class Seat(PaginatedAPIMixin,db.Model):
     show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
     status = db.Column(db.String(10))
     seat_type = db.Column(db.String(10))
+    position = db.Column(db.String(5))
     price = db.Column(db.Float)
+    
 
     # Relationships
     tickets = db.relationship('Ticket', backref='seat', lazy='dynamic')
@@ -130,6 +143,7 @@ class Seat(PaginatedAPIMixin,db.Model):
             'show_id' : self.show_id,
             'status' : self.status,
             'seat_type' : self.seat_type,
+            'position' : self.position,
             'price' : self.price,
         }
 
