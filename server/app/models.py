@@ -1,10 +1,13 @@
 from datetime import datetime
 from app import db
+from app import app
 
 import string
 import secrets
 import random
 from flask import url_for
+
+import jwt
 
 class PaginatedAPIMixin(object):
     @staticmethod
@@ -53,6 +56,20 @@ class User(PaginatedAPIMixin, db.Model):
         }
 
         return data
+    
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+ 
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
     
 
 class Movie(PaginatedAPIMixin, db.Model):
@@ -119,6 +136,7 @@ class Seat(PaginatedAPIMixin,db.Model):
     show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
     status = db.Column(db.String(10))
     seat_type = db.Column(db.String(10))
+    position = db.Column(db.String(5))
     price = db.Column(db.Float)
 
     # Relationships
@@ -139,6 +157,7 @@ class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
     seat_id = db.Column(db.Integer, db.ForeignKey('seat.id'))
+    bill_id = db.Column(db.Integer, db.ForeignKey('bill.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Drink(db.Model):
@@ -156,6 +175,7 @@ class Bill(db.Model):
 
     # Relationships
     drinks = db.relationship('Drink', backref='bill', lazy='dynamic')
+    tickets = db.relationship('Ticket', backref='bill', lazy='dynamic')
 
     def generate_bill_code(self):
         characters = string.ascii_uppercase + string.digits
