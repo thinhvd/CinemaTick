@@ -1,11 +1,12 @@
 from flask import Flask, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy 
-from app.models import User, Movie, Review, Show, Room, Seat, Ticket, Drink, Bill
+from app.models import User, Movie,  Show, Room, Seat, Ticket,  Bill
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
 from app import api
+from app import mail
 
 from flask_cors import CORS, cross_origin
 
@@ -15,7 +16,7 @@ def sign_up():
     data = request.get_json()
     session.permanent = True
 
-    if 'fullname' not in data or 'email' not in data or 'password' not in data:
+    if 'fullname' not in data or 'email' not in data or 'password' not in data or 'phone_number' not in data:
         return bad_request('must include fullname, email and password fields')
     
     fullname = data["fullname"]
@@ -132,3 +133,14 @@ def delete_user(id):
     User.query.filter_by(id = id).delete()
     db.session.commit()
     return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
+
+@bp.route('/api/user/sendmail', methods=['POST'])
+@cross_origin()
+def send_mail():    
+    msg = mail.send_message(
+        'Send Mail tutorial!',
+        sender='cinematickg8@gmail.com',
+        recipients=['trinhdat11371@gmail.com'],
+        body="Congratulations you've succeeded!"
+    )
+    return 'Mail sent'

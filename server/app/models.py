@@ -82,7 +82,6 @@ class Movie(PaginatedAPIMixin, db.Model):
     rating = db.Column(db.Float)
 
     # Relationships
-    reviews = db.relationship('Review', backref='movie', lazy='dynamic')
 
     def to_dict(self):
         data = {
@@ -97,10 +96,7 @@ class Movie(PaginatedAPIMixin, db.Model):
 
         return data
 
-class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
+
 
 class Show(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -124,6 +120,7 @@ class Show(PaginatedAPIMixin, db.Model):
         }
 
         return data
+    
 
 class Room(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -173,9 +170,6 @@ class Ticket(db.Model):
     bill_id = db.Column(db.Integer, db.ForeignKey('bill.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class Drink(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    bill_id = db.Column(db.Integer, db.ForeignKey('bill.id'))
 
 class Bill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -187,9 +181,20 @@ class Bill(db.Model):
     bill_code = db.Column(db.String(6), unique=True)
 
     # Relationships
-    drinks = db.relationship('Drink', backref='bill', lazy='dynamic')
     tickets = db.relationship('Ticket', backref='bill', lazy='dynamic')
 
     def generate_bill_code(self):
         characters = string.ascii_uppercase + string.digits
         self.bill_code = ''.join(secrets.choice(characters) for _ in range(6))
+
+    def to_dict_for_user(self):
+        data = {
+            'id': self.id,
+            'num_of_tickets' : self.num_of_tickets,
+            'total_price' : self.total_price,
+            'user_id' : self.user_id,
+            'schedule' : self.schedule,
+            'bill_code' : self.bill_code,
+        }
+
+        return data
