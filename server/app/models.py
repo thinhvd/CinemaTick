@@ -193,5 +193,4 @@ class Bill(db.Model):
             'schedule' : self.schedule,
             'bill_code' : self.bill_code,
         }
-
         return data

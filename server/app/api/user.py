@@ -1,8 +1,10 @@
 from flask import Flask, request, session, jsonify
+
 from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required
 
 from app.models import User, Movie, Show, Room, Seat, Ticket, Bill
+
 from app import db
 from app import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,7 +13,43 @@ from app.api import bp
 from app import api
 from app import mail
 
+
 from app.email import send_password_reset_email
+
+from flask_cors import CORS, cross_origin
+
+@bp.route('/api/user/signup', methods=['POST'])
+@cross_origin()
+def sign_up():
+    data = request.get_json()
+    session.permanent = True
+
+    if 'fullname' not in data or 'email' not in data or 'password' not in data or 'phone_number' not in data:
+        return bad_request('must include fullname, email and password fields')
+    
+    fullname = data["fullname"]
+    password = data["password"]
+    email = data["email"]
+    phone_number = data["phone_number"]
+
+    found_user = User.query.filter_by(email = email).first()
+    if found_user: 
+        return bad_request('please use a different email address')
+
+    found_user = User.query.filter_by(phone_number = phone_number).first()
+    if found_user: 
+        return bad_request('please use a different phone number')
+    
+    # Hash passwork
+    password_hash = generate_password_hash(password, 'pbkdf2')
+
+    # add user
+    user = User(fullname = fullname, email = email, phone_number = phone_number, password_hash = password_hash)
+    db.session.add(user)
+    db.session.commit()
+    response = jsonify(user.to_dict())
+    response.status_code = 201
+    return user.password_hash
 
 from flask_cors import CORS, cross_origin
 
@@ -77,4 +115,3 @@ def delete_user(id):
     User.query.filter_by(id = id).delete()
     db.session.commit()
     return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
-
