@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime
 
 
-@bp.route('/api/bill/user/<int:id>', methods=['GET'])
+@bp.route('/api/bill/hitory/user/<int:id>', methods=['GET'])
 @cross_origin()
 def user_hitory(id):
     bills = Bill.query.filter_by(user_id = id)
@@ -51,29 +51,30 @@ def create_bill():
         if seat is None:
             return bad_request('seat_id not true')
         
-        if seat.status == 'jj do' or seat.status== 'jj do':
+        if seat.status == 'occupied':
             return bad_request('ghe cua ban da dc dat')
         seats.append(seat)
     
     show = Show.query.get(seats[0].to_dict()['show_id']).to_dict()
     movie = Movie.query.get(show['id']).to_dict()
     for seat in seats:
-        ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = None, user_id = data['user_id'])
-        tickets.append(ticket)
         count += 1
         total_price += seat.price
         positions.append(seat.position)
-        seat.status = 'used'
+        seat.status = 'occupied'
 
-    bill_code ="123458"
+    
 
-    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = show['schedule'], bill_code = bill_code)
+    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = show['schedule'], bill_code = None)
     db.session.add(bill)
     db.session.commit()
 
-    for ticket in tickets:
-        ticket.bill_id = bill.id
+    bill_code = bill.generate_bill_code()
+
+    for seat in seats:
+        ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = bill.id, user_id = data['user_id'])
         db.session.add(ticket)
+
     db.session.commit()
 
     bill = bill.to_dict_for_user()

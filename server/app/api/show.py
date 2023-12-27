@@ -7,6 +7,7 @@ from app.api.seat import get_seats_by_show_id
 from app.api import bp
 from flask_cors import CORS, cross_origin
 from app.api.seat import create_seat
+import datetime
 
 @bp.route('/api/show/<int:id>', methods=['GET'])
 @cross_origin()
@@ -14,7 +15,18 @@ def get_show(id):
     show = Show.query.get_or_404(id).to_dict()
     return show
 
-
+@bp.route('/api/show/movie', methods=['POST'])
+@cross_origin()
+def get_show_for_movie_by_day():
+    data = request.get_json()
+    if 'movie_id' not in data or 'time' not in data:
+        return bad_request("must include data fields")
+    
+    shows = Show.query.filter(Show.schedule >= data['time'], Show.schedule < datetime.datetime.strptime(data['time'], "%Y-%m-%d") + datetime.timedelta(days=1))
+    res = []
+    for show in shows:
+        res.append(show.to_dict())
+    return res
 
 @bp.route('/api/show/movie/<int:id>', methods=['GET'])
 @cross_origin()
