@@ -1,12 +1,20 @@
 from flask import Flask, request, session, jsonify
-from flask_sqlalchemy import SQLAlchemy 
-from app.models import User, Movie,  Show, Room, Seat, Ticket,  Bill
+
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+                               unset_jwt_cookies, jwt_required
+
+from app.models import User, Movie, Show, Room, Seat, Ticket, Bill
+
 from app import db
+from app import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
 from app import api
 from app import mail
+
+
+from app.email import send_password_reset_email
 
 from flask_cors import CORS, cross_origin
 
@@ -43,30 +51,8 @@ def sign_up():
     response.status_code = 201
     return user.password_hash
 
-@bp.route('/api/user/login', methods=['POST'])
-@cross_origin()
-def login():
-    data = request.get_json()
+from flask_cors import CORS, cross_origin
 
-    if 'email' not in data or 'password' not in data:
-        return bad_request('must include fullname and password fields')
-    
-
-    email = data["email"]
-    password = data["password"]
-    session.permanent = True
-
-    user = User.query.filter_by(email = email).first()
-    
-    if user :
-        if check_password_hash(user.password_hash, password):
-            response = jsonify(user.to_dict())
-            response.status_code = 201
-            return response
-        else:
-            return bad_request("email or password not true")
-    else:
-        return bad_request("email or password not true")
     
 @bp.route('/api/user/<int:id>', methods=['GET'])
 @cross_origin()
@@ -82,9 +68,9 @@ def get_users():
     return jsonify(data)
 
      
-@bp.route('/api/user/chance_pass', methods=['PUT'])
+@bp.route('/api/user/change_pass', methods=['PUT'])
 @cross_origin()
-def chance_pass():
+def change_pass():
     data = request.get_json()
     if 'new_pass' not in data or 'id' not in data or 'old_pass' not in data:
         return bad_request('must include id , new_pass, old_pass fields')
@@ -96,36 +82,30 @@ def chance_pass():
 
     user = User.query.filter_by(id = id).first()
     if check_password_hash(user.password_hash, old_pass):
-        user.password_hash = generate_password_hash(new_pass)
+        user.password_hash = generate_password_hash(new_pass, 'pbkdf2')
         db.session.commit()
         return "thanh cong"
     else:
         return bad_request("Old not true")
 
-
-@bp.route('/api/user/forgot_pass', methods=['PUT'])
+@bp.route('/api/user/reset_pass_request', methods=['POST'])
 @cross_origin()
-def forgot_pass():
+def reset_pass_request():
     data = request.get_json()
     if 'email' not in data :
         return bad_request('must include email fields')
-    
+    email = data['email']
+    user = User.query.filter_by(email=email).first()
+    new_pass = user.generate_new_pass()
 
-    session.permanent = True
-    user = User.query.filter_by(email = data["email"]).first()
-    if not user:
-        return bad_request("email khong dung")
-    # gen pass vs gui mail cho thinh lam
+    if user:
+        send_password_reset_email(user, new_pass)
+        user.password_hash = generate_password_hash(new_pass, 'pbkdf2')
+        db.session.commit()
 
-    new_pass = 123 # tự gen
-
-    # change pass
-    user.password_hash = generate_password_hash(new_pass)
-    db.session.commit()
     response = jsonify(user.to_dict())
     response.status_code = 201
     return response
-
 
 @bp.route('/api/user/<int:id>', methods=['DELETE'])
 @cross_origin()
@@ -133,14 +113,3 @@ def delete_user(id):
     User.query.filter_by(id = id).delete()
     db.session.commit()
     return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
-
-@bp.route('/api/user/sendmail', methods=['POST'])
-@cross_origin()
-def send_mail():    
-    msg = mail.send_message(
-        'Send Mail tutorial!',
-        sender='cinematickg8@gmail.com',
-        recipients=['trinhdat11371@gmail.com'],
-        body="Congratulations you've succeeded!"
-    )
-    return 'Mail sent'
