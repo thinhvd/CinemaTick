@@ -1,10 +1,6 @@
 from flask import Flask, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy 
-<<<<<<< HEAD
-from app.models import User, Movie, Show, Room, Seat, Ticket, Bill
-=======
 from app.models import User, Movie, Review, Show, Room, Seat, Ticket, Drink, Bill
->>>>>>> 8ee759442f944388b06f246d7b73263c7a0b9e41
 from app import db
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
@@ -18,7 +14,6 @@ def get_movie(id):
 @bp.route('/api/movies', methods=['GET'])
 @cross_origin()
 def get_movies():
-<<<<<<< HEAD
     # page = request.args.get('page', 1, type=int)
     # per_page = min(request.args.get('per_page', 10, type=int), 100)
     # data = Movie.to_collection_dict(Movie.query, page, per_page, 'api.get_movies')
@@ -29,12 +24,6 @@ def get_movies():
     for movie in data:
         datas.append(movie.to_dict())
     return jsonify(datas)
-=======
-    page = request.args.get('page', 1, type=int)
-    per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Movie.to_collection_dict(Movie.query, page, per_page, 'api.get_movies')
-    return jsonify(data)
->>>>>>> 8ee759442f944388b06f246d7b73263c7a0b9e41
 
 @bp.route('/api/movie/create', methods=['POST'])
 @cross_origin()
