@@ -53,8 +53,6 @@ def sign_up():
 
 from flask_cors import CORS, cross_origin
 
-import string, secrets
-
     
 @bp.route('/api/user/<int:id>', methods=['GET'])
 @cross_origin()
@@ -72,7 +70,7 @@ def get_users():
      
 @bp.route('/api/user/change_pass', methods=['PUT'])
 @cross_origin()
-def chance_pass():
+def change_pass():
     data = request.get_json()
     if 'new_pass' not in data or 'id' not in data or 'old_pass' not in data:
         return bad_request('must include id , new_pass, old_pass fields')
