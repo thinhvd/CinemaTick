@@ -1,11 +1,14 @@
-from datetime import datetime
-from app import db
+from datetime import datetime, timedelta
+from time import time
+from app import db, login
 from app import app
 
 import string
 import secrets
 import random
 from flask import url_for
+
+from flask_login import UserMixin
 
 import jwt
 
@@ -33,7 +36,7 @@ class PaginatedAPIMixin(object):
         }
         return data
 
-class User(PaginatedAPIMixin, db.Model):
+class User(PaginatedAPIMixin, UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -46,7 +49,7 @@ class User(PaginatedAPIMixin, db.Model):
 
     def __repr__(self):
         return '<User {}>'.format(self.fullname)
-    
+
     def to_dict(self):
         data = {
             'id': self.id,
@@ -57,21 +60,17 @@ class User(PaginatedAPIMixin, db.Model):
 
         return data
     
-    def get_reset_password_token(self, expires_in=600):
-        return jwt.encode(
-            {'reset_password': self.id, 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
- 
-    @staticmethod
-    def verify_reset_password_token(token):
-        try:
-            id = jwt.decode(token, app.config['SECRET_KEY'],
-                            algorithms=['HS256'])['reset_password']
-        except:
-            return
-        return User.query.get(id)
-    
+    # function for reset password request
+    def generate_new_pass(self):
+        characters = string.ascii_letters + string.digits
+        new_pass = ''.join(secrets.choice(characters) for _ in range(6))
 
+        return new_pass
+
+    @login.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
+    
 class Movie(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30))
@@ -95,8 +94,6 @@ class Movie(PaginatedAPIMixin, db.Model):
         }
 
         return data
-
-
 
 class Show(PaginatedAPIMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
