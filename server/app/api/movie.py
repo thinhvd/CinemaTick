@@ -2,7 +2,6 @@ from flask import Flask, request, session, jsonify
 from flask_sqlalchemy import SQLAlchemy 
 
 from app.models import User, Movie, Show, Room, Seat, Ticket, Bill
-
 from app import db
 from app.api.erorrs import bad_request, error_response
 from app.api import bp
