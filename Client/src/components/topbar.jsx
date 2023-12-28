@@ -1,6 +1,7 @@
 import { Layout, Image, Row, Col, Card, Button, Space } from "antd";
 import { Header } from "antd/es/layout/layout";
 import MenuMovie from "./menu";
+import Cinematick from '../images/Cinematick.png';
 
 export default function TopBar() {
     return (
@@ -34,7 +35,7 @@ export default function TopBar() {
                     <Col span={8} className="logo">
                         <a href={`/`}>
                             <Image
-                                src="/src/images/Cinematick.png"
+                                src={Cinematick}
                                 preview={false}
                             />
                         </a>
