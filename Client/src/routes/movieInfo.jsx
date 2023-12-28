@@ -13,9 +13,11 @@ export default function MovieInfo() {
         getMovieInfo();
     }, []);
 
+    
+
     const getMovieInfo = async () => {
         try {
-            const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies");
+            const response = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/movies`);
             const responseData = await response.json();
 
             setMovieinfo(responseData);
@@ -55,7 +57,7 @@ export default function MovieInfo() {
         });
         return groupedData;
     };
-
+    
     return (
         <div className='background'>
             <TopBar />

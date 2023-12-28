@@ -16,15 +16,15 @@ import MovieList from "./routes/movieList";
 
 const router = createBrowserRouter([
   {
-    path: "",
+    path: "/",
     element: <LandingPage />,
     errorElement: <ErrorPage />
   },
-  // {
-  //   path: "login",
-  //   element: <LoginPage />,
-  //   errorElement: <ErrorPage />
-  // },
+  {
+    path: "login",
+    element: <LoginPage />,
+    errorElement: <ErrorPage />
+  },
   {
     path: "signup",
     element: <Profile />,

@@ -272,12 +272,12 @@ img {
   border-color: white;
   color: white;
   margin: 15px;
-
-  .button {
+ 
+}
+.button {
     scale: 1.5;
     background-color: green;
   }
-}
 
 .movielist {
   min-width: 100%;

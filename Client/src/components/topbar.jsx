@@ -10,7 +10,8 @@ export default function TopBar() {
                 minWidth: '100%',
                 height: '10vh',
                 backgroundColor: '#1f2833',
-                position: "fixed", zIndex: 1000,
+                position: "fixed", 
+                zIndex: 1000,
 
             }}
             >
