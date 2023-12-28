@@ -28,7 +28,7 @@ def get_movies():
 
 @bp.route('/api/movies_nopage', methods=['GET'])
 @cross_origin()
-def get_movies():
+def get_movies_nopage():
     
     data = Movie.query.all()
     datas = []
