@@ -136,11 +136,8 @@ const SelectSeatPage = () => {
   };
 
   return (
-    <Layout>
-      <TopBar />
       <div className="background">
-        <Content>
-
+        <TopBar />
           <div className="redone">
             <ul className="showcase">
               <li>
@@ -190,10 +187,7 @@ const SelectSeatPage = () => {
             <Button className="selectseatbutton" shape="round" onClick={() => sendSeatData()} icon={<DoubleRightOutlined />} size={10}>Next </Button >
 
           </div>
-
-        </Content>
       </div>
-    </Layout>
   );
 };
 

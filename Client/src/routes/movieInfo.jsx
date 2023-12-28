@@ -13,11 +13,9 @@ export default function MovieInfo() {
         getMovieInfo();
     }, []);
 
-    
-
     const getMovieInfo = async () => {
         try {
-            const response = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/movies`);
+            const response = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage`);
             const responseData = await response.json();
 
             setMovieinfo(responseData);
@@ -61,8 +59,6 @@ export default function MovieInfo() {
     return (
         <div className='background'>
             <TopBar />
-
-
             <Space className='movieSchedule' direction="vertical" align="center">
                 {movie ? (
                     <>
@@ -96,21 +92,21 @@ export default function MovieInfo() {
                                                 {movieSchedule[date].map((scheduleItem) => (
                                                     <div key={scheduleItem.id}>
                                                         <Link to={`/selectseat/${scheduleItem.id}`}>
-                                                        <Button className="buttonstyle">{new Date(scheduleItem.schedule).toLocaleTimeString()}</Button>
-                                                    </Link>
+                                                            <Button className="buttonstyle">{new Date(scheduleItem.schedule).toLocaleTimeString()}</Button>
+                                                        </Link>
                                                     </div>
                                                 ))}
-                                    </Space>
+                                            </Space>
                                         </Card>
                                     </Space>
                                 ))}
-            </Space>
+                            </Space>
                         )}
-        </>
-    ) : (
-        <></>
-    )
-}
+                    </>
+                ) : (
+                    <></>
+                )
+                }
             </Space >
         </div >
     );

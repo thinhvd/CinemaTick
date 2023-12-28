@@ -132,8 +132,6 @@ img {
   box-sizing: border-box;
 }
 
-
-
 .showcase {
   scale: 1.7;
   background-color: transparent;
@@ -248,10 +246,10 @@ img {
 .blueone {
   float: left;
   width: 25%;
-  height: 672px;
+  max-height: 90vh;
   background-color: transparent;
   box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
-  margin-top: 70px;
+  margin-top: 8vh;
 }
 
 .blueone ul {

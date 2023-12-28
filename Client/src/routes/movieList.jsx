@@ -14,7 +14,7 @@ export default function MovieList() {
 
   const getMovieList = async () => {
     try {
-      const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies");
+      const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage");
       const responseData = await response.json();
 
       setMovies(responseData);

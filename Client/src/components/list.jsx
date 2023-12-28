@@ -1,6 +1,6 @@
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef} from 'react';
 import { Link } from 'react-router-dom';
 
 
@@ -13,7 +13,7 @@ function List(props) {
 
       const getMovieList = async () => {
         try {
-          const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies");
+          const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage");
           const responseData = await response.json();
 
           setMovies(responseData);
@@ -41,43 +41,44 @@ function List(props) {
         scroll-behavior: smooth;
         white-space: nowrap;
     `;
-console.log(movies.length)
+
     const [scrollLeft, setScrollLeft] = useState(0);
-    const [scrollRight, setScrollRight] = useState(0);
+    const movieSliderRef = useRef(null);
+
 
     useEffect(() => {
-        // Cập nhật giá trị scrollLeft vào thuộc tính scrollLeft của MovieSlider
-        const movieSlider = document.getElementById('movieSlider');
-        if (movieSlider) {
-            movieSlider.scrollLeft = scrollLeft;
+        if (movieSliderRef.current) {
+            movieSliderRef.current.scrollLeft = scrollLeft;
         }
     }, [scrollLeft]);
 
-    useEffect(() => {
-        // Cập nhật giá trị scrollRight vào thuộc tính scrollRight của MovieSlider
-        const movieSlider = document.getElementById('movieSlider');
-        if (movieSlider) {
-            movieSlider.scrollRight = scrollRight;
-        }
-    }, [scrollRight]);
-
     const handleMoveLeft = () => {
-        setScrollLeft((prev) => prev - 230);
-    };
-
-    const handleMoveRight = () => {
-        setScrollRight((prev) => prev + 230);
-    };
+        const movieSlider = movieSliderRef.current;
+        const newScrollLeft = Math.max(scrollLeft - 230, 0); // Giới hạn scrollLeft không vượt quá 0
+        setScrollLeft(newScrollLeft);
+        console.log(scrollLeft);
+        if (movieSlider) {
+          movieSlider.scrollLeft = newScrollLeft;
+        }
+      };
+    
+      const handleMoveRight = () => {
+        const movieSlider = movieSliderRef.current;
+        const newScrollLeft = Math.min(scrollLeft + 230, movieSlider.scrollWidth - movieSlider.clientWidth);
+        setScrollLeft(newScrollLeft);
+        console.log(scrollLeft)
+        if (movieSlider) {
+          movieSlider.scrollLeft = newScrollLeft;
+        }
+      };
 
     return (
         <MovieRowContainer>
-            <MovieSlider> 
+            <MovieSlider ref={movieSliderRef}> 
                 {
                     movies.map((movie, index) => (
                         <div key={index} className='movieItem'>
-                            <Link to={`/movieinfo/${movie.id}`}>
-                                <img src={movie.poster} alt="" />
-                            </Link>
+                            <img src={movie.poster} alt="" />
                             <div className='movieName'>{movie.name}</div>
                         </div>
                     ))
