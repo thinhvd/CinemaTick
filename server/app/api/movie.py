@@ -30,7 +30,6 @@ def get_movies():
 @cross_origin()
 def get_movies():
     
-
     data = Movie.query.all()
     datas = []
     for movie in data:
