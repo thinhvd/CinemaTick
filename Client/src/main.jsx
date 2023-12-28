@@ -13,6 +13,8 @@ import SelectSeatPage from "./routes/selectSeatPage";
 import Profile from "./routes/profilePage";
 import TestPage from "./routes/test";
 import SelectFoodPage from "./routes/selectFoodPage";
+import MovieInfo from "./routes/movieInfo";
+import MovieList from "./routes/movieList";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
     path: "selectFood",
     element: <SelectFoodPage />,
     errorElement: <ErrorPage />
+  },
+  {
+    path:"movielist",
+    element: <MovieList/>
+  },
+  {
+    path:"/movieinfo/:id",
+    element: <MovieInfo/>,
   },
 ]);
 
