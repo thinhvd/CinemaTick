@@ -18,6 +18,8 @@ from app.email import send_password_reset_email
 
 from flask_cors import CORS, cross_origin
 
+
+
 @bp.route('/api/user/signup', methods=['POST'])
 @cross_origin()
 def sign_up():
@@ -53,7 +55,15 @@ def sign_up():
 
 from flask_cors import CORS, cross_origin
 
-    
+@bp.route('/api/profile', methods=['GET'])
+@cross_origin()
+@jwt_required()
+def get_frofile():
+    current_user = get_jwt_identity()
+
+    return jsonify(User.query.get_or_404(current_user).to_dict())    
+
+
 @bp.route('/api/user/<int:id>', methods=['GET'])
 @cross_origin()
 def get_user(id):
