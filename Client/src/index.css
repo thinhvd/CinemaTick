@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inter');
+
 
 /* index.css */
 html,
@@ -143,4 +146,152 @@ img{
 .titleStyle{
   color: white !important;
   text-align: center;
+}
+
+/* Select Seat */
+
+
+* {
+    box-sizing: border-box;
+}
+
+
+
+.showcase {
+    scale: 1.7;
+    background-color: transparent;
+    list-style: none;
+    font-weight: 500;
+    color: #777;
+    overflow: hidden;
+    list-style-type: none;
+    width: 50%; /* Can be in percentage also. */
+    /* height: auto; */
+    /* margin: 0 auto; */
+    padding: 15px;
+    position: absolute;
+    left: 510px;
+    top: 160px;
+}
+
+.showcase li {
+  padding-left: 50px;
+  float: left;
+  margin: 1px;
+  /* text-align: center; */
+    /* margin: 0 10px; */
+}
+
+.showcase li small {
+    margin-left: 3px;
+}
+
+.seat {
+    height: 13px;
+    width: 13px;
+    background-color: #777;
+    display: inline-block;
+    border-radius: 3px;
+    color: #FFF;
+    font-size: 6.5px;
+    font-family: 'Inter';
+    /* text-align: center; */
+    padding-top: 1.95px;
+}
+
+.seat.selected {
+    background-color: rgb(115, 115, 253);
+}
+
+.seat.occupied {
+    background-color: #212224;
+}
+
+.cinema {
+    scale: 2.5;
+    width: 50%;
+    margin: 0 auto;
+    padding: 30px
+    /*perspective: 1000px; */
+    /* margin: 150px 0 0 350px; */
+    
+}
+
+.row .seat:nth-of-type(3) {
+    margin-right: 10px;
+}
+
+.row .seat:nth-last-of-type(3) {
+    margin-left: 10px;
+}
+
+.cinema .seat {
+    margin-left: 2px;
+}
+
+.cinema .seat:not(.occupied):hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* .totalprice {
+  height: 1000px;
+  width: 300px;
+  margin-left: 1000px;
+  
+} */
+
+/* .totalprice span {
+    color: rgb(115, 115, 253);
+} */
+
+.selectseat_area {
+  float: left;
+  width: 50%;
+}
+
+/* .totalprice {
+  float: left;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-left: 1000px;
+} */
+
+/* test */
+.redone {
+  float: left;
+  width: 75%;
+  background-color: transparent;
+  text-align: center;
+  padding: 11% 0%;
+  margin-top: 150px;
+}
+
+.blueone {
+  float: left;
+  width: 25%;
+  height: 672px;
+  background-color: transparent;
+  box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
+  margin-top: 70px;
+}
+
+.blueone ul {
+  padding: 5px 0 0 0;
+  list-style: none;
+}
+
+.blueone li {
+  padding: 8%;
+}
+
+.totalprice {
+  font-size: 22px;
+}
+
+.selectseatbutton {
+  background-color: black;
+  border-color: white;
+  color: white;
+  margin: 15px;
 }

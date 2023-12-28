@@ -3,52 +3,53 @@ import Parse from 'parse/dist/parse.min.js';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';
+import Token from '../components/token'
 
-export default function LoginPage() {
+export default function LoginPage(props) {
     // State variables
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [currentUser, setCurrentUser] = useState(null);
+    // const [currentUser, setCurrentUser] = useState(null);
 
     var loginInfo = {
-        "username": username,
+        "email": email,
         "password": password
     }
 
     // Function that will return current user and also update current username
-    const getCurrentUser = async function () {
-        const currentUser = await Parse.User.current();
-        // Update state variable holding current user
-        setCurrentUser(currentUser);
-        return currentUser;
-    };
-    const doUserLogIn = async function () {
-        // Note that these values come from state variables that we've declared before
-        const usernameValue = username;
-        const passwordValue = password;
-        try {
-            const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
-            // logIn returns the corresponding ParseUser object
-            alert(
-                `Success! User ${loggedInUser.get(
-                    'username'
-                )} has successfully signed in!`
-            );
-            // To verify that this is in fact the current user, `current` can be used
-            const currentUser = await Parse.User.current();
-            console.log(loggedInUser === currentUser);
-            // Clear input fields
-            setUsername('');
-            setPassword('');
-            // Update state variable holding current user
-            getCurrentUser();
-            return true;
-        } catch (error) {
-            // Error can be caused by wrong parameters or lack of Internet connection
-            alert(`Error! ${error.message}`);
-            return false;
-        }
-    };
+    // const getCurrentUser = async function () {
+    //     const currentUser = await Parse.User.current();
+    //     // Update state variable holding current user
+    //     setCurrentUser(currentUser);
+    //     return currentUser;
+    // };
+    // const doUserLogIn = async function () {
+    //     // Note that these values come from state variables that we've declared before
+    //     const usernameValue = username;
+    //     const passwordValue = password;
+    //     try {
+    //         const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
+    //         // logIn returns the corresponding ParseUser object
+    //         alert(
+    //             `Success! User ${loggedInUser.get(
+    //                 'username'
+    //             )} has successfully signed in!`
+    //         );
+    //         // To verify that this is in fact the current user, `current` can be used
+    //         const currentUser = await Parse.User.current();
+    //         console.log(loggedInUser === currentUser);
+    //         // Clear input fields
+    //         setUsername('');
+    //         setPassword('');
+    //         // Update state variable holding current user
+    //         getCurrentUser();
+    //         return true;
+    //     } catch (error) {
+    //         // Error can be caused by wrong parameters or lack of Internet connection
+    //         alert(`Error! ${error.message}`);
+    //         return false;
+    //     }
+    // };
 
     //   async function cout() {
     //     const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/1", {
@@ -57,20 +58,22 @@ export default function LoginPage() {
     //     const movies = await response.json();
     //     console.log(movies);
     //   }
+    "http://fall2324w20g8.int3306.freeddns.org/api/user/login"
 
-    function sendData() {
-        fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/login", {
-            headers: {
-                'accept': 'application/json, text/plain',
-                'content-type': 'application/json;charset=utf-8'
-            },
-            method: "post",
-            body: JSON.stringify(loginInfo)
-        }).then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
-    }
-
+    const handleLogin = async () => {
+        try {
+          const response = await axios.post("http://fall2324w20g8.int3306.freeddns.org/api/user/login", loginInfo);
+          const token = response.data.token;
+    
+          // Lưu token vào localStorage hoặc sessionStorage
+          localStorage.setItem('token', token);
+    
+          // Thực hiện các bước tiếp theo sau khi đăng nhập thành công
+          // Ví dụ: chuyển hướng đến trang chính của ứng dụng
+        } catch (error) {
+          console.error('Login failed', error);
+        }
+      };
 
     return (
         <div className='background'>
@@ -83,19 +86,19 @@ export default function LoginPage() {
                 }}
             >
                 <Form.Item
-                    name="username"
+                    name="email"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Please input your Email!',
                         },
                     ]}
                 >
                     <Input
                         prefix={<UserOutlined className="site-form-item-icon" />}
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        placeholder="Username"
+                        value={email}
+                        onChange={(event) => setEmail(event.target.value)}
+                        placeholder="Email"
                     />
                 </Form.Item>
                 <Form.Item
@@ -128,7 +131,7 @@ export default function LoginPage() {
                 <Form.Item>
                     <Button
                         //onClick={() => doUserLogIn()}
-                        onClick={() => sendData()}
+                        onClick={() => handleLogin()}
                         type="primary"
                         htmlType="submit"
                         className="login-form-button">

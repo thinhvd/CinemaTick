@@ -39,7 +39,7 @@ export default function TopBar() {
                         </a>
                     </Col>
 
-                    <Col span={8} style={{ textAlign: 'right', paddingRight: '30px', paddingTop: '15px' }}>
+                    <Col span={8} style={{ textAlign: 'right', paddingRight: '30px', paddingTop: '5px' }}>
                         <Space size='middle'>
                             <Button className="buttonstyle" href={`/login`}>
                                 Log in

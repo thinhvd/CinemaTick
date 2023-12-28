@@ -9,20 +9,36 @@ import LandingPage from "./routes/landingPage";
 import ErrorPage from "./routes/errorPage";
 import LoginPage from "./routes/loginPage";
 import SignupPage from "./routes/signupPage";
+import SelectSeatPage from "./routes/selectSeatPage";
+import Profile from "./routes/profilePage";
+import TestPage from "./routes/test";
+import SelectFoodPage from "./routes/selectFoodPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "",
     element: <LandingPage />,
+    errorElement: <ErrorPage />
+  },
+  // {
+  //   path: "login",
+  //   element: <LoginPage />,
+  //   errorElement: <ErrorPage />
+  // },
+  {
+    path: "signup",
+    element: <SignupPage />,
     errorElement: <ErrorPage />
   },
   {
     path: "login",
     element: <LoginPage />,
+    errorElement: <ErrorPage />
   },
   {
-    path: "signup",
-    element: <SignupPage />,
+    path: "selectFood",
+    element: <SelectFoodPage />,
+    errorElement: <ErrorPage />
   },
 ]);
 
