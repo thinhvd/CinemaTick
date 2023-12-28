@@ -1,32 +1,67 @@
 import React, {useState} from 'react';
 import { MenuOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
-
-function getItem(label, icon, children,) {
-  return {
-    icon,
-    label,
-    children,
-  };
-}
+import { Button, Dropdown, Space } from 'antd';
 
 const items = [
-    getItem(null,<MenuOutlined style={{ color: '#c5c6c7', scale: '2.5' }}/>,[
-        getItem(<a href={`/movielist`}>Danh sách phim</a>, null, ),
-        getItem('Lịch',null)
-    ])
-]
+  {
+    key: '1',
+    label: (
+      <a target="" rel="" href={`/movielist`}>
+        DANH SÁCH PHIM
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a target="" rel="" >
+        VỀ CHÚNG TÔI
+      </a>
+    ),
+  },
+  {
+    key: '3',
+    label: (
+      <a target="" rel="" >
+        DỊCH VỤ VÀ QUẢNG CÁO
+      </a>
+    ),
+  },
+];
+
 
 export default function MenuMovie() {
-    const [collapsed, setCollapsed] = useState(false);
-    
     return (
-        <Menu
+      <Dropdown
+        style={{
+          width:'300px'
+        }}
+        menu={{
+          items,
+        }}
+      >
+        <Button 
+          style={{
+            height: "10vh",
+            width: '10vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            color:'#fff',
+            display:'flex',
+            flexDirection:'column',
+            alignItems:'center',
+            justifyContent:'center',
+            padding:'0',
+            borderRadius:'none'
+          }}
+        >
+          <MenuOutlined
             style={{
-                backgroundColor: 'transparent'
+              padding:'3px',
+              fontSize:'2.5em'
             }}
-            mode="horizontal"
-            items={items}
-        />
-      )
+          />
+          <div>Menu</div>
+        </Button>
+      </Dropdown>
+    )
 }

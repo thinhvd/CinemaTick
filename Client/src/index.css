@@ -127,13 +127,6 @@ img{
   background-color: green;
 }
 
-
-
-
-
-.cardDatVe{
-}
-
 .movielist{
   min-width: 100%;
   min-height: 100%;
@@ -143,6 +136,11 @@ img{
   grid-template-rows: repeat(2, 2fr);
   text-align: center;
   text-decoration: none !important;
+}
+
+.movielist img{
+  min-width: 180px;
+  min-height: 250px;
 }
 
 .movielist h3{
@@ -162,6 +160,27 @@ img{
   background-color: rgba(225, 225, 225, 0.6);
 }
 
+.movieSchedule{
+  display: flex;
+  justify-content: center;
+}
+
+.schedule{
+  margin-top: 40vh;
+  row-gap: 4em;
+}
+
+.time{
+  width: 100vh;
+  height: 10vh;
+  background-color: transparent;
+  border-bottom: none;
+  border-top: none;
+  border-right: none;
+  border-radius: 0%;
+  border-width: 2px;
+}
+
 .movieInfo{
   display: flex;
   align-items: center;
@@ -176,10 +195,111 @@ img{
 
 .movieInfoText{
   height: 50vh;
+  width: 70vh;
   background-color: transparent;
   border-bottom: none;
   border-top: none;
   border-right: none;
   border-radius: 0%;
   border-width: 2px;
+}
+
+
+.movieName{
+  position: absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  text-align:center;
+  font-size:14px;
+  background-color:rgba(0,0,0,0.8);
+
+}
+
+.movieItem{
+  max-width:400px;
+   max-height:500px;
+  transition: all 0.3s linear;
+  user-select:none;
+  overflow:hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movieItem:hover{
+  opacity: 1;
+  transform:scale(1.1);
+  z-index:10;
+}
+
+.movieItem img{
+  top: 0;
+  left: 0;
+  min-width:100%;
+  min-height: 100%;
+}
+
+.moveLeft{
+  position: absolute;
+  top: 30%;
+  left: 0;
+  z-index: 20;
+  transform-origin: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100px;
+  width: 50px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moveLeft:hover svg{
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+svg{
+  opacity: 0.7;
+  font-size: 30px;
+  transition: all 0.3s linear;
+}
+
+.moveRight{
+  position: absolute;
+  top: 30%;
+  right: 0;
+  z-index: 20;
+  transform-origin: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100px;
+  width: 50px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.moveRight:hover svg{
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+
+.ant-dropdown-menu {
+  background-color: #1f2833 !important;
+  width: 30em;
+
+}
+
+.ant-dropdown-menu-item {
+  color: #ffffff !important;
+  height: 3em;
+  font-size: 20px !important;
+  padding: 0 !important;
+  padding-left: 2em !important;
 }
