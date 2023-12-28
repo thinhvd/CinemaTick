@@ -1,22 +1,23 @@
 import { useState } from 'react'
 import axios from "axios";
 
-function Profile(props) {
+function Profile() {
+  const token = localStorage.getItem('token');
 
   const [profileData, setProfileData] = useState(null)
   function getData() {
     axios({
       method: "GET",
-      url:"/profile",
+      url:"http://fall2324w20g8.int3306.freeddns.org/api/profile",
       headers: {
-        Authorization: 'Bearer ' + props.token
+        Authorization: 'Bearer ' + token
       }
     })
     .then((response) => {
       const res =response.data
-      res.access_token && props.setToken(res.access_token)
+      console.log(res)
       setProfileData(({
-        profile_name: res.name,
+        profile_name: res.fullname,
         about_me: res.about}))
     }).catch((error) => {
       if (error.response) {

@@ -1,43 +1,127 @@
+// SeatSelector.js
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout.js";
 import TopBar from "../components/topbar";
-import Seat from "../components/seat"
 import { DoubleRightOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Divider, Flex, Radio } from 'antd';
-import React, { useState } from 'react';
-export default function SelectSeatPage() {
-  // const movieSelected = document.getElementById('movie');
-  // const seatsSelected = document.getElementById('seatsSelected');
-  // const totalPrice = document.getElementById('totalPrice');
-  // const container = document.querySelector('.container');
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Seat from '../components/seat';
+import { useParams } from "react-router";
 
-  // const updatePrice = () => {
-  //   const selectedSeats = document.querySelectorAll(
-  //     '.container .seat.selected:not(.occupied)'
-  //   );
-  //   const selectedSeatsCount = selectedSeats.length;
+const SelectSeatPage = () => {
+  const [seatStatus, setSeatStatus] = useState([]);
+  const [seatPrice, setSeatPrice] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [seats, setOccupiedSeat] = useState([]);
+  const { id } = useParams();
+  // var seats = [
+  //   {
+  //     "id": 1,
+  //     "position": "A1",
+  //     "price": 125,
+  //     "seat_type": "basic",
+  //     "show_id": 1,
+  //     "status": "occupied"
+  //   },
+  //   // ... (các đối tượng khác)
+  //   {
+  //     "id": 5,
+  //     "position": "A5",
+  //     "price": 125,
+  //     "seat_type": "basic",
+  //     "show_id": 1,
+  //     "status": "normal"
+  //   }
+  // ];
 
-  //   totalPrice.innerText = selectedSeatsCount * +movieSelected.value;
-  //   seatsSelected.innerText = selectedSeatsCount;
-  // };
-
-  // const selectSeat = (seat) => {
-  //   seat.classList.toggle('selected');
-  //   updatePrice();
-  // };
-
-  // var chooseSeat = (seat) => {
-  //   if (
-  //     seat.classList.contains('seat') &&
-  //     !seat.classList.contains('occupied')
-  //   ) {
-  //     selectSeat(seat);
+  // for (let row = 'A'; row <= 'H'; row++) {
+  //   for (let col = 1; col <= 12; col++) {
+  //     const seat = {
+  //       "id": `${row}${col}`,
+  //       "status": "normal"
+  //     };
+  //     seats.push(seat);
   //   }
   // }
-  const [selectedSeats, setSelectedSeats] = useState([]);
 
-  const handleSeatSelect = (seatNumber) => {
+
+  // const checkOccupied = (seatNumber) => {
+  //   console.log(seats, seats[1 - 1].status)
+  //     return seats[seatNumber - 1].status === "occupied";
+  // }
+
+
+  function numberToString(number) {
+    // Tính toán ký tự (A đến H)
+    var temp = []
+    for (let i = 0; i < number.length; i++) {
+      let charCode = Math.floor((number[i] - 1) / 12) + 'A'.charCodeAt(0);
+      let char = String.fromCharCode(charCode);
+
+      // Tính toán số (1 đến 12)
+      let numberInRow = (number[i] - 1) % 12 + 1;
+
+      // Tạo tên của ô
+      let cellName = char + numberInRow;
+
+      temp.push(cellName)
+    }
+    return temp
+
+  }
+
+  useEffect(() => {
+    console.log(id)
+    // Fetch data from API
+    axios.get(`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`)
+      .then(response => {
+        const seatData = response.data;
+        const initialSeatStatus = Array(12 * 8).fill('normal');
+        const initialSeatPrice = Array(12 * 8).fill(0);
+
+        seatData.forEach(seat => {
+          // const index = calculateIndexFromPosition(seat.position);
+          const index = seat.id;
+          initialSeatStatus[index] = seat.status;
+          initialSeatPrice[index] = seat.price;
+        });
+
+        setSeatStatus(initialSeatStatus);
+        setSeatPrice(initialSeatPrice);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []); // Empty dependency array to run the effect only once
+
+  // const calculateIndexFromPosition = (position) => {
+  //   // Implement logic to convert seat position (e.g., "A1") to array index
+  //   // You may need to adjust this based on your actual seat layout
+  //   // For example, if the layout is 12x8, you could use something like:
+  //   // const row = position.charCodeAt(0) - 'A'.charCodeAt(0);
+  //   // const col = parseInt(position.slice(1)) - 1;
+  //   // const index = row * 12 + col;
+  //   // return index;
+  // };
+
+  const handleSeatClick = (index) => {
+    if (seatStatus[index] === 'normal') {
+      const newSeatStatus = [...seatStatus];
+      newSeatStatus[index] = 'selected';
+      setSeatStatus(newSeatStatus);
+      const selectedSeatPrice = seatPrice[index];
+      setTotalPrice((prevTotal) => prevTotal + selectedSeatPrice);
+    } else if (seatStatus[index] === 'selected') {
+      const newSeatStatus = [...seatStatus];
+      newSeatStatus[index] = 'normal';
+      setSeatStatus(newSeatStatus);
+      const selectedSeatPrice = seatPrice[index];
+      setTotalPrice((prevTotal) => prevTotal - selectedSeatPrice);
+    }
+
     // Tìm vị trí của chỗ ngồi trong mảng đã chọn
-    const seatIndex = selectedSeats.indexOf(seatNumber);
+    const seatIndex = selectedSeats.indexOf(index);
 
     // Nếu chỗ ngồi đã chọn, loại bỏ nó khỏi mảng
     if (seatIndex > -1) {
@@ -46,150 +130,71 @@ export default function SelectSeatPage() {
       setSelectedSeats(newSelectedSeats);
     } else {
       // Ngược lại, thêm chỗ ngồi vào mảng đã chọn
-      setSelectedSeats([...selectedSeats, seatNumber]);
+      setSelectedSeats([...selectedSeats, index]);
     }
+
   };
-  
+
   return (
-    <div className="background">
+    <Layout>
       <TopBar />
-      <Content>
-        <div className="selectseat_area">
-          <ul className="showcase">
-            <li>
-              <div className="seat"></div>
-              <small>N/A</small>
-            </li>
-            <li>
-              <div className="seat selected"></div>
-              <small>Selected</small>
-            </li>
-            <li>
-              <div className="seat occupied"></div>
-              <small>Occupied</small>
-            </li>
-          </ul>
-          <div className="container">
-            {/* <div className="screen"></div> */}
-            <div className="row">
-              <div className="seat occupied" onClick={() => chooseSeat()}>A1</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>A2</div>
-              <div className="seat" onClick={() => chooseSeat()}>A3</div>
-              <div className="seat" onClick={() => chooseSeat()}>A4</div>
-              <div className="seat" onClick={() => chooseSeat()}>A5</div>
-              <div className="seat" onClick={() => chooseSeat()}>A6</div>
-              <div className="seat" onClick={() => chooseSeat()}>A7</div>
-              <div className="seat" onClick={() => chooseSeat()}>A8</div>
-              <div className="seat" onClick={() => chooseSeat()}>A9</div>
-              <div className="seat" onClick={() => chooseSeat()}>A10</div>
-              <div className="seat" onClick={() => chooseSeat()}>A11</div>
-              <div className="seat" onClick={() => chooseSeat()}>A12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>B1</div>
-              <div className="seat" onClick={() => chooseSeat()}>B2</div>
-              <div className="seat" onClick={() => chooseSeat()}>B3</div>
-              <div className="seat" onClick={() => chooseSeat()}>B4</div>
-              <div className="seat" onClick={() => chooseSeat()}>B5</div>
-              <div className="seat" onClick={() => chooseSeat()}>B6</div>
-              <div className="seat" onClick={() => chooseSeat()}>B7</div>
-              <div className="seat" onClick={() => chooseSeat()}>B8</div>
-              <div className="seat" onClick={() => chooseSeat()}>B9</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}> B10</div>
-              <div className="seat" onClick={() => chooseSeat()}>B11</div>
-              <div className="seat" onClick={() => chooseSeat()}>B12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>C1</div>
-              <div className="seat" onClick={() => chooseSeat()}>C2</div>
-              <div className="seat" onClick={() => chooseSeat()}>C3</div>
-              <div className="seat" onClick={() => chooseSeat()}>C4</div>
-              <div className="seat" onClick={() => chooseSeat()}>C5</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>C6</div>
-              <div className="seat" onClick={() => chooseSeat()}>C7</div>
-              <div className="seat" onClick={() => chooseSeat()}>C8</div>
-              <div className="seat" onClick={() => chooseSeat()}>C9</div>
-              <div className="seat" onClick={() => chooseSeat()}>C10</div>
-              <div className="seat" onClick={() => chooseSeat()}>C11</div>
-              <div className="seat" onClick={() => chooseSeat()}>C12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>D1</div>
-              <div className="seat" onClick={() => chooseSeat()}>D2</div>
-              <div className="seat" onClick={() => chooseSeat()}>D3</div>
-              <div className="seat" onClick={() => chooseSeat()}>D4</div>
-              <div className="seat" onClick={() => chooseSeat()}>D5</div>
-              <div className="seat" onClick={() => chooseSeat()}>D6</div>
-              <div className="seat" onClick={() => chooseSeat()}>D7</div>
-              <div className="seat" onClick={() => chooseSeat()}>D8</div>
-              <div className="seat" onClick={() => chooseSeat()}>D9</div>
-              <div className="seat" onClick={() => chooseSeat()}>D10</div>
-              <div className="seat" onClick={() => chooseSeat()}>D11</div>
-              <div className="seat" onClick={() => chooseSeat()}>D12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>E1</div>
-              <div className="seat" onClick={() => chooseSeat()}>E2</div>
-              <div className="seat" onClick={() => chooseSeat()}>E3</div>
-              <div className="seat" onClick={() => chooseSeat()}>E4</div>
-              <div className="seat" onClick={() => chooseSeat()}>E5</div>
-              <div className="seat" onClick={() => chooseSeat()}>E6</div>
-              <div className="seat" onClick={() => chooseSeat()}>E7</div>
-              <div className="seat" onClick={() => chooseSeat()}>E8</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>E9</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>E10</div>
-              <div className="seat" onClick={() => chooseSeat()}>E11</div>
-              <div className="seat" onClick={() => chooseSeat()}>E12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>F1</div>
-              <div className="seat" onClick={() => chooseSeat()}>F2</div>
-              <div className="seat" onClick={() => chooseSeat()}>F3</div>
-              <div className="seat" onClick={() => chooseSeat()}>F4</div>
-              <div className="seat" onClick={() => chooseSeat()}>F5</div>
-              <div className="seat" onClick={() => chooseSeat()}>F6</div>
-              <div className="seat" onClick={() => chooseSeat()}>F7</div>
-              <div className="seat" onClick={() => chooseSeat()}>F8</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>F9</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>F10</div>
-              <div className="seat" onClick={() => chooseSeat()}>F11</div>
-              <div className="seat" onClick={() => chooseSeat()}>F12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>G1</div>
-              <div className="seat" onClick={() => chooseSeat()}>G2</div>
-              <div className="seat" onClick={() => chooseSeat()}>G3</div>
-              <div className="seat" onClick={() => chooseSeat()}>G4</div>
-              <div className="seat" onClick={() => chooseSeat()}>G5</div>
-              <div className="seat" onClick={() => chooseSeat()}>G6</div>
-              <div className="seat" onClick={() => chooseSeat()}>G7</div>
-              <div className="seat" onClick={() => chooseSeat()}>G8</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>G9</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>G10</div>
-              <div className="seat" onClick={() => chooseSeat()}>G11</div>
-              <div className="seat" onClick={() => chooseSeat()}>G12</div>
-            </div>
-            <div className="row">
-              <div className="seat" onClick={() => chooseSeat()}>H1</div>
-              <div className="seat" onClick={() => chooseSeat()}>H2</div>
-              <div className="seat" onClick={() => chooseSeat()}>H3</div>
-              <div className="seat" onClick={() => chooseSeat()}>H4</div>
-              <div className="seat" onClick={() => chooseSeat()}>H5</div>
-              <div className="seat" onClick={() => chooseSeat()}>H6</div>
-              <div className="seat" onClick={() => chooseSeat()}>H7</div>
-              <div className="seat" onClick={() => chooseSeat()}>H8</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>H9</div>
-              <div className="seat occupied" onClick={() => chooseSeat()}>H10</div>
-              <div className="seat" onClick={() => chooseSeat()}>H11</div>
-              <div className="seat" onClick={() => chooseSeat()}>H12</div>
+      <div className="background">
+        <Content>
+
+          <div className="redone">
+            <ul className="showcase">
+              <li>
+                <div className="seat"></div>
+                <small>N/A</small>
+              </li>
+              <li>
+                <div className="seat selected"></div>
+                <small>Selected</small>
+              </li>
+              <li>
+                <div className="seat occupied"></div>
+                <small>Occupied</small>
+              </li>
+            </ul>
+            <div className="cinema">
+              {[...Array(8)].map((_, rowIndex) => (
+                <div key={rowIndex} className="row">
+                  {[...Array(12)].map((_, colIndex) => {
+                    const seatNumber = rowIndex * 12 + colIndex + 1;
+                    const index = seatNumber;
+
+                    return (
+                      <Seat
+                        key={index}
+                        seatNumber={seatNumber}
+                        status={seatStatus[index]}
+                        onClick={() => handleSeatClick(index)}
+                      />
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-        <div className="total_area">
-        <p className="totalprice">You have selected <span id="seatsSelected">0</span> seats for the price of $<span
-          id="totalPrice">0</span></p>
-        </div>
-      </Content>
-    </div>
+          <div className="blueone">
+            <ul>
+              <li>Rạp số: 1</li>
+              <li>Tên Phim: Siêu nhân Gao</li>
+              <li>Suất chiếu: 20:00 14/12/2023</li>
+              <li>Ghế đã chọn: {numberToString(selectedSeats).join(', ')}</li>
+              <li>Giá vé: 210.000 VND</li>
+              <li>Combo: Something</li>
+              <li className="totalprice">Total: {totalPrice}.000 VND</li>
+            </ul>
+            <Button className="cancelseatbutton" shape="round" icon={<CloseOutlined />} size={10}>Cancel </Button >
+            <Button className="selectseatbutton" shape="round" onClick={() => sendSeatData()} icon={<DoubleRightOutlined />} size={10}>Next </Button >
+
+          </div>
+
+        </Content>
+      </div>
+    </Layout>
   );
-} 
+};
+
+export default SelectSeatPage;

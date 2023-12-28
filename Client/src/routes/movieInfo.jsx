@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from 'react';
-import { Image, Card, Flex, Typography, Button, Space} from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Image, Card, Flex, Typography, Button, Space } from 'antd';
 import TopBar from '../components/topbar';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
 
-export default function MovieInfo (){
+export default function MovieInfo() {
     const [movieinfo, setMovieinfo] = useState([]);
     const [movieSchedule, setMovieSchedule] = useState(null);
 
@@ -26,7 +26,7 @@ export default function MovieInfo (){
 
     const { id } = useParams();
     const movie = movieinfo && movieinfo.find((m) => m.id === parseInt(id));
-    
+
     console.log(id);
 
     const getMovieSchedule = async () => {
@@ -78,35 +78,38 @@ export default function MovieInfo (){
                                         <br />
                                         <strong>Description:</strong> {movie.description}
                                     </Paragraph>
-                                        <div style={{ position: 'fixed', bottom: '20px', paddingLeft: '10px' }}>
-                                            <Button className="button" onClick={getMovieSchedule}>Đặt vé</Button>
-                                        </div>
+                                    <div style={{ position: 'fixed', bottom: '20px', paddingLeft: '10px' }}>
+                                        <Button className="button" onClick={getMovieSchedule}>Đặt vé</Button>
+                                    </div>
                                 </Space>
                             </Card>
                         </Space>
                         {movieSchedule && (
-                            <Space className='schedule' direction="vertical" align="center">  
+                            <Space className='schedule' direction="vertical" align="center">
                                 {Object.keys(movieSchedule).map((date) => (
-                                  <Space key={date} direction="horizontal" align="center">
-                                    <h2>{date}</h2>
-                                    <Card className='time'>
-                                        <Space direction='horizontal' size="large">
-                                            {movieSchedule[date].map((scheduleItem) => (
-                                                <div key={scheduleItem.id}>
-                                                    <Button className="buttonstyle">{new Date(scheduleItem.schedule).toLocaleTimeString()}</Button>
-                                                </div>
-                                            ))}
-                                        </Space>
-                                    </Card>
-                                  </Space>
+                                    <Space key={date} direction="horizontal" align="center">
+                                        <h2>{date}</h2>
+                                        <Card className='time'>
+                                            <Space direction='horizontal' size="large">
+                                                {movieSchedule[date].map((scheduleItem) => (
+                                                    <div key={scheduleItem.id}>
+                                                        <Link to={`/selectseat/${scheduleItem.id}`}>
+                                                        <Button className="buttonstyle">{new Date(scheduleItem.schedule).toLocaleTimeString()}</Button>
+                                                    </Link>
+                                                    </div>
+                                                ))}
+                                    </Space>
+                                        </Card>
+                                    </Space>
                                 ))}
-                            </Space>
-                        )}
-                    </>
-                ) : (
-                    <></>
-                )}
             </Space>
-        </div>
+                        )}
+        </>
+    ) : (
+        <></>
+    )
+}
+            </Space >
+        </div >
     );
 };

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';
-import Token from '../components/token'
+import axios from 'axios';
 
-export default function LoginPage(props) {
+export default function LoginPage() {
     // State variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -62,17 +62,22 @@ export default function LoginPage(props) {
     const handleLogin = async () => {
         try {
           const response = await axios.post("http://fall2324w20g8.int3306.freeddns.org/api/user/login", loginInfo);
-          const token = response.data.token;
+          const token = response.data.access_token;
     
           // Lưu token vào localStorage hoặc sessionStorage
           localStorage.setItem('token', token);
+          console.log(token)
+
     
           // Thực hiện các bước tiếp theo sau khi đăng nhập thành công
           // Ví dụ: chuyển hướng đến trang chính của ứng dụng
         } catch (error) {
           console.error('Login failed', error);
         }
+
       };
+
+    //   axios.get('http://localhost:3001/api/protected-resource', { headers });
 
     return (
         <div className='background'>

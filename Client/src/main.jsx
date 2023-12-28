@@ -11,8 +11,6 @@ import LoginPage from "./routes/loginPage";
 import SignupPage from "./routes/signupPage";
 import SelectSeatPage from "./routes/selectSeatPage";
 import Profile from "./routes/profilePage";
-import TestPage from "./routes/test";
-import SelectFoodPage from "./routes/selectFoodPage";
 import MovieInfo from "./routes/movieInfo";
 import MovieList from "./routes/movieList";
 
@@ -29,17 +27,12 @@ const router = createBrowserRouter([
   // },
   {
     path: "signup",
-    element: <SignupPage />,
+    element: <Profile />,
     errorElement: <ErrorPage />
   },
   {
     path: "login",
     element: <LoginPage />,
-    errorElement: <ErrorPage />
-  },
-  {
-    path: "selectFood",
-    element: <SelectFoodPage />,
     errorElement: <ErrorPage />
   },
   {
@@ -50,6 +43,10 @@ const router = createBrowserRouter([
     path:"/movieinfo/:id",
     element: <MovieInfo/>,
   },
+  {
+    path:"/selectseat/:id",
+    element: <SelectSeatPage/>,
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
