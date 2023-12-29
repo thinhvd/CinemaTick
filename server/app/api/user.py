@@ -34,6 +34,9 @@ def sign_up():
     email = data["email"]
     phone_number = data["phone_number"]
 
+    if fullname == "" or password == "" or email == "" or phone_number == "":
+        return bad_request('must include fullname, email and password fields')
+
     found_user = User.query.filter_by(email = email).first()
     if found_user: 
         return bad_request('please use a different email address')
@@ -51,7 +54,7 @@ def sign_up():
     db.session.commit()
     response = jsonify(user.to_dict())
     response.status_code = 201
-    return user.password_hash
+    return user.to_dict()
 
 from flask_cors import CORS, cross_origin
 
@@ -74,7 +77,7 @@ def get_user(id):
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = User.to_collection_dict(User.query, page, per_page, 'api.get_users')
+    data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted"), page, per_page, 'api.get_users')
     return jsonify(data)
 
      
@@ -88,7 +91,10 @@ def change_pass():
     id = data["id"]
     new_pass = data["new_pass"]
     old_pass = data["old_pass"]
+    if (new_pass == "" or old_pass == ""):
+        return bad_request('must include id , new_pass, old_pass fields')
     session.permanent = True
+
 
     user = User.query.filter_by(id = id).first()
     if check_password_hash(user.password_hash, old_pass):
@@ -105,6 +111,9 @@ def reset_pass_request():
     if 'email' not in data :
         return bad_request('must include email fields')
     email = data['email']
+    if email == "":
+        return bad_request('must include email fields')
+
     user = User.query.filter_by(email=email).first()
     new_pass = user.generate_new_pass()
 
@@ -120,6 +129,7 @@ def reset_pass_request():
 @bp.route('/api/user/<int:id>', methods=['DELETE'])
 @cross_origin()
 def delete_user(id):
-    User.query.filter_by(id = id).delete()
+    user = User.query.get_or_404(id)
+    user.fullname = "userDeleted"
     db.session.commit()
-    return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
+    return "thanh cong" 
