@@ -53,6 +53,9 @@ def create_bill():
         
         if seat.status == 'occupied':
             return bad_request('ghe cua ban da dc dat')
+        
+        if seat.status == 'delete':
+            return bad_request('ghe khong ton tai')
         seats.append(seat)
     
     show = Show.query.get(seats[0].to_dict()['show_id']).to_dict()
@@ -65,7 +68,7 @@ def create_bill():
 
     
 
-    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = show['schedule'], bill_code = None)
+    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = datetime.utcnow, bill_code = None)
     db.session.add(bill)
     db.session.commit()
 

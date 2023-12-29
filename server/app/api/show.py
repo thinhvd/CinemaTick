@@ -22,7 +22,11 @@ def get_show_for_movie_by_day():
     if 'movie_id' not in data or 'time' not in data:
         return bad_request("must include data fields")
     
-    shows = Show.query.filter(Show.schedule >= data['time'], Show.schedule < datetime.datetime.strptime(data['time'], "%Y-%m-%d") + datetime.timedelta(days=1))
+    if data['movie_id'] <= 0 or data['time'] == "":
+        return bad_request("must include data fields")
+    
+    shows = Show.query.filter(Show.schedule >= data['time'], Show.schedule < datetime.datetime.strptime(data['time'], "%Y-%m-%d") + datetime.timedelta(days=1)
+                              and Show.ticket_cost > 0)
     res = []
     for show in shows:
         res.append(show.to_dict())
@@ -31,11 +35,11 @@ def get_show_for_movie_by_day():
 @bp.route('/api/show/movie/<int:id>', methods=['GET'])
 @cross_origin()
 def get_show_for_movie(id):
-    shows = Show.query.filter_by(movie_id = id)
+    shows = Show.query.filter(Show.movie_id == id and Show.ticket_cost >= 0)
     res = []
     for show in shows:
         res.append(show.to_dict())
-    return res
+    return res  
 
 
 
@@ -44,20 +48,54 @@ def get_show_for_movie(id):
 def get_shows():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Show.to_collection_dict(Show.query, page, per_page, 'api.get_shows')
+    data = Show.to_collection_dict(Show.query.filter(Show.ticket_cost > 0), page, per_page, 'api.get_shows')
     return jsonify(data)
 
-@bp.route('/api/show/create', methods=['POST'])
-@cross_origin()
-def create_show():
-    data = request.get_json()
-    if 'room_id' not in data or 'movie_id' not in data or 'schedule' not in data or 'ticket_cost' not in data:
-        return bad_request("must include data fields")
+# @bp.route('/api/show/create', methods=['POST'])
+# @cross_origin()
+# def create_show():
+#     data = request.get_json()
+#     if 'room_id' not in data or 'movie_id' not in data or 'schedule' not in data or 'ticket_cost' not in data:
+#         return bad_request("must include data fields")
     
-    show = Show(room_id = data["room_id"], movie_id = data["movie_id"], schedule = data["schedule"], ticket_cost = data["ticket_cost"])
-    db.session.add(show)
+#     if data['room_id'] <= 0 or data['movie_id'] <= 0 or data['schedule'] == "" or data['ticket_cost'] <= 0:
+#         return bad_request("must include data fields")
+
+#     new_show_movie = Movie.query.get(data['movie_id'])
+#     new_show_hours = new_show_movie.duration / 60
+#     new_show_minutes = new_show_movie.duration % 60
+#     input_schedule_str = data['schedule']
+#     input_schedule = datetime.datetime.strptime(input_schedule_str, '%Y/%m/%d %H:%M:%S')
+#     shows = Show.query.filter(Show.schedule < input_schedule)
+#                              #  and datetime.datetime.strptime(Show.schedule, '%Y/%m/%d %H:%M:%S').date() == datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S').date())
+#                             #   and Show.ticket_cost > 0).all()
+#     x = []
+#     y= Show.query.get(1)
+#     for show in shows:
+#         x.append(show.to_dict())
+#         # if show.schedule <= datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S') + datetime.timedelta(hours=new_show_hours, minutes=new_show_minutes):
+#         #     return bad_request("khung h đã bị trùng1")
+#         # movie = Movie.query.get(show.movie_id)
+#         # hours = movie.duration / 60
+#         # minutes = movie.duration % 60
+#         # if show.schedule + datetime.timedelta(hours=hours, minutes=minutes) >= datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S'):
+#         #     return bad_request("khung h đã bị trùng2" + (show.schedule + datetime.timedelta(hours=hours, minutes=minutes)).strftime("%Y/%m/%d %H:%M:%S"))
+#     return x
+#     show = Show(room_id = data["room_id"], movie_id = data["movie_id"], schedule = data["schedule"], ticket_cost = data["ticket_cost"])
+#     db.session.add(show)
+#     db.session.commit()
+#     create_seat(show=show)
+#     response = jsonify(show.to_dict())
+#     response.status_code = 201
+#     return response
+
+@bp.route('/api/show/<int:id>', methods=['DELETE'])
+@cross_origin()
+def delete_show(id):
+    show = Show.query.get_or_404(id)
+    seats = Seat.query.filter(Seat.show_id == id)
+    for seat in seats:
+        seat.status = "delete"
+    show.ticket_cost = 0
     db.session.commit()
-    create_seat(show=show)
-    response = jsonify(show.to_dict())
-    response.status_code = 201
-    return response
+    return "thanh cong" 
