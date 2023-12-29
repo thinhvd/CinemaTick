@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';
 
@@ -15,7 +15,8 @@ export default function SignupPage() {
         "fullname": fullname,
         "password": password,
         "email": email,
-        "phone_number": phone
+        "phone_number": phone,
+        "reconfirmpassword": reconfirmpassword,
     }
 
     // Functions used by the screen components
@@ -49,6 +50,10 @@ export default function SignupPage() {
             .catch(error => console.error(error));
     }
 
+    const checkReconfirmPassword = () => {
+        return password === reconfirmpassword;
+    };
+
     return (
         <div className='background'>
             <TopBar />
@@ -71,7 +76,7 @@ export default function SignupPage() {
                     <Input
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
-                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        prefix={<MailOutlined className="site-form-item-icon" />}
                         type="email"
                         placeholder="Email"
                     />
@@ -88,7 +93,7 @@ export default function SignupPage() {
                     <Input
                         value={fullname}
                         onChange={(event) => setFullname(event.target.value)}
-                        prefix={<LockOutlined className="site-form-item-icon" />}
+                        prefix={<UserOutlined className="site-form-item-icon" />}
                         placeholder="Fullname"
                     />
                 </Form.Item>
@@ -104,7 +109,7 @@ export default function SignupPage() {
                     <Input
                         value={phone}
                         onChange={(event) => setPhone(event.target.value)}
-                        prefix={<LockOutlined className="site-form-item-icon" />}
+                        prefix={<PhoneOutlined className="site-form-item-icon" />}
                         type="phone"
                         placeholder="Phone Number"
                     />
@@ -133,13 +138,21 @@ export default function SignupPage() {
                             required: true,
                             message: 'Please re-confirm your Password!',
                         },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value || checkReconfirmPassword()) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('The two passwords do not match!'));
+                            },
+                        }),
                     ]}
                 >
                     <Input
                         value={reconfirmpassword}
                         onChange={(event) => setReconfirmpassword(event.target.value)}
                         prefix={<LockOutlined className="site-form-item-icon" />}
-                        type="re-confirm password"
+                        type="password"
                         placeholder="Re-confirm Password"
                     />
                 </Form.Item>

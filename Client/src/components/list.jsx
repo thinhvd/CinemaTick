@@ -4,21 +4,21 @@ import { useState, useEffect, useRef} from 'react';
 import { Link } from 'react-router-dom';
 
 
-function List(props) {
+function List() {
     const [movies, setMovies] = useState([]);
-
+    
     useEffect(() => {
         getMovieList();
     }, []);
 
       const getMovieList = async () => {
         try {
-          const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage");
-          const responseData = await response.json();
-
-          setMovies(responseData);
+            const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage");
+            const responseData = await response.json();
+            console.log(responseData);
+            setMovies(responseData);
         } catch(error) {
-          console.error(error);
+            console.error(error);
         }
     };
 
@@ -36,8 +36,7 @@ function List(props) {
         grid-template-columns: repeat(${movies.length},230px);
         transition: all 0.3s linear;
         user-select:none;
-        overflow-y:hidden;
-        overflow-x:auto;
+        overflow:hidden;
         scroll-behavior: smooth;
         white-space: nowrap;
     `;
@@ -55,21 +54,17 @@ function List(props) {
     const handleMoveLeft = () => {
         const movieSlider = movieSliderRef.current;
         const newScrollLeft = Math.max(scrollLeft - 230, 0); // Giới hạn scrollLeft không vượt quá 0
-        setScrollLeft(newScrollLeft);
         console.log(scrollLeft);
-        if (movieSlider) {
-          movieSlider.scrollLeft = newScrollLeft;
-        }
+        setScrollLeft(newScrollLeft);
+        
       };
     
       const handleMoveRight = () => {
         const movieSlider = movieSliderRef.current;
         const newScrollLeft = Math.min(scrollLeft + 230, movieSlider.scrollWidth - movieSlider.clientWidth);
-        setScrollLeft(newScrollLeft);
         console.log(scrollLeft)
-        if (movieSlider) {
-          movieSlider.scrollLeft = newScrollLeft;
-        }
+        setScrollLeft(newScrollLeft);
+        
       };
 
     return (
@@ -78,7 +73,9 @@ function List(props) {
                 {
                     movies.map((movie, index) => (
                         <div key={index} className='movieItem'>
-                            <img src={movie.poster} alt="" />
+                            <Link to={`/movieinfo/${movie.id}`}>
+                                <img src={movie.poster} alt="{movie.name}" />
+                            </Link>
                             <div className='movieName'>{movie.name}</div>
                         </div>
                     ))

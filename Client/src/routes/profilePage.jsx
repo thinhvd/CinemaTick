@@ -1,42 +1,82 @@
-import { useState } from 'react'
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import TopBar from '../components/topbar';
+import { UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Spin } from 'antd';
+import axios from 'axios';
 
 function Profile() {
   const token = localStorage.getItem('token');
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const [profileData, setProfileData] = useState(null)
+  useEffect(() => {
+    getData();
+  }, []);
+
   function getData() {
     axios({
-      method: "GET",
-      url:"http://fall2324w20g8.int3306.freeddns.org/api/profile",
+      method: 'GET',
+      url: 'http://fall2324w20g8.int3306.freeddns.org/api/profile',
       headers: {
-        Authorization: 'Bearer ' + token
-      }
+        Authorization: 'Bearer ' + token,
+      },
     })
-    .then((response) => {
-      const res =response.data
-      console.log(res)
-      setProfileData(({
-        profile_name: res.fullname,
-        about_me: res.about}))
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        }
-    })}
+      .then((response) => {
+        const res = response.data;
+        setProfileData(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   return (
-    <div className="Profile">
+    <div className='background'>
+      <TopBar />
+      {loading ? (
+        <Spin size='large' />
+      ) : (
+        <Form
+          name='profile_form'
+          className='profile-form'
+          initialValues={{
+            fullname: profileData?.fullname,
+            email: profileData?.email,
+            phone_number: profileData?.phone_number,
+            // Add other fields as needed
+          }}
+        >
+          <Form.Item label='Full Name' name='fullname'>
+            <Input
+              prefix={<UserOutlined className='site-form-item-icon' />}
+              placeholder='Full Name'
+              disabled
+              style={{ color: 'white' }}
+            />
+          </Form.Item>
 
-        <p>To get your profile details: </p><button onClick={getData}>Click me</button>
-        {profileData && <div>
-              <p>Profile name: {profileData.profile_name}</p>
-              <p>About me: {profileData.about_me}</p>
-            </div>
-        }
+          <Form.Item label='Email' name='email'>
+            <Input
+              prefix={<MailOutlined className='site-form-item-icon' />}
+              placeholder='Email'
+              disabled
+              style={{ color: 'white' }}
+            />
+          </Form.Item>
 
+          <Form.Item label='Phone Number' name='phone_number'>
+            <Input
+              prefix={<PhoneOutlined className='site-form-item-icon' />}
+              placeholder='Phone Number'
+              disabled
+              style={{ color: 'white' }}
+            />
+          </Form.Item>
+        </Form>
+      )}
     </div>
   );
 }

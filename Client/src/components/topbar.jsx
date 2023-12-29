@@ -2,8 +2,12 @@ import { Layout, Image, Row, Col, Card, Button, Space } from "antd";
 import { Header } from "antd/es/layout/layout";
 import MenuMovie from "./menu";
 import Cinematick from '../images/Cinematick.png';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import UserButton from "./user";
 
 export default function TopBar() {
+
     return (
         <Layout>
             <Header style={{
@@ -41,15 +45,8 @@ export default function TopBar() {
                         </a>
                     </Col>
 
-                    <Col span={8} style={{ textAlign: 'right', paddingRight: '30px', paddingTop: '5px' }}>
-                        <Space size='middle'>
-                            <Button className="buttonstyle" href={`/login`}>
-                                Log in
-                            </Button>
-                            <Button className="buttonstyle" href={`/signup`}>
-                                Sign up
-                            </Button>
-                        </Space>
+                    <Col span={8} style={{ textAlign: 'right', paddingRight: '30px', paddingTop: '20px' }}>
+                        <UserButton/>
                     </Col>
                 </Row>
             </Header>

@@ -15,6 +15,7 @@ const SelectSeatPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [seats, setOccupiedSeat] = useState([]);
   const { id } = useParams();
+  const token = localStorage.getItem('token');
   // var seats = [
   //   {
   //     "id": 1,
@@ -74,7 +75,15 @@ const SelectSeatPage = () => {
   useEffect(() => {
     console.log(id)
     // Fetch data from API
-    axios.get(`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`)
+    // axios.get(`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`)
+    axios({
+      method: "GET",
+      url:`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`,
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+    
       .then(response => {
         const seatData = response.data;
         const initialSeatStatus = Array(12 * 8).fill('normal');
@@ -86,7 +95,7 @@ const SelectSeatPage = () => {
           initialSeatStatus[index] = seat.status;
           initialSeatPrice[index] = seat.price;
         });
-
+console.log(token)
         setSeatStatus(initialSeatStatus);
         setSeatPrice(initialSeatPrice);
       })

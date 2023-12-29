@@ -52,15 +52,15 @@ body {
 }
 
 .list {
-  margin-top: 100vh;
-  height: 35vh;
-  background-size: cover;
-  background-color: transparent;
+  margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+  row-gap: 2em;
   color: white;
 }
 
 .aboutus {
-  margin-top: 100px;
+  margin-top: 10vh;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   height: 35vh;
@@ -70,6 +70,10 @@ body {
 
 .login-form {
   max-width: 300px;
+  width: 18%;
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 250px auto !important;
 }
 
 .login-form-forgot {
@@ -82,13 +86,6 @@ body {
 
 .login-form-button {
   width: 100%;
-}
-
-Form {
-  width: 18%;
-  background-color: transparent;
-  border-radius: 10px;
-  margin: 250px auto !important;
 }
 
 .buttonstyle {
@@ -289,8 +286,8 @@ img {
 }
 
 .movielist img {
-  min-width: 180px;
-  min-height: 250px;
+  min-width: 11.5em;
+  min-height: 17em;
 }
 
 .movielist h3 {
@@ -312,11 +309,10 @@ img {
 
 .movieSchedule {
   display: flex;
-  justify-content: center;
+  row-gap: 25em;
 }
 
 .schedule {
-  margin-top: 40vh;
   row-gap: 4em;
 }
 
@@ -387,8 +383,8 @@ img {
 .movieItem img {
   top: 0;
   left: 0;
-  min-width: 100%;
-  min-height: 100%;
+  min-width: 17em;
+  min-height: 25em;
 }
 
 .moveLeft {
@@ -452,4 +448,28 @@ svg {
   font-size: 20px !important;
   padding: 0 !important;
   padding-left: 2em !important;
+}
+
+.ant-input-disabled{
+  color: #fff !important;
+}
+
+.ant-form-item-label>label{
+  color: #fff !important;
+}
+
+.ant-form-horizontal .ant-form-item-control{
+  min-width: 25em;
+}
+
+.profile-form{
+  max-width: 30em;
+  background-color: transparent;
+  border-radius: 10px;
+  margin-top: 30em;
+  margin-left: 5em;
+}
+
+div.ant-row.ant-form-item-row{
+  column-gap: 2em;
 }

@@ -1,9 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import LandingPage from "./routes/landingPage";
 import ErrorPage from "./routes/errorPage";
@@ -27,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: "signup",
-    element: <Profile />,
+    element: <SignupPage />,
     errorElement: <ErrorPage />
   },
   {
@@ -46,6 +43,10 @@ const router = createBrowserRouter([
   {
     path:"/selectseat/:id",
     element: <SelectSeatPage/>,
+  },
+  {
+    path:"/profile",
+    element: <Profile/>,
   }
 ]);
 

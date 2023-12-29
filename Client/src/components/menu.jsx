@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import { MenuOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Space } from 'antd';
+import { Link } from 'react-router-dom';
 
 const items = [
   {
     key: '1',
     label: (
-      <a target="" rel="" href={`/movielist`}>
-        DANH SÁCH PHIM
-      </a>
+        <Link to={`/movielist`}>DANH SÁCH PHIM</Link>
     ),
   },
   {
@@ -33,8 +32,9 @@ const items = [
 export default function MenuMovie() {
     return (
       <Dropdown
+        id="menu"
         style={{
-          width:'300px'
+          width:'300px',
         }}
         menu={{
           items,

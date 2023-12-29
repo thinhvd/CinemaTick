@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import TopBar from '../components/topbar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
     // State variables
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     // const [currentUser, setCurrentUser] = useState(null);
+    const navigate = useNavigate();
 
     var loginInfo = {
         "email": email,
@@ -57,22 +59,22 @@ export default function LoginPage() {
     //     const movies = await response.json();
     //     console.log(movies);
     //   }
-    "http://fall2324w20g8.int3306.freeddns.org/api/user/login"
 
     const handleLogin = async () => {
         try {
-          const response = await axios.post("http://fall2324w20g8.int3306.freeddns.org/api/user/login", loginInfo);
-          const token = response.data.access_token;
+            const response = await axios.post("http://fall2324w20g8.int3306.freeddns.org/api/user/login", loginInfo);
+            const token = response.data.access_token;
     
           // Lưu token vào localStorage hoặc sessionStorage
-          localStorage.setItem('token', token);
-          console.log(token)
-
+            localStorage.setItem('token', token);
+        //   localStorage.removeItem("token");
+            console.log(token)
+            navigate('/');
     
           // Thực hiện các bước tiếp theo sau khi đăng nhập thành công
           // Ví dụ: chuyển hướng đến trang chính của ứng dụng
         } catch (error) {
-          console.error('Login failed', error);
+            console.error('Login failed', error);
         }
 
       };
@@ -99,7 +101,7 @@ export default function LoginPage() {
                     ]}
                 >
                     <Input
-                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        prefix={<MailOutlined className="site-form-item-icon" />}
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                         placeholder="Email"
@@ -139,7 +141,7 @@ export default function LoginPage() {
                         type="primary"
                         htmlType="submit"
                         className="login-form-button">
-                        Log in
+                            Log in
                     </Button>
                     Or <a href={`signup`}>Register now!</a>
                 </Form.Item>
