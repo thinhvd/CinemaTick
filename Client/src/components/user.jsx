@@ -36,19 +36,6 @@ export default function UserButton() {
         });
     };
 
-    // const logout = async () => {
-    //     try {
-    //         const response = await axios.post("http://fall2324w20g8.int3306.freeddns.org/api/user/login", loginInfo);
-    //         const token = response.data.access_token;
-    //         localStorage.removeItem('token');
-    //         console.log(token)
-    //         navigate('/');
-    //     } catch (error) {
-    //         console.error('Login failed', error);
-    //     }
-
-    // };
-
     const Logout = () => {
         localStorage.removeItem('token');
         navigate('/');
@@ -93,7 +80,7 @@ export default function UserButton() {
                 >
                     <Button 
                         style={{
-                            width:'200px',
+                            width:'40%',
                             backgroundColor: 'rgba(0, 0, 0, 0.5)',
                             color:'#fff',
                             padding:'0',

@@ -1,36 +1,34 @@
+// Import the necessary modules
 import React, { useState, useEffect } from 'react';
-import { Image, Card, Flex, Typography, Button, Space } from 'antd';
+import { Image, Card, Space, Typography, Button } from 'antd';
 import TopBar from '../components/topbar';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Element, scroller } from 'react-scroll';
 
 const { Title, Paragraph } = Typography;
 
-export default function MovieInfo() {
+const MovieInfo = () => {
     const [movieinfo, setMovieinfo] = useState([]);
     const [movieSchedule, setMovieSchedule] = useState(null);
+    const { id } = useParams();
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
 
     useEffect(() => {
         getMovieInfo();
-        console.log(token);
     }, []);
 
     const getMovieInfo = async () => {
         try {
             const response = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/movies_nopage`);
             const responseData = await response.json();
-
             setMovieinfo(responseData);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const { id } = useParams();
     const movie = movieinfo && movieinfo.find((m) => m.id === parseInt(id));
-
-    console.log(id);
 
     const getMovieSchedule = async () => {
         try {
@@ -67,14 +65,22 @@ export default function MovieInfo() {
             smooth: 'linear',
         });
     };
-    
+
+    const handleBookTicket = (scheduleItemId) => {
+        if (token) {
+            navigate(`/selectseat/${scheduleItemId}`);
+        } else {
+            navigate('/login');
+        }
+    };
+
     return (
         <div className='background'>
             <TopBar />
             <Space className='movieSchedule' direction="vertical" align="center">
                 {movie ? (
                     <>
-                        <Space className='movieInfo' direction="horizontal" align="center" >
+                        <Space className='movieInfo' direction="horizontal" align="center">
                             <img src={movie.poster} alt="movie poster" className='movieInfoImage' />
                             <Card className='movieInfoText'>
                                 <Space direction='vertical'>
@@ -89,14 +95,16 @@ export default function MovieInfo() {
                                         <strong>Description:</strong> {movie.description}
                                     </Paragraph>
                                     <div style={{ position: 'fixed', bottom: '20px', paddingLeft: '10px' }}>
-                                        <Button className="button" onClick={getMovieSchedule}>Đặt vé</Button>
+                                        <Button className="button" onClick={getMovieSchedule}>
+                                            Đặt vé
+                                        </Button>
                                     </div>
                                 </Space>
                             </Card>
                         </Space>
                         <div id="scheduleElement">
                             {movieSchedule && (
-                                <Space  className='schedule' direction="vertical" align="center">
+                                <Space className='schedule' direction="vertical" align="center">
                                     {Object.keys(movieSchedule).map((date) => (
                                         <Space key={date} direction="horizontal" align="center">
                                             <h2>{date}</h2>
@@ -104,9 +112,12 @@ export default function MovieInfo() {
                                                 <Space direction='horizontal' size="large">
                                                     {movieSchedule[date].map((scheduleItem) => (
                                                         <div key={scheduleItem.id}>
-                                                            <Link to={`/selectseat/${scheduleItem.id}`}>
-                                                                <Button className="buttonstyle">{new Date(scheduleItem.schedule).toLocaleTimeString()}</Button>
-                                                            </Link>
+                                                            <Button
+                                                                className="buttonstyle"
+                                                                onClick={() => handleBookTicket(scheduleItem.id)}
+                                                            >
+                                                                {new Date(scheduleItem.schedule).toLocaleTimeString()}
+                                                            </Button>
                                                         </div>
                                                     ))}
                                                 </Space>
@@ -120,7 +131,9 @@ export default function MovieInfo() {
                 ) : (
                     <></>
                 )}
-            </Space >
-        </div >
+            </Space>
+        </div>
     );
 };
+
+export default MovieInfo;

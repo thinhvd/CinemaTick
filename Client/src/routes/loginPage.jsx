@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input,  message } from 'antd';
 import TopBar from '../components/topbar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,54 +11,12 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     // const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+    const [errorMsg, setErrorMsg] = useState(null);
 
     var loginInfo = {
         "email": email,
         "password": password
     }
-
-    // Function that will return current user and also update current username
-    // const getCurrentUser = async function () {
-    //     const currentUser = await Parse.User.current();
-    //     // Update state variable holding current user
-    //     setCurrentUser(currentUser);
-    //     return currentUser;
-    // };
-    // const doUserLogIn = async function () {
-    //     // Note that these values come from state variables that we've declared before
-    //     const usernameValue = username;
-    //     const passwordValue = password;
-    //     try {
-    //         const loggedInUser = await Parse.User.logIn(usernameValue, passwordValue);
-    //         // logIn returns the corresponding ParseUser object
-    //         alert(
-    //             `Success! User ${loggedInUser.get(
-    //                 'username'
-    //             )} has successfully signed in!`
-    //         );
-    //         // To verify that this is in fact the current user, `current` can be used
-    //         const currentUser = await Parse.User.current();
-    //         console.log(loggedInUser === currentUser);
-    //         // Clear input fields
-    //         setUsername('');
-    //         setPassword('');
-    //         // Update state variable holding current user
-    //         getCurrentUser();
-    //         return true;
-    //     } catch (error) {
-    //         // Error can be caused by wrong parameters or lack of Internet connection
-    //         alert(`Error! ${error.message}`);
-    //         return false;
-    //     }
-    // };
-
-    //   async function cout() {
-    //     const response = await fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/1", {
-    //         method: "get"
-    //     });
-    //     const movies = await response.json();
-    //     console.log(movies);
-    //   }
 
     const handleLogin = async () => {
         try {
@@ -74,7 +32,23 @@ export default function LoginPage() {
           // Thực hiện các bước tiếp theo sau khi đăng nhập thành công
           // Ví dụ: chuyển hướng đến trang chính của ứng dụng
         } catch (error) {
-            console.error('Login failed', error);
+            // Handle authentication errors here
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error('Login failed. Server responded with:', error.response.data);
+                setErrorMsg("Invalid email or password. Please try again.");
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error('Login failed. No response received from the server.');
+                setErrorMsg("An error occurred. Please try again later.");
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.error('Login failed. Error setting up the request:', error.message);
+                setErrorMsg("An error occurred. Please try again later.");
+            }
+            // Display the error message to the user
+            message.error(errorMsg);
         }
 
       };
@@ -98,6 +72,10 @@ export default function LoginPage() {
                             required: true,
                             message: 'Please input your Email!',
                         },
+                        {
+                            type: 'email',
+                            message:'Your email must be in the form of email@example.com'
+                        }
                     ]}
                 >
                     <Input
@@ -116,7 +94,7 @@ export default function LoginPage() {
                         },
                     ]}
                 >
-                    <Input
+                    <Input.Password
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
@@ -126,7 +104,7 @@ export default function LoginPage() {
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox><div style={{color:'#fff !important'}}>Remember me</div></Checkbox>
                     </Form.Item>
 
                     <a className="login-form-forgot" href="">
@@ -136,14 +114,13 @@ export default function LoginPage() {
 
                 <Form.Item>
                     <Button
-                        //onClick={() => doUserLogIn()}
                         onClick={() => handleLogin()}
                         type="primary"
                         htmlType="submit"
                         className="login-form-button">
                             Log in
                     </Button>
-                    Or <a href={`signup`}>Register now!</a>
+                        <a href={`signup`}>Register now!</a>
                 </Form.Item>
             </Form>
         </div>

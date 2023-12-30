@@ -10,6 +10,8 @@ import SelectSeatPage from "./routes/selectSeatPage";
 import Profile from "./routes/profilePage";
 import MovieInfo from "./routes/movieInfo";
 import MovieList from "./routes/movieList";
+import AdminPage from "./routes/adminPage";
+import AdminTable from "./components/adminTable";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +49,18 @@ const router = createBrowserRouter([
   {
     path:"/profile",
     element: <Profile/>,
-  }
+  },
+  {
+    path:"/admin",
+    element: <AdminPage/>,
+    children: [
+      { path: "users", element: <AdminTable type="users" /> },
+      { path: "movies", element: <AdminTable type="movies" /> },
+      { path: "shows", element: <AdminTable type="shows" /> },
+      { path: "bills", element: <AdminTable type="bills" /> },
+    ],
+  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

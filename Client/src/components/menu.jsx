@@ -13,9 +13,7 @@ const items = [
   {
     key: '2',
     label: (
-      <a target="" rel="" >
-        VỀ CHÚNG TÔI
-      </a>
+      <Link to={`/admin/users`}>VỀ CHÚNG TÔI</Link>
     ),
   },
   {
@@ -42,22 +40,22 @@ export default function MenuMovie() {
       >
         <Button 
           style={{
-            height: "10vh",
-            width: '10vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            height: "5vw",
+            width: '5vw',
+            backgroundColor: 'transparent',
             color:'#fff',
             display:'flex',
             flexDirection:'column',
             alignItems:'center',
             justifyContent:'center',
             padding:'0',
-            borderRadius:'none'
+            borderRadius:'none',
+            border:'none'
           }}
         >
           <MenuOutlined
             style={{
               padding:'3px',
-              fontSize:'2.5em'
             }}
           />
           <div>Menu</div>

@@ -18,25 +18,7 @@ export default function SignupPage() {
         "phone_number": phone,
         "reconfirmpassword": reconfirmpassword,
     }
-
-    // Functions used by the screen components
-    const doUserRegistration = async function () {
-        // Note that these values come from state variables that we've declared before
-        const usernameValue = username;
-        const passwordValue = password;
-        try {
-            // Since the signUp method returns a Promise, we need to call it using await
-            const createdUser = await Parse.User.signUp(usernameValue, passwordValue);
-            alert(
-                `Success! User ${createdUser.getUsername()} was successfully created!`
-            );
-            return true;
-        } catch (error) {
-            // signUp can fail if any parameter is blank or failed an uniqueness check on the server
-            alert(`Error! ${error}`);
-            return false;
-        }
-    };
+    
     function uploadData() {
         fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
             headers: {
@@ -71,6 +53,10 @@ export default function SignupPage() {
                             required: true,
                             message: 'Please input your Email!',
                         },
+                        {
+                            type: 'email',
+                            message:'Your email must be in the form of email@example.com'
+                        }
                     ]}
                 >
                     <Input
@@ -104,13 +90,17 @@ export default function SignupPage() {
                             required: true,
                             message: 'Please input your Phone Number!',
                         },
+                        {
+                            pattern: /^\d+$/,
+                            message: 'Your Phone number must be numberic',
+                        }
                     ]}
                 >
                     <Input
                         value={phone}
                         onChange={(event) => setPhone(event.target.value)}
                         prefix={<PhoneOutlined className="site-form-item-icon" />}
-                        type="phone"
+                        type="tel"
                         placeholder="Phone Number"
                     />
                 </Form.Item>
@@ -123,7 +113,7 @@ export default function SignupPage() {
                         },
                     ]}
                 >
-                    <Input
+                    <Input.Password
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         prefix={<LockOutlined className="site-form-item-icon" />}
@@ -148,7 +138,7 @@ export default function SignupPage() {
                         }),
                     ]}
                 >
-                    <Input
+                    <Input.Password
                         value={reconfirmpassword}
                         onChange={(event) => setReconfirmpassword(event.target.value)}
                         prefix={<LockOutlined className="site-form-item-icon" />}
@@ -158,7 +148,7 @@ export default function SignupPage() {
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox><div style={{color:'#fff'}}>Remember me</div></Checkbox>
                     </Form.Item>
 
                     <a className="login-form-forgot" href="">
@@ -174,7 +164,7 @@ export default function SignupPage() {
                         className="login-form-button">
                         Sign Up
                     </Button>
-                    Or <a href={`/login`}>Already have a account, Sign in Now!</a>
+                        <a href={`/login`}>Already have a account, Sign in Now!</a>
                 </Form.Item>
             </Form>
         </div>

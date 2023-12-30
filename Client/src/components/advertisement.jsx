@@ -13,7 +13,7 @@ export default function Advertisment() {
     <Carousel autoplay speed={1500}>
       {adImages.map((imageUrl, index) => (
         <div key={index}>
-            <img src={imageUrl} alt="{`ad-${index}`}" style={{ minWidth: '100%', minHeight: '55em' }} />
+            <img src={imageUrl} alt="{`ad-${index}`}" style={{ minWidth: '100%', minHeight: '41vw' }} />
         </div>
       ))}
     </Carousel>

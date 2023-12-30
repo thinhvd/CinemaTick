@@ -6,11 +6,7 @@ import Advertisment from '../components/advertisement';
 export default function LandingPage() {
   return (
     <Layout className="background">
-      <Header style={{
-        padding:'0'
-      }}>
         <TopBar />
-      </Header>
       <Content className='list'>
         <Advertisment/>
         <List />

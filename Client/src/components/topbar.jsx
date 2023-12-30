@@ -39,13 +39,14 @@ export default function TopBar() {
                     <Col span={8} className="logo">
                         <a href={`/`}>
                             <Image
+                                className="logoweb"
                                 src={Cinematick}
                                 preview={false}
                             />
                         </a>
                     </Col>
 
-                    <Col span={8} style={{ textAlign: 'right', paddingRight: '30px', paddingTop: '20px' }}>
+                    <Col span={8} style={{ textAlign: 'right', paddingRight: '2%', paddingTop: '1%' }}>
                         <UserButton/>
                     </Col>
                 </Row>
