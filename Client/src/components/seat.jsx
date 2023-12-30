@@ -1,9 +1,10 @@
 // Seat.js
 import React from 'react';
 
-const Seat = ({ seatNumber, status, onClick }) => {
+const Seat = ({ seatNumber, status, seatType, onClick }) => {
     function numberToString(number) {
         // Tính toán ký tự (A đến H)
+        number = number % 96
         let charCode = Math.floor((number - 1) / 12) + 'A'.charCodeAt(0);
         let char = String.fromCharCode(charCode);
 
@@ -21,8 +22,7 @@ const Seat = ({ seatNumber, status, onClick }) => {
         // height: '40px',
         // margin: '5px',
         // border: '1px solid #ccc',
-        backgroundColor:
-          status === 'occupied' ? '#212224' : status === 'selected' ? 'rgb(115, 115, 253)' : '#777',
+        backgroundColor: status === 'occupied' ? '#212224' : status === 'selected' ? 'rgb(115, 115, 253)' : seatType === 'vip' ? '#800080' : '#777',
         cursor: status === 'occupied' ? 'not-allowed' : 'pointer',
       };
 

@@ -41,7 +41,7 @@ export default function SignupPage() {
             <TopBar />
             <Form
                 name="normal_login"
-                className="login-form"
+                className="signup-form"
                 initialValues={{
                     remember: true,
                 }}
@@ -151,7 +151,7 @@ export default function SignupPage() {
                         <Checkbox><div style={{color:'#fff'}}>Remember me</div></Checkbox>
                     </Form.Item>
 
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="/forgotpassword">
                         Forgot password
                     </a>
                 </Form.Item>

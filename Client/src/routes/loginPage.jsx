@@ -107,7 +107,7 @@ export default function LoginPage() {
                         <Checkbox><div style={{color:'#fff !important'}}>Remember me</div></Checkbox>
                     </Form.Item>
 
-                    <a className="login-form-forgot" href="">
+                    <a className="login-form-forgot" href="/forgotpassword">
                         Forgot password
                     </a>
                 </Form.Item>

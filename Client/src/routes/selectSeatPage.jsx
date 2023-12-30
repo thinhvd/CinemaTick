@@ -1,4 +1,4 @@
-// SeatSelector.js
+// SeatSelector.jsid
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout.js";
 import TopBar from "../components/topbar";
 import { DoubleRightOutlined, CloseOutlined } from '@ant-design/icons';
@@ -11,11 +11,18 @@ import { useParams } from "react-router";
 const SelectSeatPage = () => {
   const [seatStatus, setSeatStatus] = useState([]);
   const [seatPrice, setSeatPrice] = useState([]);
+  const [seatType, setSeatType] = useState([]);
+  const [movieName, setmovieName] = useState([]);
+  const [schedule, setSchedule] = useState([]);
+  const [room, setRoom] = useState([]);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [seats, setOccupiedSeat] = useState([]);
   const { id } = useParams();
   const token = localStorage.getItem('token');
+  var checkout_info = {
+    'price': totalPrice,
+    'message': 'Vé' + numberToString(selectedSeats).join(', ') + 'phim' + movieName + 'suất chiếu' + schedule
+  }
   // var seats = [
   //   {
   //     "id": 1,
@@ -57,7 +64,7 @@ const SelectSeatPage = () => {
     // Tính toán ký tự (A đến H)
     var temp = []
     for (let i = 0; i < number.length; i++) {
-      let charCode = Math.floor((number[i] - 1) / 12) + 'A'.charCodeAt(0);
+      let charCode = Math.floor((number[i] % 96 - 1) / 12) + 'A'.charCodeAt(0);
       let char = String.fromCharCode(charCode);
 
       // Tính toán số (1 đến 12)
@@ -72,32 +79,69 @@ const SelectSeatPage = () => {
 
   }
 
+  function stringToNumber(string) {
+    const columnLetter = string.charAt(0);
+    const rowNumber = parseInt(string.slice(1));
+
+    // Chuyển đổi chữ cái cột thành số tương ứng (A->1, B->2, ..., H->8)
+    const columnNumber = columnLetter.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
+
+    // Kiểm tra nếu dữ liệu đầu vào là hợp lệ
+    if (isNaN(rowNumber) || rowNumber < 1 || rowNumber > 12 || columnNumber < 1 || columnNumber > 8) {
+      console.error("Dữ liệu đầu vào không hợp lệ.");
+      return null;
+    }
+
+    // Tính toán số tương ứng
+    const number = (columnNumber - 1) * 12 + rowNumber;
+
+    return number;
+  }
+
+  function redirectToCheckout() {
+    fetch("http://fall2324w20g8.int3306.freeddns.org/payment", {
+      headers: {
+        'accept': 'application/json, text/plain',
+        'content-type': 'application/json;charset=utf-8'
+      },
+      method: "post",
+      body: JSON.stringify(checkout_info)
+    }).then(response => response.json())
+      .then(data => window.location.href = data.payment_url)
+      .catch(error => console.error(error));
+  }
+
   useEffect(() => {
-    console.log(id)
     // Fetch data from API
     // axios.get(`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`)
     axios({
       method: "GET",
-      url:`http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`,
+      url: `http://fall2324w20g8.int3306.freeddns.org/api/seats/${id}`,
       headers: {
         Authorization: 'Bearer ' + token
       }
     })
-    
+
       .then(response => {
         const seatData = response.data;
-        const initialSeatStatus = Array(12 * 8).fill('normal');
-        const initialSeatPrice = Array(12 * 8).fill(0);
+        const initialSeatStatus = Array(672).fill('normal');
+        const initialSeatPrice = Array(672).fill(0);
+        const initialSeatType = Array(672).fill('basic');
 
         seatData.forEach(seat => {
           // const index = calculateIndexFromPosition(seat.position);
-          const index = seat.id;
+          var index = seat.id;
           initialSeatStatus[index] = seat.status;
           initialSeatPrice[index] = seat.price;
+          initialSeatType[index] = seat.seat_type;
         });
-console.log(token)
+        // console.log(seatData)
+        setmovieName(seatData[0].movie_name)
+        setSchedule(seatData[0].schedule)
+        setRoom(seatData[0].room)
         setSeatStatus(initialSeatStatus);
         setSeatPrice(initialSeatPrice);
+        setSeatType(initialSeatType);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -115,6 +159,11 @@ console.log(token)
   // };
 
   const handleSeatClick = (index) => {
+    // console.log(index)
+    //console.log(id)
+    if(seatStatus[index] === 'empty') {
+      seatStatus[index] = 'normal'
+    }
     if (seatStatus[index] === 'normal') {
       const newSeatStatus = [...seatStatus];
       newSeatStatus[index] = 'selected';
@@ -137,66 +186,69 @@ console.log(token)
       const newSelectedSeats = [...selectedSeats];
       newSelectedSeats.splice(seatIndex, 1);
       setSelectedSeats(newSelectedSeats);
+      // console.log(newSelectedSeats)
     } else {
       // Ngược lại, thêm chỗ ngồi vào mảng đã chọn
       setSelectedSeats([...selectedSeats, index]);
+      //console.log(...selectedSeats)
     }
 
   };
 
   return (
-      <div className="background">
-        <TopBar />
-          <div className="redone">
-            <ul className="showcase">
-              <li>
-                <div className="seat"></div>
-                <small>N/A</small>
-              </li>
-              <li>
-                <div className="seat selected"></div>
-                <small>Selected</small>
-              </li>
-              <li>
-                <div className="seat occupied"></div>
-                <small>Occupied</small>
-              </li>
-            </ul>
-            <div className="cinema">
-              {[...Array(8)].map((_, rowIndex) => (
-                <div key={rowIndex} className="row">
-                  {[...Array(12)].map((_, colIndex) => {
-                    const seatNumber = rowIndex * 12 + colIndex + 1;
-                    const index = seatNumber;
-
-                    return (
-                      <Seat
-                        key={index}
-                        seatNumber={seatNumber}
-                        status={seatStatus[index]}
-                        onClick={() => handleSeatClick(index)}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
+    <div className="background">
+      <TopBar />
+      <div className="redone">
+        <ul className="showcase">
+          <li>
+            <div className="seat"></div>
+            <small>Normal</small>
+          </li>
+          <li>
+            <div className="seat VIP"></div>
+            <small>VIP</small>
+          </li>
+          <li>
+            <div className="seat selected"></div>
+            <small>Selected</small>
+          </li>
+          <li>
+            <div className="seat occupied"></div>
+            <small>Occupied</small>
+          </li>
+        </ul>
+        <div className="cinema">
+          {[...Array(8)].map((_, rowIndex) => (
+            <div key={rowIndex} className="row">
+              {[...Array(12)].map((_, colIndex) => {
+                const seatNumber = rowIndex * 12 + colIndex + 1;
+                const seatID = seatNumber + 96 * (id - 1)
+                return (
+                  <Seat
+                    key={seatID}
+                    seatNumber={seatID}
+                    status={seatStatus[seatID]}
+                    seatType={seatType[seatID]}
+                    onClick={() => handleSeatClick(seatID)}
+                  />
+                );
+              })}
             </div>
-          </div>
-          <div className="blueone">
-            <ul>
-              <li>Rạp số: 1</li>
-              <li>Tên Phim: Siêu nhân Gao</li>
-              <li>Suất chiếu: 20:00 14/12/2023</li>
-              <li>Ghế đã chọn: {numberToString(selectedSeats).join(', ')}</li>
-              <li>Giá vé: 210.000 VND</li>
-              <li>Combo: Something</li>
-              <li className="totalprice">Total: {totalPrice}.000 VND</li>
-            </ul>
-            <Button className="cancelseatbutton" shape="round" icon={<CloseOutlined />} size={10}>Cancel </Button >
-            <Button className="selectseatbutton" shape="round" onClick={() => sendSeatData()} icon={<DoubleRightOutlined />} size={10}>Next </Button >
-
-          </div>
+          ))}
+        </div>
       </div>
+      <div className="blueone">
+        <ul>
+          <li>Rạp số: {room}</li>
+          <li>Tên Phim: {movieName}</li>
+          <li>Suất chiếu: {schedule}</li>
+          <li>Ghế đã chọn: {numberToString(selectedSeats).join(', ')}</li>
+          <li className="totalprice">Total: {totalPrice} VND</li>
+        </ul>
+        <Button className="cancelseatbutton" shape="round" icon={<CloseOutlined />} >Cancel </Button >
+        <Button className="selectseatbutton" shape="round" onClick={() => redirectToCheckout()} icon={<DoubleRightOutlined />} >Next </Button >
+      </div>
+    </div>
   );
 };
 

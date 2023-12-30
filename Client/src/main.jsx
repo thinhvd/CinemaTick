@@ -12,6 +12,8 @@ import MovieInfo from "./routes/movieInfo";
 import MovieList from "./routes/movieList";
 import AdminPage from "./routes/adminPage";
 import AdminTable from "./components/adminTable";
+import ForgotPasswordPage from "./routes/forgotPasswordPage";
+import Successmess from "./routes/successmess";
 
 const router = createBrowserRouter([
   {
@@ -60,7 +62,15 @@ const router = createBrowserRouter([
       { path: "bills", element: <AdminTable type="bills" /> },
     ],
   },
+  {
 
+    path:"/forgotpassword",
+    element: <ForgotPasswordPage/>,
+  },
+  {
+    path:"/successmess",
+    element: <Successmess/>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
