@@ -1,8 +1,11 @@
 import json
 from flask import Flask, request, session, jsonify, render_template, redirect
+from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
+                               unset_jwt_cookies, jwt_required
 from app import db
 from app import jwt
 from app.api.erorrs import bad_request, error_response
+from app.models import User, Movie,  Show, Room, Seat, Ticket,  Bill
 from app.payment import bp
 from app import auth
 
@@ -14,6 +17,7 @@ from config import Config
 from app.payment.vnpay import vnpay
 
 @bp.route('/payment', methods=['GET','POST'])
+@cross_origin()
 def payment():
     if request.method == 'POST':
         data = request.get_json()
@@ -23,7 +27,7 @@ def payment():
         order_type = 190001 # Vé xem phim
         order_id = 1
         amount = data['price']
-        order_desc = data['message']
+        order_desc = data['message'] # "THONG TIN VE: seat id:[], movie name:, show id: "
         bank_code = ""
         language = 'vn'
         ipaddr = get_client_ip(request)
@@ -49,10 +53,15 @@ def payment():
         vnp.requestData['vnp_ReturnUrl'] = Config.VNPAY_RETURN_URL
         vnpay_payment_url = vnp.get_payment_url(Config.VNPAY_PAYMENT_URL, Config.VNPAY_HASH_SECRET_KEY)
         print(vnpay_payment_url)
-        return redirect(vnpay_payment_url)
+        response = {
+            "payment_url": vnpay_payment_url
+        }
+        return jsonify(response)
     
 
 @bp.route('/payment_return', methods=['GET','POST'])
+@cross_origin()
+@jwt_required()
 def payment_return():
     inputData = request.args
     if inputData:
@@ -69,26 +78,68 @@ def payment_return():
         vnp_CardType = inputData['vnp_CardType']
         if vnp.validate_response(Config.VNPAY_HASH_SECRET_KEY):
             if vnp_ResponseCode == '00':
-                return render_template( 'payment_return.html', title="Kết quả thanh toán",
-                                                               result= "Thành công", order_id= order_id,
-                                                               amount= amount,
-                                                               order_desc= order_desc,
-                                                               vnp_TransactionNo= vnp_TransactionNo,
-                                                               vnp_ResponseCode= vnp_ResponseCode)
+                payment_info = order_desc
+                # Split seat_id
+                seat_id_start = payment_info.find("seat id:[") + len("seat id:[")
+                seat_id_end = payment_info.find("]", seat_id_start)
+                seat_id_str = payment_info[seat_id_start:seat_id_end]
+                seat_id = [int(x.strip()) for x in seat_id_str.split(',')]
+
+                # Split movie_name
+                movie_name_start = payment_info.find("movie name:") + len("movie name:")
+                movie_name_end = payment_info.find(",", movie_name_start)
+                movie_name = payment_info[movie_name_start:movie_name_end].strip()
+
+                # split show_id
+                show_id_start = payment_info.find("show id:") + len("show id:")
+                show_id_str = payment_info[show_id_start:].strip()
+                show_id = int(show_id_str)
+
+                #get current user id
+                current_user = get_jwt_identity()
+
+                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+                seats = []
+                positions = []
+                for s_id in seat_id:
+                    seat = Seat.query.get(s_id)
+                    if seat is None:
+                        return bad_request('seat_id not true')
+                    
+                    if seat.status == 'occupied':
+                        return bad_request('GHẾ HIỆN TẠI ĐÃ CÓ NGƯỜI KHÁC ĐẶT')
+                    seats.append(seat)
+                
+                show = Show.query.get(seats[0].to_dict()['show_id']).to_dict()
+                movie = Movie.query.get(show['id']).to_dict()
+                for seat in seats:
+                    positions.append(seat.position)
+                    seat.status = 'occupied'
+
+                # creat bill
+                bill = Bill(num_of_tickets = len(seat_id), total_price = amount, user_id = current_user, 
+                            schedule = current_datetime, bill_code = None)
+                
+                bill.generate_bill_code()
+                db.session.add(bill)
+                db.session.commit()
+                
+                # creat ticket
+                for seat in seats:
+                    ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = bill.id, user_id = current_user)
+                    db.session.add(ticket)
+                db.session.commit()
+
+                bill_data = bill.to_dict_for_user()
+                bill_data['positions'] = positions
+                bill_data['movie_name'] = movie_name
+
+                return jsonify(bill_data)
             else:
-                return render_template( 'payment_return.html', title= "Kết quả thanh toán",
-                                                               result= "Lỗi", order_id= order_id,
-                                                               amount= amount,
-                                                               order_desc= order_desc,
-                                                               vnp_TransactionNo= vnp_TransactionNo,
-                                                               vnp_ResponseCode= vnp_ResponseCode)
+                return f"Thanh toán lỗi, mã lỗi: {vnp_ResponseCode}"
         else:
-            return render_template('payment_return.html',
-                          title= "Kết quả thanh toán", result= "Lỗi", order_id= order_id, amount= amount,
-                           order_desc= order_desc, vnp_TransactionNo= vnp_TransactionNo,
-                           vnp_ResponseCode= vnp_ResponseCode, msg= "Sai checksum")
-    else:
-        return render_template("payment_return.html", title="Kết quả thanh toán", result="")
+            return f"Sai checksum, mã lỗi {vnp_ResponseCode}"
 
 def get_client_ip(request):
     x_forwarded_for = request.headers.get('X-Forwarded-For')
