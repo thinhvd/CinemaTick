@@ -22,8 +22,8 @@ def payment():
         #Process input data and build url payment
         order_type = 190001 # Vé xem phim
         order_id = 1
-        amount = data['amount']
-        order_desc = "THANH TOAN VE XEM PHIM"
+        amount = data['price']
+        order_desc = data['message']
         bank_code = ""
         language = 'vn'
         ipaddr = get_client_ip(request)
