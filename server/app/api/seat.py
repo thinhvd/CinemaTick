@@ -45,13 +45,10 @@ def get_seats_by_show_id(show_id):
     for seat in seats:
         datas.append(seat.to_dict())
 
-    return {
-        'room' : room['id'],
-        'movie_name' : movie['name'],
-        'schedule' : show['schedule'],
-        'datas': datas
-    }
-    
+    datas[0]['room'] = room['id']
+    datas[0]['movie_name'] = movie['name']
+    datas[0]['schedule']= show['schedule']
+    return jsonify(datas)
 
 
 @bp.route('/api/seat/update', methods=['POST'])
