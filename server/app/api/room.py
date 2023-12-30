@@ -26,6 +26,9 @@ def create_room():
     if 'screen_type' not in data:
         return bad_request("must include screen_type fields")
     
+    if data['screen_type'] == "":
+        return bad_request("must include screen_type fields")
+    
     room = Room(screen_type = data["screen_type"], num_of_seats = 96)
     db.session.add(room)
     db.session.commit()
@@ -40,6 +43,9 @@ def update_room():
     if 'screen_type' not in data or 'id' not in data:
         return bad_request("must include screen_type and room id fields")
     
+    if data['screen_type'] == "" or data['id']:
+        return bad_request("must include screen_type fields")
+
     room = Room.query.get(data["id"])
     room.screen_type = data["screen_type"]
     db.session.commit()

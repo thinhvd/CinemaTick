@@ -15,12 +15,22 @@ def get_movie(id):
 @bp.route('/api/movies', methods=['GET'])
 @cross_origin()
 def get_movies():
-    # page = request.args.get('page', 1, type=int)
-    # per_page = min(request.args.get('per_page', 10, type=int), 100)
-    # data = Movie.to_collection_dict(Movie.query, page, per_page, 'api.get_movies')
-    # return jsonify(data)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = Movie.to_collection_dict(Movie.query.filter(Movie.name != "movieDeleted"), page, per_page, 'api.get_movies')
+    return jsonify(data)
 
-    data = Movie.query.all()
+    # data = Movie.query.all()
+    # datas = []
+    # for movie in data:
+    #     datas.append(movie.to_dict())
+    # return jsonify(datas)
+
+@bp.route('/api/movies_nopage', methods=['GET'])
+@cross_origin()
+def get_movies_nopage():
+    
+    data = Movie.query.filter(Movie.name != "movieDeleted")
     datas = []
     for movie in data:
         datas.append(movie.to_dict())
@@ -32,6 +42,9 @@ def create():
     data = request.get_json()
 
     if 'name' not in data or 'description' not in data or 'poster' not in data or 'duration' not in data or 'genre' not in data:
+        return bad_request('must include input data fields')
+    
+    if data['name'] == "" or data['description'] == "" or data['poster'] == "" or data['duration'] <= 0 or data['genre'] == "" :
         return bad_request('must include input data fields')
 
     movie_checker = Movie.query.filter_by(name = data["name"]).first()
@@ -50,34 +63,36 @@ def create():
 def update():
     data = request.get_json()
 
-    if 'id' not in data:
-        return bad_request("must have movie id")    
+    if 'id' not in data or 'name' not in data or 'description' not in data or 'poster' not in data or 'duration' not in data or 'genre' not in data:
+        return bad_request('must include input data fields')
+
+    if data['name'] == "" or data['description'] == "" or data['poster'] == "" or data['duration'] <= 0 or data['genre'] == "" :
+        return bad_request('must include input data fields')    
     
     movie = Movie.query.filter_by(id = data["id"]).first()
     if not movie:
         return bad_request('movie id ko ton tai')
 
 
-    if 'name' in data:
-        movie.name = data["name"]
-
-    if 'description' in data:
-        movie.description = data["description"]
-
-    if 'poster' in data:
-        movie.poster = data["poster"]
-
-    if 'duration' in data:
-        movie.duration = data["duration"]
-
-    if 'genre' in data:
-        movie.genre = data["genre"]
+    movie.name = data["name"]
+    movie.description = data["description"]
+    movie.poster = data["poster"]
+    movie.duration = data["duration"]
+    movie.genre = data["genre"]
 
     db.session.commit()
     response = jsonify(movie.to_dict())
     response.status_code = 201
     return response
 
-# @bp.route('/api/movie/delete', methods=['DELETE'])
-# @cross_origin()
-# Có nên khi xóa phim sẽ xóa hết review,... liên quan đến phim ko
+
+@bp.route('/api/movie/<int:id>', methods=['DELETE'])
+@cross_origin()
+def delete_movie(id):
+    movie = Movie.query.get_or_404(id)
+    movie.name = "movieDeleted"
+    db.session.commit()
+    return "thanh cong" 
+
+
+
