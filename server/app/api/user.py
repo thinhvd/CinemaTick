@@ -18,6 +18,8 @@ from app.email import send_password_reset_email
 
 from flask_cors import CORS, cross_origin
 
+
+
 @bp.route('/api/user/signup', methods=['POST'])
 @cross_origin()
 def sign_up():
@@ -31,6 +33,9 @@ def sign_up():
     password = data["password"]
     email = data["email"]
     phone_number = data["phone_number"]
+
+    if fullname == "" or password == "" or email == "" or phone_number == "":
+        return bad_request('must include fullname, email and password fields')
 
     found_user = User.query.filter_by(email = email).first()
     if found_user: 
@@ -51,7 +56,16 @@ def sign_up():
     response.status_code = 201
     return response
 
-    
+
+@bp.route('/api/profile', methods=['GET'])
+@cross_origin()
+@jwt_required()
+def get_frofile():
+    current_user = get_jwt_identity()
+
+    return jsonify(User.query.get_or_404(current_user).to_dict())    
+
+
 @bp.route('/api/user/<int:id>', methods=['GET'])
 @cross_origin()
 def get_user(id):
@@ -62,7 +76,7 @@ def get_user(id):
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = User.to_collection_dict(User.query, page, per_page, 'api.get_users')
+    data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted"), page, per_page, 'api.get_users')
     return jsonify(data)
 
      
@@ -95,6 +109,9 @@ def reset_pass_request():
     if 'email' not in data :
         return bad_request('must include email fields')
     email = data['email']
+    if email == "":
+        return bad_request('must include email fields')
+
     user = User.query.filter_by(email=email).first()
     new_pass = user.generate_new_pass()
 
@@ -110,8 +127,7 @@ def reset_pass_request():
 @bp.route('/api/user/<int:id>', methods=['DELETE'])
 @cross_origin()
 def delete_user(id):
-    User.query.filter_by(id = id).delete()
+    user = User.query.get_or_404(id)
+    user.fullname = "userDeleted"
     db.session.commit()
     return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
-
-
