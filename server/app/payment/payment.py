@@ -131,7 +131,7 @@ def payment_return():
                 
                 # creat ticket
                 for seat in seats:
-                    ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = bill.id, user_id = current_user_id)
+                    ticket = Ticket(show_id = show['id'], seat_id = seat.id, bill_id = bill.id, user_id = current_user_id)
                     db.session.add(ticket)
                 db.session.commit()
 
