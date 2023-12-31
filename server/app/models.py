@@ -217,7 +217,7 @@ class Bill(PaginatedAPIMixin,db.Model):
         tickets = Ticket.query.filter_by(bill_id = self.id)
         show = Show.query.get(tickets[0].show_id)
         movie = Movie.query.get(show.movie_id)
-
+        user = User.query.get(self.id)
         positions = []  
         for ticket in tickets:
             positions.append(Seat.query.get(ticket.seat_id).position)
@@ -230,6 +230,7 @@ class Bill(PaginatedAPIMixin,db.Model):
             'schedule' : self.schedule,
             'bill_code' : self.bill_code,
             'movie_name' : movie.name,
-            'positions' : positions
+            'positions' : positions,
+            'user_name' : user.fullname
         }
         return data
