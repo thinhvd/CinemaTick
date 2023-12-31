@@ -32,7 +32,7 @@ export default function FooterArea(){
                         Về Cinematick
                     </Title>
                     <Paragraph style={{color:'white'}}>
-                        <strong>Một web làm phim tuyệt vời</strong>
+                        <strong>Một web đặt vé xem phim tuyệt vời</strong>
                     </Paragraph>
 
                 </Space>
