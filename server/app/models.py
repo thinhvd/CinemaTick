@@ -186,12 +186,12 @@ class Ticket(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
-class Bill(db.Model):
+class Bill(PaginatedAPIMixin,db.Model):
     id = db.Column(db.Integer, primary_key=True)
     num_of_tickets = db.Column(db.Integer)
     total_price = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    schedule = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    schedule = db.Column(db.DateTime, index=True, default=datetime.now())
 
     bill_code = db.Column(db.String(6), unique=True)
 
@@ -210,5 +210,26 @@ class Bill(db.Model):
             'user_id' : self.user_id,
             'schedule' : self.schedule,
             'bill_code' : self.bill_code,
+        }
+        return data
+    
+    def to_dict(self):
+        tickets = Ticket.query.filter_by(bill_id = self.id)
+        show = Show.query.get(tickets[0].show_id)
+        movie = Movie.query.get(show.movie_id)
+
+        positions = []  
+        for ticket in tickets:
+            positions.append(Seat.query.get(ticket.seat_id).position)
+        
+        data = {
+            'id': self.id,
+            'num_of_tickets' : self.num_of_tickets,
+            'total_price' : self.total_price,
+            'user_id' : self.user_id,
+            'schedule' : self.schedule,
+            'bill_code' : self.bill_code,
+            'movie_name' : movie.name,
+            'positions' : positions
         }
         return data
