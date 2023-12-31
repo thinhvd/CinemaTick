@@ -1,22 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 200vh;
+      margin: 0;
+      background-image: url('background.jpg');
+      background-size: cover;
+      font-family: 'Arial', sans-serif;
+      min-height: 100%;
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: white;
+      box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
+      overflow: auto;
+    }
+
+    header {
+      background-color: #1f2833;
+      height: 10vh;
+      width: 100%;
+    }
+
+    div {
+      border: 2px solid #808080;
+      margin: 60px;
+      padding: 20px;
+      background-color: #1f2833;
+      border-radius: 10px;
+      text-align: center;
+      font-family: 'Roboto', sans-serif;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Georgia', serif;
+    }
+
+    p {
+      margin: 10px 0;
+      font-family: 'Verdana', sans-serif;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 20px 40px;
+      background-color: #000000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Helvetica', sans-serif;
+      font-size: large;
+    }
+
+    div p {
+      text-align: left;
+      margin-left: 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logoweb {
+      max-width: 8vw;
+    }
+  </style>
 </head>
+
 <body>
-    <div>
-        <h1>{{ title }}</h1>
-        <p>Trạng thái thanh toán: {{ result }}</p>
-        <p>Mã đơn hàng: {{ order_id }}</p>
-        <p>Số giao dịch: {{ vnp_TransactionNo }}</p>
-        <p>Tên phim: {{ movie_name }}</p>
-        <p>Tổng số vé: {{ num_of_ticket }}</p>
-        <p>Suất chiếu: {{ schedule }}</p>
-        <p>Vị trí ghế: {{ positions }}</p>
-        <p>Số tiền thanh toán: {{ amount }}</p>
-        <p>Mã Bill: {{ bill_code }}</p>
-    </div>
+  <header></header>
+  <div>
+    <h1>{{ title }}</h1>
+
+    <p>Trạng thái thanh toán: {{ result }}</p>
+    <p>Thời gian thanh toán: {{ schedule }}</p>
+    <p>Tên phim: {{ movie_name }}</p>
+    <p>Suất chiếu: {{ show_schedule }}</p>
+    <p>Tổng số vé: {{ num_of_ticket }}</p>
+    <p>Vị trí ghế: {{ positions }}</p>
+    <p>Số tiền thanh toán: {{ amount }}</p>
+    <p>Mã Bill: {{ bill_code }}</p>
+    <button onclick="goToHomePage()">Trở về trang chính</button>
+  </div>
+
+  <script>
+    function goToHomePage() {
+      window.location.href = "http://fall2324w20g8.int3306.freeddns.org/";
+    }
+  </script>
 </body>
+
 </html>
