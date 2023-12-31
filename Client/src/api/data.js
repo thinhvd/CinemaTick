@@ -5,10 +5,9 @@ const getData = async (path, page = 1) => {
 };
 /**
  *
- 
-@param {string} path current table page
-@param {string || number} id the id of deleting item
-*/
+ * @param {string} path current table page
+ * @param {string || number} id the id of deleting item
+ */
 const deleteData = async (path, id) => {
     try {
         await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/${path}/${id}`, {
@@ -36,4 +35,37 @@ const addData = async (path, data = {}) => {
     }
 };
 
-export { getData, deleteData, addData };
+const searchData = async (path, data = {}) => {
+    try {
+        const res = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/${path}/search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        return res.json();
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
+const updateMovie = async (data = {}) => {
+    try {
+        const res = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/movie/update`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        return res.ok;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+
+export { getData, deleteData, addData, updateMovie, searchData };

@@ -1,31 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useLoaderData, useLocation, useOutletContext } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
     ScheduleOutlined,
     UserOutlined,
     VideoCameraOutlined,
     ContainerOutlined,
+    LogoutOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Typography, theme, Table, Pagination, Flex } from 'antd';
 import AdminTable from '../components/adminTable';
-import { useNavigate } from 'react-router-dom';
-import { getData, deleteData } from '../api/data';
+import AdminLoginPage from './adminLoginPage';
+import { getData, deleteData, searchData } from '../api/data';
 const { Header, Content, Sider } = Layout;
+
+const { Item } = Menu;
 
 const items = [
     { key: '/admin/users', label: 'Users', icon: <UserOutlined /> },
     { key: '/admin/movies', label: 'Movies', icon: <VideoCameraOutlined /> },
     { key: '/admin/shows', label: 'Shows', icon: <ScheduleOutlined /> },
     { key: '/admin/bills', label: 'Bills', icon: <ContainerOutlined /> },
+    { key: '/admin', label: 'Logout', icon: <LogoutOutlined /> },
 ];
 
 const AdminPage = () => {
     const [data, setData] = useState({
+        bills: [],
         users: [],
         movies: [],
         shows: [],
-        bills: [],
     });
     const [page, setPage] = useState({
         users: 1,
@@ -33,6 +38,11 @@ const AdminPage = () => {
         shows: 1,
         bills: 1,
     });
+    const [isLogin, setLogin] = useState(
+        sessionStorage.getItem('is_login') === 'true' ? true : false
+    );
+    const [searchedData, setSearchedData] = useState([]);
+
     const navigate = useNavigate();
     let location = useLocation();
     let currentPath = location.pathname.replace('/admin/', '');
@@ -42,12 +52,14 @@ const AdminPage = () => {
     } = theme.useToken();
 
     useEffect(() => {
-        if (true) {
+        if (currentPath !== '/admin') {
             getData(currentPath).then((res) => {
                 setData({ ...data, [currentPath]: res.items });
             });
         }
     }, [location.pathname]);
+
+    // Logic Function //
 
     const handleNextClick = () => {
         getData(currentPath, page[currentPath]).then((res) => {
@@ -78,28 +90,46 @@ const AdminPage = () => {
         setData({ ...data, [currentPath]: newData });
     };
 
+    // todo: update UI upon data update successfully
     const handleUpdate = () => {};
 
-    const handleSearch = () => {};
+    //todo: render search result
+    const handleSearch = async (type, data) => {
+        const path = currentPath.substring(-1, currentPath.length - 1);
+
+        const res = await searchData(path, { [type]: data });
+        console.log(res);
+        setSearchedData(res.items);
+        setData({ ...data, [currentPath]: res.items });
+    };
 
     // todo: update UI upon data post successfully
     const handleAdd = () => {};
 
-    return (
+    const handleSignOut = () => {
+        sessionStorage.setItem('is_login', 'false');
+        setLogin(false);
+        navigate('/admin');
+    };
+
+    return !isLogin ? (
+        <AdminLoginPage setLogin={setLogin} />
+    ) : (
         <Layout
             style={{
                 height: '100vh',
             }}
         >
             <Sider breakpoint='lg' collapsedWidth='0'>
-                <div className='demo-logo-vertical' />
                 <Menu
-                    onClick={(item) => navigate(`${item.key}`)}
+                    onClick={(item) =>
+                        item.key !== '/admin' ? navigate(`${item.key}`) : handleSignOut()
+                    }
                     theme='dark'
                     mode='inline'
                     defaultSelectedKeys={[`${location.pathname}`]}
                     items={items}
-                />
+                ></Menu>
             </Sider>
             <Layout>
                 <Header
