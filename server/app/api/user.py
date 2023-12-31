@@ -20,42 +20,6 @@ from flask_cors import CORS, cross_origin
 
 
 
-@bp.route('/api/user/signup', methods=['POST'])
-@cross_origin()
-def sign_up():
-    data = request.get_json()
-    session.permanent = True
-
-    if 'fullname' not in data or 'email' not in data or 'password' not in data or 'phone_number' not in data:
-        return bad_request('must include fullname, email and password fields')
-    
-    fullname = data["fullname"]
-    password = data["password"]
-    email = data["email"]
-    phone_number = data["phone_number"]
-
-    if fullname == "" or password == "" or email == "" or phone_number == "":
-        return bad_request('must include fullname, email and password fields')
-
-    found_user = User.query.filter_by(email = email).first()
-    if found_user: 
-        return bad_request('please use a different email address')
-
-    found_user = User.query.filter_by(phone_number = phone_number).first()
-    if found_user: 
-        return bad_request('please use a different phone number')
-    
-    # Hash passwork
-    password_hash = generate_password_hash(password, 'pbkdf2')
-
-    # add user
-    user = User(fullname = fullname, email = email, phone_number = phone_number, password_hash = password_hash)
-    db.session.add(user)
-    db.session.commit()
-    response = jsonify(user.to_dict())
-    response.status_code = 201
-    return response
-
 
 @bp.route('/api/profile', methods=['GET'])
 @cross_origin()
@@ -136,7 +100,7 @@ def delete_user(id):
 @cross_origin()
 def search_user():
     input = request.get_json()
-    if 'fullname' not in input or 'email' not in data or 'phone_number' not in data:
+    if 'fullname' not in input and 'email' not in input and 'phone_number' not in input:
         return bad_request('must include input fields')
     
     if 'fullname' in input:
@@ -169,4 +133,4 @@ def search_user():
                                                          User.phone_number.like('%' + input['phone_number'] + '%')), page, per_page, 'api.search_user')
         return jsonify(data)
     
-    return "thanh cong" # luon thanh cong du co hay ko co ID trong DB
+    return bad_request('something wrong')

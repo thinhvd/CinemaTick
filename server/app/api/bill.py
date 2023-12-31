@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime
 from flask_jwt_extended import jwt_required,get_jwt_identity
 
-@bp.route('/api/bill/hitory/user', methods=['GET'])
+@bp.route('/api/bill/history/user', methods=['GET'])
 @cross_origin()
 @jwt_required
 def user_hitory():
@@ -129,5 +129,5 @@ def search_bill():
     
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Bill.to_collection_dict(Movie.query.filter(Bill.bill_code == input['bill_code']).order_by(Bill.schedule.desc()), page, per_page, 'api.search_movie')
+    data = Bill.to_collection_dict(Bill.query.filter(Bill.bill_code.like('%' + input['bill_code'] + '%')).order_by(Bill.schedule.desc()), page, per_page, 'api.search_movie')
     return jsonify(data)
