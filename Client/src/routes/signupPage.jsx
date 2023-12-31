@@ -19,38 +19,24 @@ export default function SignupPage() {
     }
     
     function uploadData() {
-        // Check if the email already exists
-        fetch(`http://fall2324w20g8.int3306.freeddns.org/api/profile`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.email) {
-                    // Email already exists, show a message
-                    message.error('Email already exists. Please use a different email.');
-                } else {
-                    // Email doesn't exist, proceed with signup
-                    fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
-                        headers: {
-                            'accept': 'application/json, text/plain',
-                            'content-type': 'application/json;charset=utf-8'
-                        },
-                        method: "post",
-                        body: JSON.stringify(signupInfo)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                        message.success('Signup successful!'); // Show success message
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        message.error('Signup failed. Please try again.'); // Show error message
-                    });
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                message.error('Error checking email. Please try again.');
-            });
+        fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
+            headers: {
+                'accept': 'application/json, text/plain',
+                'content-type': 'application/json;charset=utf-8'
+            },
+            method: "post",
+            body: JSON.stringify(signupInfo)
+        }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.message) {
+              // Show the server response message
+              message.info(data.message);
+            } else {
+              // Handle success (if needed)
+            }
+          })
+            .catch(error => console.error(error));
     }
     
 

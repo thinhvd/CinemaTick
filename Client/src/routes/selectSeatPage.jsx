@@ -2,7 +2,7 @@
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout.js";
 import TopBar from "../components/topbar";
 import { DoubleRightOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Divider, Flex, Radio } from 'antd';
+import { Button, Divider, Flex, Radio, Space } from 'antd';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Seat from '../components/seat';
@@ -209,7 +209,7 @@ const SelectSeatPage = () => {
             <small>Normal</small>
           </li>
           <li>
-            <div className="seat VIP"></div>
+            <div className="seat vip"></div>
             <small>VIP</small>
           </li>
           <li>
@@ -249,8 +249,10 @@ const SelectSeatPage = () => {
           <li>Ghế đã chọn: {numberToString(selectedSeats).join(', ')}</li>
           <li className="totalprice">Total: {totalPrice} VND</li>
         </ul>
-        <Button className="cancelseatbutton" shape="round" icon={<CloseOutlined />} >Cancel </Button >
-        <Button className="selectseatbutton" shape="round" onClick={() => redirectToCheckout()} icon={<DoubleRightOutlined />} >Next </Button >
+        <Space className="seatbutton" direction="horizontal" align="center">
+          <Button className="cancelseatbutton" shape="round" href={`/`} icon={<CloseOutlined />} >Cancel </Button >
+          <Button className="selectseatbutton" shape="round" onClick={() => redirectToCheckout()} icon={<DoubleRightOutlined />} >Next </Button >
+        </Space>
       </div>
     </div>
   );

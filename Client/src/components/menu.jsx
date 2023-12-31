@@ -19,7 +19,7 @@ const items = [
   {
     key: '3',
     label: (
-      <Link to={`/cinematick`}>DỊCH VỤ VÀ QUẢNG CÁO</Link>
+      <Link to={`/service`}>DỊCH VỤ QUẢNG CÁO</Link>
     ),
   },
   {

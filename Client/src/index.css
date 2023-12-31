@@ -122,36 +122,6 @@ img {
   text-align: center;
 }
 
-.showcase {
-  scale: 1.7;
-  background-color: transparent;
-  list-style: none;
-  font-weight: 500;
-  color: #777;
-  overflow: hidden;
-  list-style-type: none;
-  width: 50%;
-  /* Can be in percentage also. */
-  /* height: auto; */
-  /* margin: 0 auto; */
-  padding: 15px;
-  position: absolute;
-  left: 510px;
-  top: 160px;
-}
-
-.showcase li {
-  padding-left: 50px;
-  float: left;
-  margin: 1px;
-  /* text-align: center; */
-  /* margin: 0 10px; */
-}
-
-.showcase li small {
-  margin-left: 3px;
-}
-
 .seat {
   height: 13px;
   width: 13px;
@@ -171,6 +141,10 @@ img {
 
 .seat.occupied {
   background-color: #212224;
+}
+
+.seat.vip {
+  background-color: #800080;
 }
 
 .cinema {
@@ -225,6 +199,7 @@ img {
 /* test */
 .redone {
   float: left;
+  height: 100%;
   width: 75%;
   background-color: transparent;
   text-align: center;
@@ -232,33 +207,85 @@ img {
   margin-top: 150px;
 }
 
+
+.showcase {
+  scale: 1.7;
+  background-color: transparent;
+  list-style: none;
+  font-weight: 500;
+  color: #777;
+  overflow: hidden;
+  list-style-type: none;
+  width: 50%;
+  position: absolute;
+  left: 510px;
+  top: 160px;
+}
+
+.showcase li {
+  padding-left: 50px;
+  float: left;
+  margin: 1px;
+  /* text-align: center; */
+  /* margin: 0 10px; */
+}
+
+.showcase li small {
+  margin-left: 3px;
+}
+
 .blueone {
   float: left;
   width: 25%;
-  max-height: 90vh;
+  min-height: 100vh;
   background-color: transparent;
   box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
-  margin-top: 8vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
 }
 
 .blueone ul {
+  font-size: large;
   padding: 5px 0 0 0;
   list-style: none;
 }
 
 .blueone li {
-  padding: 8%;
+  padding-top: 20%;
+  padding-left: 5%;
 }
 
 .totalprice {
   font-size: 22px;
 }
 
+.seatbutton{
+  padding: 5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10vh;
+
+}
+
+.cancelseatbutton{
+  display: flex;
+  align-items: center;
+  width: 7vw;
+}
+
 .selectseatbutton {
   background-color: black;
   border-color: white;
   color: white;
+  display: flex;
+  align-items: center;
+  width: 7vw;
 }
+
 .button {
   scale: 1.5;
   background-color: green;

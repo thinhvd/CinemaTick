@@ -15,6 +15,7 @@ import AdminTable from "./components/adminTable";
 import ForgotPasswordPage from "./routes/forgotPasswordPage";
 import Successmess from "./routes/successmess";
 import Cinematick from "./routes/aboutus";
+import Service from "./routes/service";
 
 const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
   {
     path:"/cinematick",
     element:<Cinematick/>
+  },
+  {
+    path:"/service",
+    element:<Service/>
   }
 ]);
 
