@@ -113,7 +113,7 @@ def get_bill(id):
 def get_bills():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
-    data = Bill.to_collection_dict(Bill.query, page, per_page, 'api.get_bills')
+    data = Bill.to_collection_dict(Bill.query.order_by(Bill.schedule.desc()), page, per_page, 'api.get_bills')
     return jsonify(data)
 
 

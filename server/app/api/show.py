@@ -121,14 +121,11 @@ def search_show():
     per_page = min(request.args.get('per_page', 10, type=int), 100)
 
 
-    
     movies = Movie.query.filter(Movie.name != "movieDeleted",
                                  Movie.name.like('%' + input['movie_name'] + '%'))
     movie_ids = []
     for movie in movies:
         movie_ids.append(movie.id)
-
-
-    data = Show.to_collection_dict(Show.query.filter(Show.movie_id.in_(movie_ids)).order_by(Show.schedule.desc()),
+    data = Show.to_collection_dict(Show.query.filter(Show.movie_id.in_(movie_ids)),
                                     page, per_page, 'api.search_show')
     return jsonify(data)
