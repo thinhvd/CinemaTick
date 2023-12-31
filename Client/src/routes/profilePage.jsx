@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import TopBar from "../components/topbar";
 import { UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button, Spin, message } from "antd";
+import { Form, Input, Button, Space, message } from "antd";
 import axios from "axios";
+import HistoryTable from "../components/history";
 
 function Profile() {
   const token = localStorage.getItem("token");
@@ -28,6 +29,7 @@ function Profile() {
       .then((response) => {
         const res = response.data;
         setProfileData(res);
+        console.log(profileData)
       })
       .catch((error) => {
         console.error(error);
@@ -58,7 +60,6 @@ function Profile() {
         }
       );
       message.success("Mật khẩu đã đổi thành công!");
-      console.log(response.data); 
     } catch (error) {
       console.error("Change Password failed", error);
     }
@@ -67,9 +68,8 @@ function Profile() {
   return (
     <div className="background">
       <TopBar />
-      {loading ? (
-        <Spin size="large" />
-      ) : (
+      {profileData ?(
+      <Space className="profilePage" direction="horizontal">
         <Form
           name="profile_form"
           className="profile-form"
@@ -108,7 +108,7 @@ function Profile() {
 
           <Form.Item>
             <Button style={{ color: "white", borderColor: "white" }} type="text" onClick={handleTogglePasswordFields}>
-              {showPasswordFields ? "Hide Password" : "Show Password Fields"}
+              {showPasswordFields ? "Hide Change Password Form" : "Show Change Password Form"}
             </Button>
           </Form.Item>
 
@@ -187,7 +187,11 @@ function Profile() {
             </>
           )}
         </Form>
-      )}
+        <HistoryTable/>
+      </Space>
+      ) : (
+        <></>
+        )}
     </div>
   );
 }

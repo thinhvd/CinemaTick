@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Image, Card, Space, Typography, Button } from 'antd';
 import TopBar from '../components/topbar';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Element, scroller } from 'react-scroll';
+import { Element, scroller, animateScroll } from 'react-scroll';
 
 const { Title, Paragraph } = Typography;
 
@@ -34,10 +34,13 @@ const MovieInfo = () => {
         try {
             const response = await fetch(`http://fall2324w20g8.int3306.freeddns.org/api/show/movie/${id}`);
             const data = await response.json();
+            console.log(data)
             data.sort((a, b) => new Date(a.schedule) - new Date(b.schedule));
-            const groupedData = groupByDate(data);
+            const formatedData = formatScheduleTime(data)
+            const groupedData = groupByDate(formatedData);
             setMovieSchedule(groupedData);
-            scrollDownToSchedule();
+            scrollDownToSchedule()
+            console.log(formatedData)
         } catch (error) {
             console.error(error);
         }
@@ -46,7 +49,7 @@ const MovieInfo = () => {
     const groupByDate = (data) => {
         const groupedData = {};
         data.forEach((scheduleItem) => {
-            const date = new Date(scheduleItem.schedule).toLocaleDateString();
+            const date = new Date(scheduleItem.schedule).toLocaleDateString([],{month:'2-digit', day:'2-digit', year:'numeric'});
             if (!groupedData[date]) {
                 groupedData[date] = [];
             }
@@ -58,12 +61,31 @@ const MovieInfo = () => {
         return groupedData;
     };
 
+    const formatScheduleTime = (data) => {
+        const timeZone = 'GMT';
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone,
+
+        };
+    
+        return data.map((scheduleItem) => ({
+            ...scheduleItem,
+            schedule: new Intl.DateTimeFormat('en-US', options).format(new Date(scheduleItem.schedule)),
+        }));
+    };
+
     const scrollDownToSchedule = () => {
         scroller.scrollTo('scheduleElement', {
             duration: 800,
             delay: 0,
             smooth: 'linear',
         });
+        console.log('trượt xuống')
     };
 
     const handleBookTicket = (scheduleItemId) => {
@@ -116,7 +138,7 @@ const MovieInfo = () => {
                                                                 className="buttonstyle"
                                                                 onClick={() => handleBookTicket(scheduleItem.id)}
                                                             >
-                                                                {new Date(scheduleItem.schedule).toLocaleTimeString()}
+                                                                {new Date(scheduleItem.schedule).toLocaleTimeString([],{ hour: '2-digit', minute: '2-digit'})}
                                                             </Button>
                                                         </div>
                                                     ))}

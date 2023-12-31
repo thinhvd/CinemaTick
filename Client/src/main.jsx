@@ -14,7 +14,7 @@ import AdminPage from "./routes/adminPage";
 import AdminTable from "./components/adminTable";
 import ForgotPasswordPage from "./routes/forgotPasswordPage";
 import Successmess from "./routes/successmess";
-import PaymetNoti from "./routes/paymentNoti";
+import Cinematick from "./routes/aboutus";
 
 const router = createBrowserRouter([
   {
@@ -64,7 +64,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-
     path:"/forgotpassword",
     element: <ForgotPasswordPage/>,
   },
@@ -73,9 +72,9 @@ const router = createBrowserRouter([
     element: <Successmess/>,
   },
   {
-    path:"/paymentnoti",
-    element: <PaymetNoti/>,
-  },
+    path:"/cinematick",
+    element:<Cinematick/>
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

@@ -33,7 +33,7 @@ function List() {
 
     const MovieSlider = styled.div`
         display: grid;
-        grid-template-columns: repeat(${movies.length},230px);
+        grid-template-columns: repeat(${movies.length},12.6vw);
         transition: all 0.3s linear;
         user-select:none;
         overflow:hidden;
@@ -52,16 +52,22 @@ function List() {
     }, [scrollLeft]);
 
     const handleMoveLeft = () => {
+        const vwEquivalent = 12.6;
+        const viewportWidth = window.innerWidth;
+        const pixelEquivalent = (vwEquivalent / 100) * viewportWidth;
         const movieSlider = movieSliderRef.current;
-        const newScrollLeft = Math.max(scrollLeft - 230, 0); // Giới hạn scrollLeft không vượt quá 0
+        const newScrollLeft = Math.max(scrollLeft - pixelEquivalent, 0); // Giới hạn scrollLeft không vượt quá 0
         console.log(scrollLeft);
         setScrollLeft(newScrollLeft);
         
       };
     
       const handleMoveRight = () => {
+        const vwEquivalent = 12.6;
+        const viewportWidth = window.innerWidth;
+        const pixelEquivalent = (vwEquivalent / 100) * viewportWidth;
         const movieSlider = movieSliderRef.current;
-        const newScrollLeft = Math.min(scrollLeft + 230, movieSlider.scrollWidth - movieSlider.clientWidth);
+        const newScrollLeft = Math.min(scrollLeft + pixelEquivalent, movieSlider.scrollWidth - movieSlider.clientWidth);
         console.log(scrollLeft)
         setScrollLeft(newScrollLeft);
         

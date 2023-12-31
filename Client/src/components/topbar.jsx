@@ -1,9 +1,7 @@
-import { Layout, Image, Row, Col, Card, Button, Space } from "antd";
+import { Layout, Image, Row, Col, Card,} from "antd";
 import { Header } from "antd/es/layout/layout";
 import MenuMovie from "./menu";
 import Cinematick from '../images/Cinematick.png';
-import { useState, useEffect } from "react";
-import axios from "axios";
 import UserButton from "./user";
 
 export default function TopBar() {
@@ -13,7 +11,7 @@ export default function TopBar() {
             <Header style={{
                 margin: '0', padding: '0',
                 minWidth: '100%',
-                height: '10vh',
+                height: '5.1vw',
                 backgroundColor: '#1f2833',
                 position: "fixed", 
                 zIndex: 1000,
@@ -24,13 +22,13 @@ export default function TopBar() {
                     <Col span={8}>
                         <Card
                             style={{
-                                width: '10vh',
-                                height: '10vh',
+                                width: '5vw',
+                                height: '5vw',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 backgroundColor: 'transparent',
-                                border: 'none'
+                                border:'none'
                             }}>
                             <MenuMovie/>
                         </Card>
@@ -46,7 +44,7 @@ export default function TopBar() {
                         </a>
                     </Col>
 
-                    <Col span={8} style={{ textAlign: 'right', paddingRight: '2%', paddingTop: '1%' }}>
+                    <Col span={8} style={{ textAlign: 'right', paddingRight: '2vw', paddingTop: '1vw' }}>
                         <UserButton/>
                     </Col>
                 </Row>

@@ -33,15 +33,16 @@ export default function ForgotPasswordPage() {
     return (
         <div className='background'>
             <TopBar />
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-            <p className='forgotpasswordtext'>Để lấy lại mật khẩu, hãy nhập Email của bạn</p>
             <Form
                 name="forgot_password"
-                className="forgot_password-form"
+                className="account-form"
                 initialValues={{
                     remember: true,
                 }}
             >
+                <Form.Item>
+                    <div style={{color:'white', fontSize:'1vw' }}>Để lấy lại mật khẩu, hãy nhập Email của bạn</div>
+                </Form.Item>
                 <Form.Item
                     name="email"
                     rules={[

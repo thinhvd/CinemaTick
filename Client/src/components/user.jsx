@@ -24,7 +24,7 @@ export default function UserButton() {
             if (response.status >= 200 && response.status < 300) {
                 const userData = response.data;
                 setUser(userData);
-                console.log(userData);
+                // console.log(userData);
             } else {
                 setUser(null);
                 console.log("User not available");
@@ -45,7 +45,7 @@ export default function UserButton() {
         if (isLoggedIn) {
             getUserInfo();
         }
-        console.log(token)
+        // console.log(token)
     }, [isLoggedIn]);
 
     const items = [

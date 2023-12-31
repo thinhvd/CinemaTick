@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Inter');
-
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Inter");
 
 /* index.css */
 html,
@@ -11,7 +10,7 @@ body,
 .content {
   height: 100%;
   width: 100%;
-  font-family: 'Source Code Pro', sans-serif;
+  font-family: "Source Code Pro", sans-serif;
 }
 
 .app {
@@ -64,16 +63,14 @@ body {
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   height: 25vw;
-  text-align: center;
   background-size: cover;
 }
 
-.login-form {
-  max-width: 300px;
-  width: 18%;
+.account-form {
+  max-width: 20vw;
   background-color: transparent;
   border-radius: 10px;
-  margin: 250px auto !important;
+  margin: 15vw auto !important;
 }
 
 .login-form-forgot {
@@ -91,7 +88,7 @@ body {
 .buttonstyle {
   background-color: #000000;
   color: #c5c6c7;
-  min-width: 100px;
+  min-width: 6vw;
 }
 
 .logo {
@@ -100,13 +97,13 @@ body {
   justify-content: center;
 }
 
-.logoweb{
+.logoweb {
   max-width: 8vw;
 }
 
-img{
+img {
   max-width: 10vw;
-  max-height: 13vw;
+  max-height: 30vh;
 }
 
 .cardStyle {
@@ -124,7 +121,6 @@ img{
   color: white !important;
   text-align: center;
 }
-
 
 .showcase {
   scale: 1.7;
@@ -162,9 +158,9 @@ img{
   background-color: #777;
   display: inline-block;
   border-radius: 3px;
-  color: #FFF;
+  color: #fff;
   font-size: 6.5px;
-  font-family: 'Inter';
+  font-family: "Inter";
   /* text-align: center; */
   padding-top: 1.95px;
 }
@@ -181,10 +177,9 @@ img{
   scale: 2.5;
   width: 50%;
   margin: 0 auto;
-  padding: 30px
-    /*perspective: 1000px; */
-    /* margin: 150px 0 0 350px; */
-
+  padding: 30px;
+  /*perspective: 1000px; */
+  /* margin: 150px 0 0 350px; */
 }
 
 .row .seat:nth-of-type(3) {
@@ -263,15 +258,14 @@ img{
   background-color: black;
   border-color: white;
   color: white;
- 
 }
 .button {
-    scale: 1.5;
-    background-color: green;
-  }
+  scale: 1.5;
+  background-color: green;
+}
 
 .movielist {
-  margin-top: 8vw;
+  margin-top: 16vh;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 2fr);
@@ -280,8 +274,8 @@ img{
 }
 
 .movielist img {
-  min-width: 10vw;
-  min-height: 15vw;
+  min-width: 11vw;
+  min-height: 30vh;
 }
 
 .movielist h3 {
@@ -303,7 +297,7 @@ img{
 
 .movieSchedule {
   display: flex;
-  row-gap: 25em;
+  row-gap: 20vw;
 }
 
 .schedule {
@@ -330,7 +324,7 @@ img{
 
 .movieInfoImage {
   scale: 2;
-  transform: translate(-30%)
+  transform: translate(-30%);
 }
 
 .movieInfoText {
@@ -344,21 +338,19 @@ img{
   border-width: 2px;
 }
 
-
 .movieName {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   text-align: center;
-  font-size: 14px;
+  font-size: 0.8vw;
   background-color: rgba(0, 0, 0, 0.8);
-
 }
 
 .movieItem {
-  max-width: 400px;
-  max-height: 500px;
+  max-width: 12.6vw;
+  max-height: 35vh;
   transition: all 0.3s linear;
   user-select: none;
   overflow: hidden;
@@ -371,14 +363,14 @@ img{
 .movieItem:hover {
   opacity: 1;
   transform: scale(1.1);
-  z-index: 10;
+  z-index: 20;
 }
 
 .movieItem img {
   top: 0;
   left: 0;
-  min-width: 12.5vw;
-  min-height: 18vw;
+  min-width: 12.6vw;
+  min-height: 35vh;
 }
 
 .moveLeft {
@@ -429,11 +421,9 @@ svg {
   transform: scale(1.2);
 }
 
-
 .ant-dropdown-menu {
   background-color: #1f2833 !important;
   width: 30em;
-
 }
 
 .ant-dropdown-menu-item {
@@ -444,31 +434,29 @@ svg {
   padding-left: 2em !important;
 }
 
-.ant-input-disabled{
+.ant-input-disabled {
   color: #fff !important;
 }
 
-.ant-form label{
-  color: #fff ;
+.ant-form label {
+  color: #fff;
 }
 
-.ant-form-horizontal .ant-form-item-control{
+.ant-form-horizontal .ant-form-item-control {
   min-width: 25em;
 }
 
-.profile-form{
+.profile-form {
   max-width: 20vw;
   background-color: transparent;
   border-radius: 10px;
-  margin-top: 10vw;
-  margin-left: 10vw;
 }
 
-div.ant-row.ant-form-item-row{
+div.ant-row.ant-form-item-row {
   column-gap: 2em;
 }
 
-.AddNewItem .ant-btn{
+.AddNewItem .ant-btn {
   padding-bottom: 0;
   padding-top: 0;
   display: flex;
@@ -476,11 +464,33 @@ div.ant-row.ant-form-item-row{
   align-items: center;
 }
 
-
 .ant-form-item-required {
-  color:#000000 !important
+  color: #000000 !important;
 }
 
-.ant-form-item-label>label {
-  color:#ffffff !important
+.ant-form-item-label > label {
+  color: #ffffff !important;
+}
+
+.contact {
+  align-items: baseline;
+}
+
+.aboutcinematick {
+  margin-top: 7vw;
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.profilePage {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 20vh;
+}
+
+.historyTable{
+  width: 40vw;
+  background-color: transparent !important;
 }

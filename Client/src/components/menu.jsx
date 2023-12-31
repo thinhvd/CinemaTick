@@ -13,15 +13,19 @@ const items = [
   {
     key: '2',
     label: (
-      <Link to={`/admin/users`}>VỀ CHÚNG TÔI</Link>
+      <Link to={`/cinematick`}>VỀ CHÚNG TÔI</Link>
     ),
   },
   {
     key: '3',
     label: (
-      <a target="" rel="" >
-        DỊCH VỤ VÀ QUẢNG CÁO
-      </a>
+      <Link to={`/cinematick`}>DỊCH VỤ VÀ QUẢNG CÁO</Link>
+    ),
+  },
+  {
+    key: '4',
+    label: (
+      <Link to={`/admin/users`}>ADMIN</Link>
     ),
   },
 ];
@@ -32,7 +36,7 @@ export default function MenuMovie() {
       <Dropdown
         id="menu"
         style={{
-          width:'300px',
+          width:'20vw',
         }}
         menu={{
           items,
@@ -55,7 +59,7 @@ export default function MenuMovie() {
         >
           <MenuOutlined
             style={{
-              padding:'3px',
+              padding:'0.5vw',
             }}
           />
           <div>Menu</div>

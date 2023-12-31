@@ -5,15 +5,16 @@ export default function Successmess() {
     return (
         <div className='background'>
             <TopBar />
-            <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-            <p className='forgotpasswordtext'>Mật khẩu đã được cập nhật thành công, vui lòng check Email của bạn</p>
             <Form
                 name="forgot_password"
-                className="forgot_password-form"
+                className="account-form"
                 initialValues={{
                     remember: true,
                 }}
             >
+                <Form.Item>
+                    <div style={{color:'white', fontSize:'1vw' }}>Mật khẩu đã được cập nhật thành công, vui lòng check Email của bạn</div>
+                </Form.Item>
                 <Form.Item>
                         <Button
                             type="primary"

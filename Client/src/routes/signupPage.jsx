@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LockOutlined, UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import TopBar from '../components/topbar';
 
 export default function SignupPage() {
@@ -19,17 +19,40 @@ export default function SignupPage() {
     }
     
     function uploadData() {
-        fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
-            headers: {
-                'accept': 'application/json, text/plain',
-                'content-type': 'application/json;charset=utf-8'
-            },
-            method: "post",
-            body: JSON.stringify(signupInfo)
-        }).then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error(error));
+        // Check if the email already exists
+        fetch(`http://fall2324w20g8.int3306.freeddns.org/api/profile`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.email) {
+                    // Email already exists, show a message
+                    message.error('Email already exists. Please use a different email.');
+                } else {
+                    // Email doesn't exist, proceed with signup
+                    fetch("http://fall2324w20g8.int3306.freeddns.org/api/user/signup", {
+                        headers: {
+                            'accept': 'application/json, text/plain',
+                            'content-type': 'application/json;charset=utf-8'
+                        },
+                        method: "post",
+                        body: JSON.stringify(signupInfo)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        message.success('Signup successful!'); // Show success message
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        message.error('Signup failed. Please try again.'); // Show error message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                message.error('Error checking email. Please try again.');
+            });
     }
+    
 
     const checkReconfirmPassword = () => {
         return password === reconfirmpassword;
@@ -40,7 +63,7 @@ export default function SignupPage() {
             <TopBar />
             <Form
                 name="normal_login"
-                className="signup-form"
+                className="account-form"
                 initialValues={{
                     remember: true,
                 }}
@@ -91,7 +114,7 @@ export default function SignupPage() {
                         },
                         {
                             pattern: /^\d+$/,
-                            message: 'Your Phone number must be numberic',
+                            message: 'Your Phone number must be numeric',
                         }
                     ]}
                 >

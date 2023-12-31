@@ -60,7 +60,7 @@ export default function LoginPage() {
             <TopBar />
             <Form
                 name="normal_login"
-                className="login-form"
+                className="account-form"
                 initialValues={{
                     remember: true,
                 }}
