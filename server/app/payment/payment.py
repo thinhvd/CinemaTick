@@ -21,11 +21,10 @@ from app.payment.vnpay import vnpay
 def payment():
     if request.method == 'POST':
         data = request.get_json()
-        current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         #Process input data and build url payment
         order_type = 190001 # Vé xem phim
-        order_id = 1
+        order_id = datetime.now().strftime('%Y%m%d%H%M%S')
         amount = data['price']
         order_desc = data['message'] # "THONG TIN VE: seat id:[], movie name:, show id: "
         bank_code = ""
