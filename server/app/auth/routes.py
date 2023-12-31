@@ -71,6 +71,8 @@ def login():
     user = User.query.filter_by(email = email).first()
     
     if user :
+        if user.fullname == "userDeleted":
+            return bad_request("user đã bị xóa")
         if check_password_hash(user.password_hash, password):
             access_token = create_access_token(identity=user.id)
             data = user.to_dict()
