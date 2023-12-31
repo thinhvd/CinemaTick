@@ -18,6 +18,7 @@ from app.payment.vnpay import vnpay
 
 @bp.route('/payment', methods=['GET','POST'])
 @cross_origin()
+@jwt_required()
 def payment():
     if request.method == 'POST':
         data = request.get_json()
@@ -27,10 +28,12 @@ def payment():
         order_id = datetime.now().strftime('%Y%m%d%H%M%S')
         amount = data['price']
         order_desc = data['message'] # "THONG TIN VE: seat id:[], movie name:, show id: "
+        current_user = get_jwt_identity()
+        order_desc = order_desc + f", user id: {current_user}"
+
         bank_code = ""
         language = 'vn'
         ipaddr = get_client_ip(request)
-
 
         vnp = vnpay()
         vnp.requestData['vnp_Version'] = '2.1.0'
@@ -60,7 +63,6 @@ def payment():
 
 @bp.route('/payment_return', methods=['GET','POST'])
 @cross_origin()
-@jwt_required()
 def payment_return():
     inputData = request.args
     if inputData:
@@ -78,24 +80,27 @@ def payment_return():
         if vnp.validate_response(Config.VNPAY_HASH_SECRET_KEY):
             if vnp_ResponseCode == '00':
                 payment_info = order_desc
-                # Split seat_id
+                # Tách seat_id
                 seat_id_start = payment_info.find("seat id:[") + len("seat id:[")
                 seat_id_end = payment_info.find("]", seat_id_start)
                 seat_id_str = payment_info[seat_id_start:seat_id_end]
                 seat_id = [int(x.strip()) for x in seat_id_str.split(',')]
 
-                # Split movie_name
+                # Tách movie_name
                 movie_name_start = payment_info.find("movie name:") + len("movie name:")
                 movie_name_end = payment_info.find(",", movie_name_start)
                 movie_name = payment_info[movie_name_start:movie_name_end].strip()
 
-                # split show_id
+                # Tách show_id
                 show_id_start = payment_info.find("show id:") + len("show id:")
-                show_id_str = payment_info[show_id_start:].strip()
+                show_id_end = payment_info.find(",", show_id_start)
+                show_id_str = payment_info[show_id_start:show_id_end].strip()
                 show_id = int(show_id_str)
 
-                #get current user id
-                current_user = get_jwt_identity()
+                # Tách user_id
+                user_id_start = payment_info.find("user id:") + len("user id:")
+                user_id_str = payment_info[user_id_start:].strip()
+                current_user_id = int(user_id_str)
 
                 current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -117,7 +122,7 @@ def payment_return():
                     seat.status = 'occupied'
 
                 # creat bill
-                bill = Bill(num_of_tickets = len(seat_id), total_price = amount, user_id = current_user, 
+                bill = Bill(num_of_tickets = len(seat_id), total_price = amount, user_id = current_user_id, 
                             schedule = current_datetime, bill_code = None)
                 
                 bill.generate_bill_code()
@@ -126,7 +131,7 @@ def payment_return():
                 
                 # creat ticket
                 for seat in seats:
-                    ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = bill.id, user_id = current_user)
+                    ticket = Ticket(show_id = show['id'], seat_id = seat_id, bill_id = bill.id, user_id = current_user_id)
                     db.session.add(ticket)
                 db.session.commit()
 
@@ -135,8 +140,22 @@ def payment_return():
                 bill_data['movie_name'] = movie_name
 
                 return jsonify(bill_data)
+                # return render_template( 'payment_return.html', title="Kết quả thanh toán",
+                #                                                result = "Thành công", order_id= order_id,
+                #                                                amount = amount,
+                #                                                order_desc = order_desc,
+                #                                                vnp_TransactionNo = vnp_TransactionNo,
+                #                                                vnp_ResponseCode = vnp_ResponseCode,
+                #                                                movie_name = bill_data['movie_name'])
+
             else:
-                return f"Thanh toán lỗi, mã lỗi: {vnp_ResponseCode}"
+                #return f"Thanh toán lỗi, mã lỗi: {vnp_ResponseCode}"
+                return render_template( 'payment_return.html', title= "Kết quả thanh toán",
+                                                               result= "Lỗi", order_id= order_id,
+                                                               amount= amount,
+                                                               order_desc= order_desc,
+                                                               vnp_TransactionNo= vnp_TransactionNo,
+                                                               vnp_ResponseCode= vnp_ResponseCode)
         else:
             return f"Sai checksum, mã lỗi {vnp_ResponseCode}"
 
