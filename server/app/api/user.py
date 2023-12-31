@@ -100,7 +100,7 @@ def delete_user(id):
 @cross_origin()
 def search_user():
     input = request.get_json()
-    if 'fullname' not in input or 'email' not in data or 'phone_number' not in data:
+    if 'fullname' not in input and 'email' not in input and 'phone_number' not in input:
         return bad_request('must include input fields')
     
     if 'fullname' in input:
