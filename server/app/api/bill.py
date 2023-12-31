@@ -13,7 +13,7 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 @jwt_required
 def user_hitory():
     current_user = get_jwt_identity()
-    bills = Bill.query.filter_by(user_id = current_user)
+    bills = Bill.query.filter_by(user_id = current_user).order_by(Bill.schedule.desc())
     res = []
 
     for bill in bills:
