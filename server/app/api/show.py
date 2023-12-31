@@ -38,7 +38,10 @@ def get_show_for_movie_by_day():
 @bp.route('/api/show/movie/<int:id>', methods=['GET'])
 @cross_origin()
 def get_show_for_movie(id):
-    shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost >= 0)
+    utc_now = datetime.datetime.utcnow()
+    utc_offset = datetime.timedelta(hours=7)
+    utc_plus_7 = utc_now + utc_offset
+    shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost >= 0, Show.schedule > utc_plus_7)
     res = []
     for show in shows:
         res.append(show.to_dict())
@@ -118,14 +121,11 @@ def search_show():
     per_page = min(request.args.get('per_page', 10, type=int), 100)
 
 
-    
     movies = Movie.query.filter(Movie.name != "movieDeleted",
                                  Movie.name.like('%' + input['movie_name'] + '%'))
     movie_ids = []
     for movie in movies:
         movie_ids.append(movie.id)
-
-
-    data = Show.to_collection_dict(Show.query.filter(Show.movie_id.in_(movie_ids)).order_by(Show.schedule.desc()),
+    data = Show.to_collection_dict(Show.query.filter(Show.movie_id.in_(movie_ids)),
                                     page, per_page, 'api.search_show')
     return jsonify(data)
