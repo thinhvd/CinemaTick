@@ -50,7 +50,7 @@ export default function Cinematick() {
                             <strong>
                                 Cơ sở: Đại học Công nghệ - Đại học Quốc gia Hà Nội
                                 <br/>
-                                Địa chỉ: 144 Xuẩn Thủy
+                                Địa chỉ: 144 Xuân Thủy
                                 <br/>
                                 SĐT: 0965909618 (Mr.Thịnh)
                             </strong>
@@ -62,6 +62,13 @@ export default function Cinematick() {
                         <Title level={3} style={{color:'white'}}>
                             NHÀ TÀI TRỢ
                         </Title>
+                        <Paragraph style={{color:'white'}}>
+                            <strong>Đại học Công nghệ - Đại học Quốc gia Hà Nội:</strong>
+                        </Paragraph>
+                        <Image
+                                className="logoweb"
+                                src={"https://scontent.fhan5-10.fna.fbcdn.net/v/t39.30808-6/306977255_543189674275183_7940280886638255894_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=t8FuNNYptGIAX-qIMoy&_nc_oc=AQmUHQ08llh6a1i7PZ8uTV8g-TIzzelRcOgXicOdipDg6adwWbrQUz60AfI9muPTz1g&_nc_ht=scontent.fhan5-10.fna&oh=00_AfCqZDi84ctrmR4tjet5ZkvGXtygzpvMPj4-2ryvnbQ7LA&oe=65964B75"}
+                        />
                         <Paragraph style={{color:'white'}}>
                             <strong>Kèo Kafe:</strong>
                         </Paragraph>
@@ -76,13 +83,7 @@ export default function Cinematick() {
                                 className="logoweb"
                                 src={"https://scontent.fhan5-6.fna.fbcdn.net/v/t39.30808-6/339159584_240898315065344_1570296131210151142_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=AgGHPDifAhcAX-QtrXd&_nc_ht=scontent.fhan5-6.fna&oh=00_AfCvz5yX-UVBh6UDk68oW1ttxkJ0oS9nnH8f14xuYkKXXg&oe=6596E152"}
                         />
-                        <Paragraph style={{color:'white'}}>
-                            <strong>Đại học Công nghệ - Đại học Quốc gia Hà Nội:</strong>
-                        </Paragraph>
-                        <Image
-                                className="logoweb"
-                                src={"https://scontent.fhan5-10.fna.fbcdn.net/v/t39.30808-6/306977255_543189674275183_7940280886638255894_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=t8FuNNYptGIAX-qIMoy&_nc_oc=AQmUHQ08llh6a1i7PZ8uTV8g-TIzzelRcOgXicOdipDg6adwWbrQUz60AfI9muPTz1g&_nc_ht=scontent.fhan5-10.fna&oh=00_AfCqZDi84ctrmR4tjet5ZkvGXtygzpvMPj4-2ryvnbQ7LA&oe=65964B75"}
-                        />
+                        
                     </Space>
                 </Space>
             </Space>

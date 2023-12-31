@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LockOutlined, UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import TopBar from '../components/topbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignupPage() {
     // State variables
@@ -10,6 +11,7 @@ export default function SignupPage() {
     const [fullname, setFullname] = useState('');
     const [phone, setPhone] = useState('');
     const [reconfirmpassword, setReconfirmpassword] = useState('');
+    const navigate = useNavigate();
 
     var signupInfo = {
         "fullname": fullname,
@@ -33,6 +35,7 @@ export default function SignupPage() {
               // Show the server response message
               message.info(data.message);
             } else {
+                navigate(`/login`);
               // Handle success (if needed)
             }
           })

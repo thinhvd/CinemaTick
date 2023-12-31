@@ -109,7 +109,7 @@ const AdminPage = () => {
     const handleSignOut = () => {
         sessionStorage.setItem('is_login', 'false');
         setLogin(false);
-        navigate('/admin');
+        navigate('/');
     };
 
     return !isLogin ? (

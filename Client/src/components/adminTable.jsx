@@ -167,6 +167,16 @@ const AdminTable = ({
 
     const columnsBill = [
         {
+            title: 'User ID',
+            dataIndex: 'user_id',
+            key: 'user_id',
+        },
+        {
+            title: 'User Name',
+            dataIndex: 'user_name',
+            key: 'user_name',
+        },
+        {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
@@ -211,11 +221,6 @@ const AdminTable = ({
             title: 'Total Price',
             dataIndex: 'total_price',
             key: 'total_price',
-        },
-        {
-            title: 'User ID',
-            dataIndex: 'user_id',
-            key: 'user_id',
         },
     ];
 

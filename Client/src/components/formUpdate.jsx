@@ -73,10 +73,14 @@ const FormUpdate = ({ onBlur, type = 'movies', formData }) => {
             <Form
                 style={{
                     backgroundImage: `url(${background})`,
+                    backgroundSize:'cover',
                     padding: 24,
                     boxShadow: '0 0 1px #fff',
                     height: 'fit-content',
                     minWidth: 350,
+                    borderRadius:'2vh',
+                    borderColor:'#000000',
+                    border:'solid'
                 }}
                 initialValues={{
                     ...formData,

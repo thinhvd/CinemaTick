@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import TopBar from "../components/topbar";
 import { UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button, Space, message } from "antd";
+import { Form, Input, Button, Space, message, Typography } from "antd";
 import axios from "axios";
 import HistoryTable from "../components/history";
+
+const {Title, Paragraph} = Typography;
 
 function Profile() {
   const token = localStorage.getItem("token");
@@ -187,7 +189,11 @@ function Profile() {
             </>
           )}
         </Form>
-        <HistoryTable/>
+        <Space direction="vertical">
+          <Title level={2} style={{color:'white'}}>LỊCH SỬ GIAO DỊCH:</Title>
+          <HistoryTable/>
+        </Space>
+        
       </Space>
       ) : (
         <></>
