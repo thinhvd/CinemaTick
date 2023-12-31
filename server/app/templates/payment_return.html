@@ -91,15 +91,16 @@
     <p>Suất chiếu: {{ show_schedule }}</p>
     <p>Tổng số vé: {{ num_of_ticket }}</p>
     <p>Vị trí ghế: {{ positions }}</p>
-    <p>Số tiền thanh toán: {{ amount }}</p>
+    <p>Số tiền thanh toán: {{ amount }} VND</p>
     <p>Mã Bill: {{ bill_code }}</p>
-    <button href="goToHomePage()">Trở về trang chính</button>
+    <button id = "redirect">Trở về trang chính</button>
   </div>
 
   <script>
-    function goToHomePage() {
+    var button = document.getElementById("redirect");
+    button.addEventListener("click", function () {
       window.location.href = "http://fall2324w20g8.int3306.freeddns.org/";
-    }
+    });
   </script>
 </body>
 
