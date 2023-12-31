@@ -1,7 +1,7 @@
 <div align="center">
   <p>
     <a href="http://fall2324w20g8.int3306.freeddns.org/" target="_blank">
-      <img width="100%" src="https://github.com/thinhvd/CinemaTick/blob/main/dist/assets/Cinematick-bKhDpndx.png?raw=true" alt="logo"></a>
+      <img width="20%" src="https://github.com/thinhvd/CinemaTick/blob/main/dist/assets/Cinematick-bKhDpndx.png?raw=true" alt="logo"></a>
   </p>
 </div>
 
