@@ -19,7 +19,6 @@ def get_show(id):
 
 @bp.route('/api/show/movie', methods=['POST'])
 @cross_origin()
-@jwt_required()
 def get_show_for_movie_by_day():
     data = request.get_json()
     if 'movie_id' not in data or 'time' not in data:
@@ -38,7 +37,6 @@ def get_show_for_movie_by_day():
 
 @bp.route('/api/show/movie/<int:id>', methods=['GET'])
 @cross_origin()
-@jwt_required()
 def get_show_for_movie(id):
     shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost >= 0)
     res = []
