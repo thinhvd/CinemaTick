@@ -8,10 +8,10 @@ from flask_cors import CORS, cross_origin
 from datetime import datetime
 from flask_jwt_extended import jwt_required,get_jwt_identity
 
-@bp.route('/api/bill/hitory/user/<int:id>', methods=['GET'])
+@bp.route('/api/bill/hitory/user', methods=['GET'])
 @cross_origin()
 @jwt_required
-def user_hitory(id):
+def user_hitory():
     current_user = get_jwt_identity()
     bills = Bill.query.filter_by(user_id = current_user)
     res = []
@@ -24,7 +24,7 @@ def user_hitory(id):
         positions = []
         for ticket in tickets:
             positions.append(Seat.query.get(ticket.seat_id).position)
-        
+    
         bill['movie_name'] = movie.name
         bill['positions'] = positions
         res.append(bill)
@@ -70,7 +70,7 @@ def create_bill():
 
     
 
-    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = datetime.utcnow, bill_code = None)
+    bill = Bill(num_of_tickets = count, total_price = total_price, user_id = data['user_id'], schedule = datetime.now(), bill_code = None)
     db.session.add(bill)
     db.session.commit()
 
@@ -106,26 +106,15 @@ def get_bill(id):
 
     return jsonify(bill)
 
+
+
 @bp.route('/api/bills', methods=['GET'])
 @cross_origin()
 def get_bills():
-    bills = Bill.query.all()
-    res = []
-
-    for bill in bills:
-        bill = bill.to_dict_for_user()
-        tickets = Ticket.query.filter_by(bill_id = bill['id'])
-        show = Show.query.get(tickets[0].show_id)
-        movie = Movie.query.get(show.movie_id)
-        positions = []
-        for ticket in tickets:
-            positions.append(Seat.query.get(ticket.seat_id).position)
-        
-        bill['movie_name'] = movie.name
-        bill['positions'] = positions
-        res.append(bill)
-
-    return jsonify(res)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = Bill.to_collection_dict(Bill.query, page, per_page, 'api.get_bills')
+    return jsonify(data)
 
 
 @bp.route('/api/bill/search', methods=['POST'])
