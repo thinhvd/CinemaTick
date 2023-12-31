@@ -139,14 +139,19 @@ def payment_return():
                 bill_data['positions'] = positions
                 bill_data['movie_name'] = movie_name
 
-                return jsonify(bill_data)
-                # return render_template( 'payment_return.html', title="Kết quả thanh toán",
-                #                                                result = "Thành công", order_id= order_id,
-                #                                                amount = amount,
-                #                                                order_desc = order_desc,
-                #                                                vnp_TransactionNo = vnp_TransactionNo,
-                #                                                vnp_ResponseCode = vnp_ResponseCode,
-                #                                                movie_name = bill_data['movie_name'])
+                #return jsonify(bill_data)
+                return render_template( 'payment_return.html', title="Kết quả thanh toán",
+                                                               result = "Thành công", order_id= order_id,
+                                                               amount = amount,
+                                                               order_desc = order_desc,
+                                                               vnp_TransactionNo = vnp_TransactionNo,
+                                                               vnp_ResponseCode = vnp_ResponseCode,
+                                                               movie_name = bill_data['movie_name'],
+                                                               num_of_ticket = bill_data['num_of_tickets'],
+                                                                schedule = bill_data['schedule'],
+                                                                bill_code = bill_data['bill_code'],
+                                                                positions = ', '.join(bill_data['positions'])
+                                                               )
 
             else:
                 #return f"Thanh toán lỗi, mã lỗi: {vnp_ResponseCode}"

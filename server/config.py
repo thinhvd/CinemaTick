@@ -30,7 +30,7 @@ class Config(object):
     MAIL_USE_SSL = True
 
     #Config VNPAY payment
-    VNPAY_RETURN_URL = 'http://localhost:5001/payment_return'  # get from config
+    VNPAY_RETURN_URL = 'http://fall2324w20g8.int3306.freeddns.org/payment_return'  # get from config
     VNPAY_PAYMENT_URL = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'  # get from config
     VNPAY_API_URL = 'https://sandbox.vnpayment.vn/merchant_webapi/merchant.html'
     VNPAY_TMN_CODE = 'NK2LD6FS'  # Website ID in VNPAY System, get from config
