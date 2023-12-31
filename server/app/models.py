@@ -112,6 +112,7 @@ class Show(PaginatedAPIMixin, db.Model):
             'id': self.id,
             'room_id' : self.room_id,
             'movie_id' : self.movie_id,
+            'movie_name' : Movie.query.get(self.movie_id).name,
             'schedule' : self.schedule,
             'ticket_cost' : self.ticket_cost
         }

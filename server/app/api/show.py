@@ -8,15 +8,18 @@ from app.api import bp
 from flask_cors import CORS, cross_origin
 from app.api.seat import create_seat
 import datetime
+from flask_jwt_extended import jwt_required
 
 @bp.route('/api/show/<int:id>', methods=['GET'])
 @cross_origin()
+@jwt_required()
 def get_show(id):
     show = Show.query.get_or_404(id).to_dict()
     return show
 
 @bp.route('/api/show/movie', methods=['POST'])
 @cross_origin()
+@jwt_required()
 def get_show_for_movie_by_day():
     data = request.get_json()
     if 'movie_id' not in data or 'time' not in data:
@@ -35,6 +38,7 @@ def get_show_for_movie_by_day():
 
 @bp.route('/api/show/movie/<int:id>', methods=['GET'])
 @cross_origin()
+@jwt_required()
 def get_show_for_movie(id):
     shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost >= 0)
     res = []
@@ -100,3 +104,30 @@ def delete_show(id):
     show.ticket_cost = 0
     db.session.commit()
     return "thanh cong" 
+
+
+@bp.route('/api/show/search', methods=['POST'])
+@cross_origin()
+def search_show():
+    input = request.get_json()
+    if 'movie_name' not in input:
+        return bad_request('must include input fields')
+    
+    if input['movie_name'] == "":
+        return bad_request('must include input fields')
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+
+
+    
+    movies = Movie.query.filter(Movie.name != "movieDeleted",
+                                 Movie.name.like('%' + input['movie_name'] + '%'))
+    movie_ids = []
+    for movie in movies:
+        movie_ids.append(movie.id)
+
+
+    data = Show.to_collection_dict(Show.query.filter(Show.movie_id.in_(movie_ids)).order_by(Show.schedule.desc()),
+                                    page, per_page, 'api.search_show')
+    return jsonify(data)

@@ -6,12 +6,14 @@ from app.api.erorrs import bad_request, error_response
 from app.api import bp
 from flask_cors import CORS, cross_origin
 from datetime import datetime
-
+from flask_jwt_extended import jwt_required,get_jwt_identity
 
 @bp.route('/api/bill/hitory/user/<int:id>', methods=['GET'])
 @cross_origin()
+@jwt_required
 def user_hitory(id):
-    bills = Bill.query.filter_by(user_id = id)
+    current_user = get_jwt_identity()
+    bills = Bill.query.filter_by(user_id = current_user)
     res = []
 
     for bill in bills:
@@ -124,3 +126,19 @@ def get_bills():
         res.append(bill)
 
     return jsonify(res)
+
+
+@bp.route('/api/bill/search', methods=['POST'])
+@cross_origin()
+def search_bill():
+    input = request.get_json()
+    if 'bill_code' not in input:
+        return bad_request('must include input fields')
+    
+    if input['bill_code'] == "":
+        return bad_request('must include input fields')
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = Bill.to_collection_dict(Movie.query.filter(Bill.bill_code == input['bill_code']).order_by(Bill.schedule.desc()), page, per_page, 'api.search_movie')
+    return jsonify(data)

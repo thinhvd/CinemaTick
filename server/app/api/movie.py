@@ -20,11 +20,21 @@ def get_movies():
     data = Movie.to_collection_dict(Movie.query.filter(Movie.name != "movieDeleted"), page, per_page, 'api.get_movies')
     return jsonify(data)
 
-    # data = Movie.query.all()
-    # datas = []
-    # for movie in data:
-    #     datas.append(movie.to_dict())
-    # return jsonify(datas)
+@bp.route('/api/movie/search', methods=['POST'])
+@cross_origin()
+def search_movie():
+    input = request.get_json()
+    if 'movie_name' not in input:
+        return bad_request('must include input fields')
+    
+    if input['movie_name'] == "":
+        return bad_request('must include input fields')
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    data = Movie.to_collection_dict(Movie.query.filter(Movie.name != "movieDeleted",
+                                                        Movie.name.like('%' + input['movie_name'] + '%')), page, per_page, 'api.search_movie')
+    return jsonify(data)
 
 @bp.route('/api/movies_nopage', methods=['GET'])
 @cross_origin()

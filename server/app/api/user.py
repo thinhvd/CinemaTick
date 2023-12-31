@@ -79,10 +79,10 @@ def get_users():
     per_page = min(request.args.get('per_page', 10, type=int), 100)
     data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted"), page, per_page, 'api.get_users')
     return jsonify(data)
-
      
 @bp.route('/api/user/change_pass', methods=['PUT'])
 @cross_origin()
+@jwt_required()
 def change_pass():
     data = request.get_json()
     if 'new_pass' not in data or 'id' not in data or 'old_pass' not in data:
@@ -133,3 +133,43 @@ def delete_user(id):
     user.fullname = "userDeleted"
     db.session.commit()
     return "thanh cong" 
+
+
+@bp.route('/api/user/search', methods=['POST'])
+@cross_origin()
+def search_user():
+    input = request.get_json()
+    if 'fullname' not in input or 'email' not in data or 'phone_number' not in data:
+        return bad_request('must include input fields')
+    
+    if 'fullname' in input:
+        if input['fullname'] == "":
+            return bad_request("must include input fields")
+        
+        page = request.args.get('page', 1, type=int)
+        per_page = min(request.args.get('per_page', 10, type=int), 100)
+        data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted", 
+                                                         User.fullname.like('%' + input['fullname'] + '%')), page, per_page, 'api.search_user')
+        return jsonify(data)
+
+    if 'email' in input:
+        if input['email'] == "":
+            return bad_request("must include input fields")
+        
+        page = request.args.get('page', 1, type=int)
+        per_page = min(request.args.get('per_page', 10, type=int), 100)
+        data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted", 
+                                                         User.email.like('%' + input['email'] + '%')), page, per_page, 'api.search_user')
+        return jsonify(data)
+    
+    if 'phone_number' in input:
+        if input['phone_number'] == "":
+            return bad_request("must include input fields")
+        
+        page = request.args.get('page', 1, type=int)
+        per_page = min(request.args.get('per_page', 10, type=int), 100)
+        data = User.to_collection_dict(User.query.filter(User.fullname != "userDeleted", 
+                                                         User.phone_number.like('%' + input['phone_number'] + '%')), page, per_page, 'api.search_user')
+        return jsonify(data)
+    
+    
