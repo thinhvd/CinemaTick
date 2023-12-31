@@ -11,10 +11,10 @@ Project of Web Application Development Course (INT3306E_20) - A web application 
 # Group 8
 Members of the group:
 
-- **Vu Duc Thinh** - 20021444 (Group leader): Backend Developer
-- **Trinh Quoc Dat** - 20021328: Backend Developer
-- **Nguyen Le Minh** - 20021394: Frontend Developer
-- **Hoang Vu Anh** - 20020128: Frontend Developer
+- **Vũ Đức Thịnh** - 20021444 (Group leader): Backend Developer
+- **Trịnh Quốc Đạt** - 20021328: Backend Developer
+- **Nguyễn Lê Minh** - 20021394: Frontend Developer
+- **Hoàng Vũ Anh** - 20020128: Frontend Developer
 
 # How to run
 Log in to the server https://int3306.freeddns.org/
