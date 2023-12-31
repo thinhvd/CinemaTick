@@ -3,6 +3,9 @@ import React from 'react';
 
 const Seat = ({ seatNumber, status, seatType, onClick }) => {
     function numberToString(number) {
+        if (number % 96 == 0) {
+            return 'H12'
+        }
         // Tính toán ký tự (A đến H)
         number = number % 96
         let charCode = Math.floor((number - 1) / 12) + 'A'.charCodeAt(0);

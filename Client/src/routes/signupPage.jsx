@@ -16,7 +16,6 @@ export default function SignupPage() {
         "password": password,
         "email": email,
         "phone_number": phone,
-        "reconfirmpassword": reconfirmpassword,
     }
     
     function uploadData() {

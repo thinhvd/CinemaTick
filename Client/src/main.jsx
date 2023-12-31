@@ -14,6 +14,7 @@ import AdminPage from "./routes/adminPage";
 import AdminTable from "./components/adminTable";
 import ForgotPasswordPage from "./routes/forgotPasswordPage";
 import Successmess from "./routes/successmess";
+import PaymetNoti from "./routes/paymentNoti";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path:"/successmess",
     element: <Successmess/>,
+  },
+  {
+    path:"/paymentnoti",
+    element: <PaymetNoti/>,
   },
 ]);
 

@@ -21,7 +21,7 @@ const SelectSeatPage = () => {
   const token = localStorage.getItem('token');
   var checkout_info = {
     'price': totalPrice,
-    'message': 'Vé' + numberToString(selectedSeats).join(', ') + 'phim' + movieName + 'suất chiếu' + schedule
+    'message': 'THONG TIN VE: seat id:[' + selectedSeats.join(', ')  + ']'+ ',movie name:' + movieName + ',show id:' + id
   }
   // var seats = [
   //   {
@@ -64,16 +64,19 @@ const SelectSeatPage = () => {
     // Tính toán ký tự (A đến H)
     var temp = []
     for (let i = 0; i < number.length; i++) {
-      let charCode = Math.floor((number[i] % 96 - 1) / 12) + 'A'.charCodeAt(0);
-      let char = String.fromCharCode(charCode);
-
-      // Tính toán số (1 đến 12)
-      let numberInRow = (number[i] - 1) % 12 + 1;
-
-      // Tạo tên của ô
-      let cellName = char + numberInRow;
-
-      temp.push(cellName)
+      if (number[i] % 96 == 0) temp.push('H12')
+      else {
+        let charCode = Math.floor((number[i] % 96 - 1) / 12) + 'A'.charCodeAt(0);
+        let char = String.fromCharCode(charCode);
+  
+        // Tính toán số (1 đến 12)
+        let numberInRow = (number[i] - 1) % 12 + 1;
+  
+        // Tạo tên của ô
+        let cellName = char + numberInRow;
+  
+        temp.push(cellName)
+      }
     }
     return temp
 
@@ -102,7 +105,8 @@ const SelectSeatPage = () => {
     fetch("http://fall2324w20g8.int3306.freeddns.org/payment", {
       headers: {
         'accept': 'application/json, text/plain',
-        'content-type': 'application/json;charset=utf-8'
+        'content-type': 'application/json;charset=utf-8',
+        'Authorization': 'Bearer ' + token
       },
       method: "post",
       body: JSON.stringify(checkout_info)

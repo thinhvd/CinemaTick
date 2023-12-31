@@ -37,7 +37,7 @@ export default function TopBar() {
                     </Col>
 
                     <Col span={8} className="logo">
-                        <a href={`/`}>
+                        <a onClick={"http://fall2324w20g8.int3306.freeddns.org/"}>
                             <Image
                                 className="logoweb"
                                 src={Cinematick}
