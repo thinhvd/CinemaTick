@@ -12,7 +12,7 @@
       align-items: center;
       min-height: 200vh;
       margin: 0;
-      background-image: url('background.jpg');
+      background-image: url('/static/background.jpg');
       background-size: cover;
       font-family: 'Arial', sans-serif;
       min-height: 100%;
@@ -93,7 +93,7 @@
     <p>Vị trí ghế: {{ positions }}</p>
     <p>Số tiền thanh toán: {{ amount }}</p>
     <p>Mã Bill: {{ bill_code }}</p>
-    <button onclick="goToHomePage()">Trở về trang chính</button>
+    <button href="goToHomePage()">Trở về trang chính</button>
   </div>
 
   <script>

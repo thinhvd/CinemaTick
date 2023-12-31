@@ -10,7 +10,7 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 
 @bp.route('/api/bill/history/user', methods=['GET'])
 @cross_origin()
-@jwt_required
+@jwt_required()
 def user_hitory():
     current_user = get_jwt_identity()
     bills = Bill.query.filter_by(user_id = current_user)

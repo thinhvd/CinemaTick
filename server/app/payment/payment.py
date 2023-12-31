@@ -177,4 +177,7 @@ def get_client_ip(request):
         ip = request.remote_addr
     return ip
 
-
+@bp.route('/hihi', methods=['GET','POST'])
+@cross_origin()
+def hihi():
+    return render_template ('payment_return.html', title="Kết quả thanh toán")

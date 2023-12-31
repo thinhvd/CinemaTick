@@ -29,10 +29,6 @@ def sign_up():
     email = data["email"]
     phone_number = data["phone_number"]
 
-    if (fullname == "" or password == "" or email == "" or phone_number == ""):
-        return bad_request('must include fullname, email and password fields')
-
-
     found_user = User.query.filter_by(email = email).first()
     if found_user: 
         return bad_request('please use a different email address')
