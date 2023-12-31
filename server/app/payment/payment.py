@@ -120,7 +120,7 @@ def payment_return():
                     seats.append(seat)
                 
                 show = Show.query.get(seats[0].to_dict()['show_id']).to_dict()
-                movie = Movie.query.get(show['id']).to_dict()
+
                 for seat in seats:
                     positions.append(seat.position)
                     seat.status = 'occupied'
@@ -154,6 +154,7 @@ def payment_return():
                                                                num_of_ticket = bill_data['num_of_tickets'],
                                                                 schedule = bill_data['schedule'],
                                                                 bill_code = bill_data['bill_code'],
+                                                                show_schedule = show['schedule'],
                                                                 positions = ', '.join(bill_data['positions'])
                                                                )
 
