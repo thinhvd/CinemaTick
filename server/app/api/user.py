@@ -54,9 +54,8 @@ def sign_up():
     db.session.commit()
     response = jsonify(user.to_dict())
     response.status_code = 201
-    return user.to_dict()
+    return response
 
-from flask_cors import CORS, cross_origin
 
 @bp.route('/api/profile', methods=['GET'])
 @cross_origin()
@@ -84,25 +83,23 @@ def get_users():
 @cross_origin()
 @jwt_required()
 def change_pass():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(id=current_user).first()
+
     data = request.get_json()
     if 'new_pass' not in data or 'id' not in data or 'old_pass' not in data:
         return bad_request('must include id , new_pass, old_pass fields')
     
-    id = data["id"]
     new_pass = data["new_pass"]
     old_pass = data["old_pass"]
-    if (new_pass == "" or old_pass == ""):
-        return bad_request('must include id , new_pass, old_pass fields')
     session.permanent = True
 
-
-    user = User.query.filter_by(id = id).first()
     if check_password_hash(user.password_hash, old_pass):
         user.password_hash = generate_password_hash(new_pass, 'pbkdf2')
         db.session.commit()
-        return "thanh cong"
+        return "Đổi mật khẩu thành công"
     else:
-        return bad_request("Old not true")
+        return bad_request("Old password not correct")
 
 @bp.route('/api/user/reset_pass_request', methods=['POST'])
 @cross_origin()
@@ -172,4 +169,4 @@ def search_user():
                                                          User.phone_number.like('%' + input['phone_number'] + '%')), page, per_page, 'api.search_user')
         return jsonify(data)
     
-    
+    return "thanh cong" # luon thanh cong du co hay ko co ID trong DB

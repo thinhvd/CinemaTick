@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from flask_mail import  Mail
 
 
-app = Flask(__name__, static_folder='../../dist', static_url_path='/')
+app = Flask(__name__, static_folder='../../dist')
 cors = CORS(app)
 app.config.from_object(Config)
 
@@ -25,5 +25,8 @@ app.register_blueprint(api_bp)
 
 from app.auth import bp as auth_bp
 app.register_blueprint(auth_bp)
+
+from app.payment import bp as payment_bp
+app.register_blueprint(payment_bp)
 
 from app import models
