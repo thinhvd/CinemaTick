@@ -101,8 +101,12 @@ def payment_return():
                 user_id_start = payment_info.find("user id:") + len("user id:")
                 user_id_str = payment_info[user_id_start:].strip()
                 current_user_id = int(user_id_str)
-
-                current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                
+                # Lấy giờ hiện tại cho lịch tạo bill
+                utc_now = datetime.utcnow()
+                utc_offset = timedelta(hours=7)
+                utc_plus_7 = utc_now + utc_offset
+                current_datetime = utc_plus_7.strftime('%Y-%m-%d %H:%M:%S')
 
                 seats = []
                 positions = []
