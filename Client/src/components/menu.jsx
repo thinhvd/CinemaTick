@@ -19,12 +19,6 @@ const items = [
   {
     key: '3',
     label: (
-      <Link to={`/service`}>DỊCH VỤ QUẢNG CÁO</Link>
-    ),
-  },
-  {
-    key: '4',
-    label: (
       <Link to={`/admin/users`}>ADMIN</Link>
     ),
   },

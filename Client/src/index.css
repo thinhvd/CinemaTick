@@ -130,6 +130,8 @@ img {
   background-color: #777;
   display: inline-block;
   border-radius: 0.5vh;
+  border: 0.2vw solid;
+  border-color: #000000;
   color: #fff;
   font-family: "Inter";
   padding: 1.5vh;

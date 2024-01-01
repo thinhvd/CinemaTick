@@ -44,7 +44,7 @@ export default function FooterArea(){
                         <strong>
                             Cơ sở: Đại học Công nghệ - Đại học Quốc gia Hà Nội
                             <br/>
-                            Địa chỉ: 144 Xuẩn Thủy
+                            Địa chỉ: 144 Xuân Thủy
                             <br/>
                             SĐT: 0965909618 (Mr.Thịnh)
                         </strong>
