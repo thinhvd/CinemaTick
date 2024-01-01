@@ -167,16 +167,6 @@ const AdminTable = ({
 
     const columnsBill = [
         {
-            title: 'User ID',
-            dataIndex: 'user_id',
-            key: 'user_id',
-        },
-        {
-            title: 'User Name',
-            dataIndex: 'user_name',
-            key: 'user_name',
-        },
-        {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
@@ -187,9 +177,29 @@ const AdminTable = ({
             key: 'bill_code',
         },
         {
+            title: 'User ID',
+            dataIndex: 'user_id',
+            key: 'user_id',
+        },
+        {
+            title: 'User Name',
+            dataIndex: 'user_name',
+            key: 'user_name',
+        },
+        {
             title: 'Movie Name',
             dataIndex: 'movie_name',
             key: 'movie_name',
+        },
+        {
+            title: 'Room',
+            dataIndex: 'room',
+            key: 'room',
+        },
+        {
+            title: 'Schedule',
+            dataIndex: 'movie_time',
+            key: 'movie_time',
         },
         {
             title: 'Number of tickets',
@@ -213,7 +223,7 @@ const AdminTable = ({
             ),
         },
         {
-            title: 'Schedule',
+            title: 'Bill Time',
             dataIndex: 'schedule',
             key: 'schedule',
         },

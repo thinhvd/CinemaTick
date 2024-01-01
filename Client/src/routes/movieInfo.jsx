@@ -116,7 +116,7 @@ const MovieInfo = () => {
                                         <br />
                                         <strong>Description:</strong> {movie.description}
                                     </Paragraph>
-                                    <div style={{ position: 'fixed', bottom: '20px', paddingLeft: '10px' }}>
+                                    <div style={{ position: 'absolute', bottom: '2vh'}}>
                                         <Button className="button" onClick={getMovieSchedule}>
                                             Đặt vé
                                         </Button>
@@ -135,7 +135,7 @@ const MovieInfo = () => {
                                                     {movieSchedule[date].map((scheduleItem) => (
                                                         <div key={scheduleItem.id}>
                                                             <Button
-                                                                className="buttonstyle"
+                                                                className="schedulebuttonstyle"
                                                                 onClick={() => handleBookTicket(scheduleItem.id)}
                                                             >
                                                                 {new Date(scheduleItem.schedule).toLocaleTimeString([],{ hour: '2-digit', minute: '2-digit'})}

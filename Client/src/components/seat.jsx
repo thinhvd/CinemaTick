@@ -30,7 +30,6 @@ const Seat = ({ seatNumber, status, seatType, onClick }) => {
       };
 
     return <div
-        // className={`seat ${isSelected ? 'selected' : ''} ${isOccupied ? 'occupied' : ''}`}
         className='seat'
         style={seatStyles}
         onClick={onClick}>

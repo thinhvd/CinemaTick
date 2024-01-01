@@ -11,7 +11,7 @@ export default function TopBar() {
             <Header style={{
                 margin: '0', padding: '0',
                 minWidth: '100%',
-                height: '5.1vw',
+                height: '10vh',
                 backgroundColor: '#1f2833',
                 position: "fixed", 
                 zIndex: 1000,
@@ -22,8 +22,8 @@ export default function TopBar() {
                     <Col span={8}>
                         <Card
                             style={{
-                                width: '5vw',
-                                height: '5vw',
+                                width:'5.1vw',
+                                height: '10vh',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
@@ -44,8 +44,19 @@ export default function TopBar() {
                         </a>
                     </Col>
 
-                    <Col span={8} style={{ textAlign: 'right', paddingRight: '2vw', paddingTop: '1vw' }}>
-                        <UserButton/>
+                    <Col span={8} style={{ textAlign: 'right',padding:'0',  display:'flex', justifyContent:'flex-end' }}>
+                        <Card
+                            style={{
+                                width: '20vw',
+                                height: '10vh',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                                backgroundColor:'transparent',
+                                border:'none'
+                            }}>
+                                <UserButton/>
+                        </Card>
                     </Col>
                 </Row>
             </Header>

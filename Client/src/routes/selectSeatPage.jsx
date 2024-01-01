@@ -2,11 +2,13 @@
 import Layout, { Content, Footer, Header } from "antd/es/layout/layout.js";
 import TopBar from "../components/topbar";
 import { DoubleRightOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Divider, Flex, Radio, Space } from 'antd';
+import { Button, Divider, Flex, Radio, Space, Typography } from 'antd';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Seat from '../components/seat';
 import { useParams } from "react-router";
+
+const {Title, Paragraph} = Typography;
 
 const SelectSeatPage = () => {
   const [seatStatus, setSeatStatus] = useState([]);
@@ -23,41 +25,6 @@ const SelectSeatPage = () => {
     'price': totalPrice,
     'message': 'THONG TIN VE: seat id:[' + selectedSeats.join(', ')  + ']'+ ',movie name:' + movieName + ',show id:' + id
   }
-  // var seats = [
-  //   {
-  //     "id": 1,
-  //     "position": "A1",
-  //     "price": 125,
-  //     "seat_type": "basic",
-  //     "show_id": 1,
-  //     "status": "occupied"
-  //   },
-  //   // ... (các đối tượng khác)
-  //   {
-  //     "id": 5,
-  //     "position": "A5",
-  //     "price": 125,
-  //     "seat_type": "basic",
-  //     "show_id": 1,
-  //     "status": "normal"
-  //   }
-  // ];
-
-  // for (let row = 'A'; row <= 'H'; row++) {
-  //   for (let col = 1; col <= 12; col++) {
-  //     const seat = {
-  //       "id": `${row}${col}`,
-  //       "status": "normal"
-  //     };
-  //     seats.push(seat);
-  //   }
-  // }
-
-
-  // const checkOccupied = (seatNumber) => {
-  //   console.log(seats, seats[1 - 1].status)
-  //     return seats[seatNumber - 1].status === "occupied";
-  // }
 
 
   function numberToString(number) {
@@ -202,26 +169,27 @@ const SelectSeatPage = () => {
   return (
     <div className="background">
       <TopBar />
-      <div className="redone">
-        <ul className="showcase">
-          <li>
+      <Space style={{display:'flex', justifyContent:'space-between',marginTop:'10vh' }} direction="horizontal">
+      <Space className="redone" direction="vertical">
+        <Space className="cinema">
+          <Space>
             <div className="seat"></div>
-            <small>Normal</small>
-          </li>
-          <li>
+            <Title level={3} style={{color:'white'}}>Normal</Title>
+          </Space>
+          <Space>
             <div className="seat vip"></div>
-            <small>VIP</small>
-          </li>
-          <li>
+            <Title level={3} style={{color:'white'}}>VIP</Title>
+          </Space>
+          <Space>
             <div className="seat selected"></div>
-            <small>Selected</small>
-          </li>
-          <li>
+            <Title level={3} style={{color:'white'}}>Selected</Title>
+          </Space>
+          <Space>
             <div className="seat occupied"></div>
-            <small>Occupied</small>
-          </li>
-        </ul>
-        <div className="cinema">
+            <Title level={3} style={{color:'white'}}>Occupied</Title>
+          </Space>
+        </Space>
+        <Space direction="column" style={{display:'flex', flexDirection:'column', fontSize:''}}>
           {[...Array(8)].map((_, rowIndex) => (
             <div key={rowIndex} className="row">
               {[...Array(12)].map((_, colIndex) => {
@@ -239,8 +207,8 @@ const SelectSeatPage = () => {
               })}
             </div>
           ))}
-        </div>
-      </div>
+        </Space>
+      </Space>
       <div className="blueone">
         <ul>
           <li>Rạp số: {room}</li>
@@ -254,6 +222,7 @@ const SelectSeatPage = () => {
           <Button className="selectseatbutton" shape="round" onClick={() => redirectToCheckout()} icon={<DoubleRightOutlined />} >Next </Button >
         </Space>
       </div>
+      </Space>
     </div>
   );
 };

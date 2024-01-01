@@ -54,7 +54,7 @@ body {
   margin-top: 5vw;
   display: flex;
   flex-direction: column;
-  row-gap: 2vw;
+  row-gap: 2vh;
   color: white;
 }
 
@@ -62,7 +62,6 @@ body {
   margin-top: 5vw;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
-  height: 25vw;
   background-size: cover;
 }
 
@@ -89,12 +88,15 @@ body {
   background-color: #000000;
   color: #c5c6c7;
   min-width: 6vw;
+  min-height: 3.5vh;
+  font-size: 1.2;
 }
 
 .logo {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 1vh;
 }
 
 .logoweb {
@@ -123,16 +125,15 @@ img {
 }
 
 .seat {
-  height: 13px;
-  width: 13px;
+  height: 3vh;
+  width: 2vw;
   background-color: #777;
   display: inline-block;
-  border-radius: 3px;
+  border-radius: 0.5vh;
   color: #fff;
-  font-size: 6.5px;
   font-family: "Inter";
-  /* text-align: center; */
-  padding-top: 1.95px;
+  padding: 1.5vh;
+  text-align: center;
 }
 
 .seat.selected {
@@ -148,24 +149,23 @@ img {
 }
 
 .cinema {
-  scale: 2.5;
-  width: 50%;
-  margin: 0 auto;
-  padding: 30px;
-  /*perspective: 1000px; */
-  /* margin: 150px 0 0 350px; */
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  min-width: 50vw;
 }
 
+
 .row .seat:nth-of-type(3) {
-  margin-right: 10px;
+  margin-right: 2vw;
 }
 
 .row .seat:nth-last-of-type(3) {
-  margin-left: 10px;
+  margin-left: 2vw;
 }
 
 .cinema .seat {
-  margin-left: 2px;
+  margin-left: 1vw;
 }
 
 .cinema .seat:not(.occupied):hover {
@@ -173,39 +173,15 @@ img {
   cursor: pointer;
 }
 
-/* .totalprice {
-  height: 1000px;
-  width: 300px;
-  margin-left: 1000px;
-  
-} */
 
-/* .totalprice span {
-    color: rgb(115, 115, 253);
-} */
-
-.selectseat_area {
-  float: left;
-  width: 50%;
-}
-
-/* .totalprice {
-  float: left;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  margin-left: 1000px;
-} */
-
-/* test */
 .redone {
-  float: left;
-  height: 100%;
-  width: 75%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 90vh;
+  min-width: 70vw;
   background-color: transparent;
-  text-align: center;
-  margin-top: 40vh;
 }
-
 
 .showcase {
   scale: 1.7;
@@ -221,19 +197,9 @@ img {
   top: 20vh;
 }
 
-.showcase li {
-  padding-left: 5vh;
-  float: left;
-}
-
-.showcase li small {
-  margin-left: 3px;
-}
-
 .blueone {
-  float: left;
-  width: 25%;
-  min-height: 100vh;
+  min-width: 30vw;
+  min-height: 90vh;
   background-color: transparent;
   box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -244,14 +210,16 @@ img {
 }
 
 .blueone ul {
+  width: 100%;
   font-size: large;
-  padding: 5px 0 0 0;
+  padding: 0 0 0 0;
   list-style: none;
 }
 
 .blueone li {
-  padding-top: 20%;
-  padding-left: 5%;
+  padding-top: 7vh;
+  padding-left: 2vh;
+  padding-right: 2vh;
 }
 
 .totalprice {
@@ -283,7 +251,10 @@ img {
 }
 
 .button {
-  scale: 1.5;
+  height: 6vh;
+  width: 7vw;
+  font-size: 1.5vw;
+  padding: 0;
   background-color: #000000;
   color: #ffffff;
 }
@@ -291,75 +262,88 @@ img {
 .movielist {
   margin-top: 16vh;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 2fr);
+  grid-template-columns: repeat(5, 20vw);
+  grid-template-rows: repeat(2, 40vh);
   text-align: center;
   text-decoration: none !important;
 }
 
 .movielist img {
   min-width: 11vw;
-  min-height: 30vh;
+  height: 30vh;
 }
 
 .movielist h3 {
+  font-size: 1vw;
   text-align: center;
   overflow-wrap: break-word;
   color: #fff;
 }
 
 .countpage {
-  width: 100%;
-  position: fixed;
-  bottom: 20px;
+  min-width: 100%;
+  min-height: 4vh;
+  position: absolute;
+  bottom: 2vh;
   left: 50%;
+  padding-top:1vh ;
   transform: translateX(-50%);
-  font-size: 50px;
-  padding: 10px;
   background-color: rgba(225, 225, 225, 0.6);
 }
 
 .movieSchedule {
+  background-size: cover;
   display: flex;
-  row-gap: 20vw;
+  align-items: center;
+  justify-content: center;
+  row-gap: 10vw;
+  margin-top: 20vh;
 }
 
 .schedule {
-  row-gap: 4em;
+  row-gap: 3vh;
 }
 
 .time {
-  width: 100vh;
-  height: 10vh;
+  width: 70vw;
+  min-height: 10vh;
   background-color: transparent;
   border-bottom: none;
   border-top: none;
   border-right: none;
   border-radius: 0%;
-  border-width: 2px;
+  border-width: 0.2vw;
+}
+
+.schedulebuttonstyle{
+  background-color: #000000;
+  color: #c5c6c7;
+  min-width: 6vw;
+  font-size: inherit;
 }
 
 .movieInfo {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(50%);
 }
 
 .movieInfoImage {
-  scale: 2;
-  transform: translate(-30%);
+  min-height: 50vh;
+  min-width: 18vw;
+  transform: translate(-20%);
 }
 
 .movieInfoText {
-  height: 50vh;
-  width: 70vh;
+  min-height: 50vh;
+  max-width: 40vw;
   background-color: transparent;
   border-bottom: none;
   border-top: none;
   border-right: none;
   border-radius: 0%;
-  border-width: 2px;
+  border-width: 0.2vw;
+  font-size: inherit;
 }
 
 .movieName {

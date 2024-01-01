@@ -80,10 +80,9 @@ export default function UserButton() {
                 >
                     <Button 
                         style={{
-                            width:'40%',
+                            minWidth:'15vw',
                             backgroundColor: 'rgba(0, 0, 0, 0.5)',
                             color:'#fff',
-                            padding:'0',
                             borderRadius:'none',
                         }}
                     >
@@ -92,7 +91,7 @@ export default function UserButton() {
                 </Dropdown>
             ) : (
                 // Hiển thị nút "Log in" và "Sign up"
-                <Space size='middle'>
+                <Space size='large'>
                     <Button className="buttonstyle" href={`/login`}>
                         Log in
                     </Button>

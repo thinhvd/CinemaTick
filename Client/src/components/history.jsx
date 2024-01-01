@@ -3,17 +3,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const HistoryTable = ({ rowSelection }) => {
-    const [data, setData] = useState([
-        // {
-        //     key:'1',
-        //     name: 'A',
-        //     schedule: '12:00:00',
-        //     num_of_tickets: '4',
-        //     total_price: '123000',
-        //     bill_code: 'ASDFGH',
-        // },
-        // Add more data entries as needed
-    ]);
+    const [data, setData] = useState([]);
     const token = localStorage.getItem('token');
 
     function fetchHistoryInfo() {
@@ -45,7 +35,7 @@ const HistoryTable = ({ rowSelection }) => {
             key: 'name',
         },
         {
-            title: 'Schedule',
+            title: 'Bill Time',
             dataIndex: 'schedule',
             key: 'schedule',
         },
