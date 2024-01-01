@@ -218,6 +218,7 @@ class Bill(PaginatedAPIMixin,db.Model):
         show = Show.query.get(tickets[0].show_id)
         movie = Movie.query.get(show.movie_id)
         user = User.query.get(self.user_id)
+
         positions = []  
         for ticket in tickets:
             positions.append(Seat.query.get(ticket.seat_id).position)
@@ -231,6 +232,8 @@ class Bill(PaginatedAPIMixin,db.Model):
             'bill_code' : self.bill_code,
             'movie_name' : movie.name,
             'positions' : positions,
-            'user_name' : user.fullname
+            'user_name' : user.fullname,
+            'movie_time' : show.schedule,
+            'room' : show.room_id
         }
         return data
