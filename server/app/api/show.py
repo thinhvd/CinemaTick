@@ -48,7 +48,7 @@ def get_show_for_movie(id):
     return res  
 
 
-
+ 
 @bp.route('/api/shows', methods=['GET'])
 @cross_origin()
 def get_shows():
@@ -67,24 +67,32 @@ def create_show():
     if data['room_id'] <= 0 or data['movie_id'] <= 0 or data['schedule'] == "" or data['ticket_cost'] <= 0:
         return bad_request("must include data fields")
 
+    utc_now = datetime.datetime.utcnow()
+    utc_offset = datetime.timedelta(hours=7)
+    utc_plus_7 = utc_now + utc_offset
+
     new_show_movie = Movie.query.get(data['movie_id'])
     new_show_hours = new_show_movie.duration // 60
     new_show_minutes = new_show_movie.duration % 60
     input_schedule_str = data['schedule']
     input_schedule = datetime.datetime.strptime(input_schedule_str, '%Y/%m/%d %H:%M:%S')
-    shows = Show.query.filter(Show.room_id == data['room_id']
-                              ,Show.ticket_cost > 0
-                              ,Show.schedule >= datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S').date()
-                              ,Show.schedule < datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S').date() + datetime.timedelta(days=1))
+    if input_schedule <= utc_plus_7:
+        return bad_request("khung giờ không đúng")
+    new_show_date = input_schedule.date()
+    print(new_show_date)
+    shows = Show.query.filter(Show.room_id == data['room_id'],
+                              Show.ticket_cost > 0,Show.schedule >= new_show_date,
+                              Show.schedule < new_show_date + datetime.timedelta(days=1),
+                              Show.schedule > utc_plus_7)
     
     for show in shows:
-        
-        if show.schedule <= datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S') + datetime.timedelta(hours=new_show_hours, minutes=new_show_minutes) and show.schedule > datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S'):
+
+        if show.schedule <= input_schedule + datetime.timedelta(hours=new_show_hours, minutes=new_show_minutes + 10) and show.schedule >= input_schedule:
             return bad_request("khung h đã bị trùng1 ")
         movie = Movie.query.get(show.movie_id)
         hours = movie.duration / 60
         minutes = movie.duration % 60
-        if show.schedule + datetime.timedelta(hours=hours, minutes=minutes) >= datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S') and show.schedule + datetime.timedelta(hours=hours, minutes=minutes) < datetime.datetime.strptime(data['schedule'], '%Y/%m/%d %H:%M:%S') + datetime.timedelta(hours=new_show_hours, minutes=new_show_minutes):
+        if show.schedule + datetime.timedelta(hours=hours, minutes=minutes + 10) >= input_schedule and show.schedule + datetime.timedelta(hours=hours, minutes=minutes + 10) <= input_schedule + datetime.timedelta(hours=new_show_hours, minutes=new_show_minutes + 10):
             return bad_request("khung h đã bị trùng2 ")
     
     show = Show(room_id = data["room_id"], movie_id = data["movie_id"], schedule = data["schedule"], ticket_cost = data["ticket_cost"])
