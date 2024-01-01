@@ -41,7 +41,7 @@ def get_show_for_movie(id):
     utc_now = datetime.datetime.utcnow()
     utc_offset = datetime.timedelta(hours=7)
     utc_plus_7 = utc_now + utc_offset
-    shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost >= 0, Show.schedule > utc_plus_7)
+    shows = Show.query.filter(Show.movie_id == id, Show.ticket_cost > 0, Show.schedule > utc_plus_7)
     res = []
     for show in shows:
         res.append(show.to_dict())
