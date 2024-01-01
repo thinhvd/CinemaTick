@@ -8,7 +8,7 @@ from flask_cors import CORS, cross_origin
 from flask_mail import  Mail
 
 
-app = Flask(__name__, static_folder='../../dist')
+app = Flask(__name__, static_folder='./static')
 cors = CORS(app)
 app.config.from_object(Config)
 

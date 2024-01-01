@@ -12,7 +12,7 @@
       align-items: center;
       min-height: 200vh;
       margin: 0;
-      background-image: url('/static/background.jpg');
+      background-image: url({{ url_for('static', filename='assets/image.jpg') }});
       background-size: cover;
       font-family: 'Arial', sans-serif;
       min-height: 100%;
@@ -20,7 +20,6 @@
       background-attachment: fixed;
       background-repeat: no-repeat;
       color: white;
-      box-shadow: inset 0px 0px 0px 2000px rgba(0, 0, 0, 0.5);
       overflow: auto;
     }
 
@@ -37,13 +36,12 @@
       background-color: #1f2833;
       border-radius: 10px;
       text-align: center;
-      font-family: 'Roboto', sans-serif;
       color: #fff;
     }
 
     h1 {
       text-align: center;
-      font-family: 'Georgia', serif;
+      font-family: 'Verdana', serif;
     }
 
     p {
@@ -57,7 +55,7 @@
       background-color: #000000;
       color: #fff;
       border: none;
-      border-radius: 5px;
+      border-radius: 15px;
       cursor: pointer;
       font-family: 'Helvetica', sans-serif;
       font-size: large;
@@ -84,7 +82,6 @@
   <header></header>
   <div>
     <h1>{{ title }}</h1>
-
     <p>Trạng thái thanh toán: {{ result }}</p>
     <p>Thời gian thanh toán: {{ schedule }}</p>
     <p>Tên phim: {{ movie_name }}</p>
@@ -99,7 +96,7 @@
   <script>
     var button = document.getElementById("redirect");
     button.addEventListener("click", function () {
-      window.location.href = "http://fall2324w20g8.int3306.freeddns.org/";
+      window.location.href = "/";
     });
   </script>
 </body>
